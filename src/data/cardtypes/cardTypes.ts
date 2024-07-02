@@ -8,7 +8,7 @@ export interface CardTypes {
   status: string;
 }
 
-export interface CardTypeUpdateForm{
+export interface CardTypeUpdateForm {
   id: string;
   siteCode: string;
   methodology: string;
@@ -34,4 +34,10 @@ export interface CardTypeUpdateForm{
   audiosDurationPs: number;
   videosDurationPs: number;
   status: string;
+}
+
+export interface CardTypesCatalog {
+  id: string;
+  cardTypeMethodology: string;
+  cardTypeMethodologyName: string;
 }

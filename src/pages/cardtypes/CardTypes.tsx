@@ -105,11 +105,14 @@ const CardTypess = () => {
   const handleOnFormCreateFinish = async (values: any) => {
     try {
       setModalLoading(true);
+      const aux = values.cardTypeMethodology.split(" - ");
+      const cardTypeMethodology = aux[1];
+      const methodologyName = aux[0];
       await registerCardType(
         new CreateCardType(
-          values.cardTypeMethodology? values.cardTypeMethodology:Strings.M,
+          cardTypeMethodology,
           Number(siteId),
-          values.methodology.trim(),
+          methodologyName,
           values.name.trim(),
           values.description.trim(),
           values.color.toHex(),
