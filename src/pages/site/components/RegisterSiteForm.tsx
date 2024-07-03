@@ -6,13 +6,20 @@ import {
   Image,
   Input,
   InputNumber,
+  Radio,
+  RadioChangeEvent,
+  Select,
   Upload,
   UploadFile,
   UploadProps,
 } from "antd";
 import { MailOutlined } from "@ant-design/icons";
 import { FaRegBuilding } from "react-icons/fa";
-import { MdCurrencyExchange, MdOutlineCategory, MdOutlineLocalPhone, MdOutlineQrCodeScanner } from "react-icons/md";
+import {
+  MdOutlineCategory,
+  MdOutlineLocalPhone,
+  MdOutlineQrCodeScanner,
+} from "react-icons/md";
 import { SlCompass } from "react-icons/sl";
 import { IoIosContact } from "react-icons/io";
 import { PlusOutlined } from "@ant-design/icons";
@@ -20,12 +27,17 @@ import { BsDiagram3 } from "react-icons/bs";
 import { HiDevicePhoneMobile } from "react-icons/hi2";
 import { TiPlusOutline } from "react-icons/ti";
 import Strings from "../../../utils/localizations/Strings";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { CiBarcode } from "react-icons/ci";
 import { IoBusinessOutline } from "react-icons/io5";
 import { TbWorldLatitude, TbWorldLongitude } from "react-icons/tb";
 import { FiDollarSign } from "react-icons/fi";
 import { LuHistory } from "react-icons/lu";
+import { useGetCurrenciesMutation } from "../../../services/currencyService";
+import { Currency } from "../../../data/currency/currency";
+import { useAppSelector } from "../../../core/store";
+import { selectGeneratedSiteCode } from "../../../core/genericReducer";
+import { AiOutlineNumber } from "react-icons/ai";
 
 type FormInstance = GetRef<typeof Form>;
 
@@ -47,6 +59,31 @@ const RegisterSiteForm = ({ form }: FormProps) => {
   const [previewOpen, setPreviewOpen] = useState(false);
   const [previewImage, setPreviewImage] = useState(Strings.empty);
   const [fileList, setFileList] = useState<UploadFile[]>([]);
+  const [getCurrencies] = useGetCurrenciesMutation();
+  const [currencies, setCurrencies] = useState<Currency[]>([]);
+  const generatedSiteCode = useAppSelector(selectGeneratedSiteCode);
+  const [value, setValue] = useState(Strings.nombrado);
+
+  const onChange = (e: RadioChangeEvent) => {
+    setValue(e.target.value);
+  };
+
+  const handleGetData = async () => {
+    const response = await getCurrencies().unwrap();
+    setCurrencies(response);
+  };
+
+  useEffect(() => {
+    form.setFieldValue("siteCode", generatedSiteCode);
+    handleGetData();
+  }, []);
+
+  const currencyOptions = () => {
+    return currencies.map((currency) => ({
+      label: `${currency.code} - ${currency.name}`,
+      value: currency.code,
+    }));
+  };
 
   const handleOnPreview = async (file: UploadFile) => {
     if (!file.url && !file.preview) {
@@ -58,7 +95,9 @@ const RegisterSiteForm = ({ form }: FormProps) => {
   };
 
   const handleChange: UploadProps["onChange"] = ({ fileList: newFileList }) => {
-    const filteredFileList = newFileList.filter(file => file.status !== 'removed');
+    const filteredFileList = newFileList.filter(
+      (file) => file.status !== "removed"
+    );
     setFileList(filteredFileList);
   };
 
@@ -114,17 +153,8 @@ const RegisterSiteForm = ({ form }: FormProps) => {
           </Form.Item>
         </div>
         <div className="flex flex-row flex-wrap">
-          <Form.Item
-            name="siteCode"
-            rules={[{ required: true, message: Strings.requiredSiteCode }]}
-          >
-            <Input
-              size="large"
-              maxLength={6}
-              showCount
-              placeholder={Strings.siteCode}
-              addonBefore={<CiBarcode />}
-            />
+          <Form.Item name="siteCode" className="w-36">
+            <Input size="large" disabled addonBefore={<CiBarcode />} />
           </Form.Item>
           <Form.Item
             name="siteBusinessName"
@@ -146,19 +176,34 @@ const RegisterSiteForm = ({ form }: FormProps) => {
             name="siteType"
             rules={[{ required: true, message: Strings.requiredSiteType }]}
           >
-            <Input size="large" maxLength={20} placeholder={Strings.siteType} addonBefore={<MdOutlineCategory />} />
+            <Input
+              size="large"
+              maxLength={20}
+              placeholder={Strings.siteType}
+              addonBefore={<MdOutlineCategory />}
+            />
           </Form.Item>
           <Form.Item
             name="latitud"
             rules={[{ required: true, message: Strings.requiredLatitud }]}
           >
-            <InputNumber size="large" maxLength={11} placeholder={Strings.latitud} addonBefore={<TbWorldLatitude />}/>
+            <InputNumber
+              size="large"
+              maxLength={11}
+              placeholder={Strings.latitud}
+              addonBefore={<TbWorldLatitude />}
+            />
           </Form.Item>
           <Form.Item
             name="longitud"
             rules={[{ required: true, message: Strings.requiredLongitud }]}
           >
-            <InputNumber size="large" maxLength={11} placeholder={Strings.longitud} addonBefore={<TbWorldLongitude />}/>
+            <InputNumber
+              size="large"
+              maxLength={11}
+              placeholder={Strings.longitud}
+              addonBefore={<TbWorldLongitude />}
+            />
           </Form.Item>
         </div>
         <Form.Item
@@ -253,46 +298,92 @@ const RegisterSiteForm = ({ form }: FormProps) => {
             placeholder={Strings.email}
           />
         </Form.Item>
-        <div className="flex justify-between flex-row flex-wrap">
-        <Form.Item
-          name="dueDate"
-          rules={[{ required: true, message: Strings.requiredDueDate }]}
-        >
-          <DatePicker
-            size="large"
-            format="YYYY-MM-DD"
-            placeholder={Strings.dueDate}
-          />
-        </Form.Item>
-        <Form.Item
-          name="monthlyPayment"
-          rules={[{ required: true, message: Strings.requiredMonthlyPayment }]}
-        >
-          <InputNumber
-            size="large"
-            maxLength={12}
-            placeholder={Strings.monthlyPayment}
-            addonBefore={<FiDollarSign />}
-          />
-        </Form.Item>
-        <Form.Item
-          name="currency"
-          rules={[{ required: true, message: Strings.requiredCurrency }]}
-        >
-          <Input size="large" maxLength={3} placeholder={Strings.currency} addonBefore={<MdCurrencyExchange />} />
-        </Form.Item>
+        <div className="flex flex-row flex-wrap">
+          <Form.Item
+            name="dueDate"
+            rules={[{ required: true, message: Strings.requiredDueDate }]}
+            className="mr-2"
+          >
+            <DatePicker
+              size="large"
+              format="YYYY-MM-DD"
+              placeholder={Strings.dueDate}
+            />
+          </Form.Item>
+          <Form.Item
+            name="monthlyPayment"
+            rules={[
+              { required: true, message: Strings.requiredMonthlyPayment },
+            ]}
+            className="mr-2"
+          >
+            <InputNumber
+              size="large"
+              maxLength={12}
+              placeholder={Strings.monthlyPayment}
+              addonBefore={<FiDollarSign />}
+            />
+          </Form.Item>
+          <Form.Item
+            name="currency"
+            rules={[{ required: true, message: Strings.requiredCurrency }]}
+            className="w-72"
+          >
+            <Select
+              size="large"
+              options={currencyOptions()}
+              placeholder={Strings.currency}
+            />
+          </Form.Item>
         </div>
-        <Form.Item
-          name="appHistoryDays"
-          rules={[{ required: true, message: Strings.requiredAppHistoryDays }]}
-        >
-          <InputNumber
-            size="large"
-            maxLength={3}
-            placeholder={Strings.appHistoryDays}
-            addonBefore={<LuHistory />}
-          />
-        </Form.Item>
+        <div className="flex flex-row">
+          <Form.Item
+            name="appHistoryDays"
+            rules={[
+              { required: true, message: Strings.requiredAppHistoryDays },
+            ]}
+            className="mr-10"
+          >
+            <InputNumber
+              size="large"
+              maxLength={3}
+              placeholder={Strings.appHistoryDays}
+              addonBefore={<LuHistory />}
+            />
+          </Form.Item>
+          <div>
+            <h1>{Strings.userLicense}</h1>
+            <Form.Item
+              name="userLicense"
+              className="mr-10"
+              rules={[{ required: true, message: Strings.requiredUserLicense }]}
+            >
+              <Radio.Group onChange={onChange} value={value}>
+                <Radio value={Strings.concurrente}>{Strings.concurrent}</Radio>
+                <Radio value={Strings.nombrado}>{Strings.named}</Radio>
+              </Radio.Group>
+            </Form.Item>
+          </div>
+          {value === Strings.concurrente && (
+            <Form.Item
+              name="userQuantity"
+              rules={[
+                {
+                  required: true,
+                  message: Strings.requiredAdditionalField,
+                },
+              ]}
+              className="flex-1"
+            >
+              <InputNumber
+                addonBefore={<AiOutlineNumber />}
+                size="large"
+                max={100}
+                placeholder={Strings.quantity}
+              />
+            </Form.Item>
+          )}
+        </div>
         <Form.Item
           name="logo"
           label={Strings.logo}
