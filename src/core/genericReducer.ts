@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import Strings from "../utils/localizations/Strings";
 
 const initialState = {
   rowData: null,
@@ -12,6 +13,7 @@ const initialState = {
 
   },
   siteId: 0,
+  siteCode: Strings.empty
 };
 const genericSlice = createSlice({
   name: "data",
@@ -22,6 +24,12 @@ const genericSlice = createSlice({
     },
     resetRowData: (state) => {
       state.rowData = null;
+    },
+    setGeneratedSiteCode: (state, action) => {
+      state.siteCode = action.payload;
+    },
+    resetGeneratedSiteCode: (state) => {
+      state.siteCode = Strings.empty;
     },
     setSiteId: (state, action) => {
       state.siteId = action.payload;
@@ -88,12 +96,15 @@ export const {
   setLevelUpdatedIndicator,
   resetLevelUpdatedIndicator,
   setPreclassifierUpdatedIndicator,
-  resetPreclassifierUpdatedIndicator
+  resetPreclassifierUpdatedIndicator,
+  setGeneratedSiteCode,
+  resetGeneratedSiteCode
 } = genericSlice.actions;
 
 export default genericSlice.reducer;
 
 export const selectCurrentRowData = (state: any) => state.data.rowData;
+export const selectGeneratedSiteCode = (state: any) => state.data.siteCode;
 export const selectSiteUpdatedIndicator = (state: any) =>
   state.data.indicators.site.updated;
 export const selectCompanyUpdatedIndicator = (state: any) =>
