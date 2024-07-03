@@ -6,6 +6,7 @@ import {
   Image,
   Input,
   InputNumber,
+  Select,
   Upload,
   UploadFile,
   UploadProps,
@@ -13,7 +14,6 @@ import {
 import { MailOutlined } from "@ant-design/icons";
 import { FaRegBuilding } from "react-icons/fa";
 import {
-  MdCurrencyExchange,
   MdOutlineCategory,
   MdOutlineLocalPhone,
   MdOutlineQrCodeScanner,
@@ -35,6 +35,8 @@ import { useAppSelector } from "../../../core/store";
 import { selectCurrentRowData } from "../../../core/genericReducer";
 import { SiteUpdateForm } from "../../../data/site/site";
 import moment from "moment";
+import { useGetCurrenciesMutation } from "../../../services/currencyService";
+import { Currency } from "../../../data/currency/currency";
 
 type FormInstance = GetRef<typeof Form>;
 
@@ -58,13 +60,31 @@ const UpdateSiteForm = ({ form }: FormProps) => {
   ) as unknown as SiteUpdateForm;
   const [previewOpen, setPreviewOpen] = useState(false);
   const [previewImage, setPreviewImage] = useState(Strings.empty);
-  const [fileList, setFileList] = useState<UploadFile[]>([])
+  const [fileList, setFileList] = useState<UploadFile[]>([]);
+  const [getCurrencies] = useGetCurrenciesMutation();
+  const [currencies, setCurrencies] = useState<Currency[]>([]);
+
+  const handleGetData = async () => {
+    const response = await getCurrencies().unwrap();
+    setCurrencies(response);
+  };
+
+  useEffect(() => {
+    handleGetData();
+  }, []);
+
+  const currencyOptions = () => {
+    return currencies.map((currency) => ({
+      label: `${currency.code} - ${currency.name}`,
+      value: currency.code,
+    }));
+  };
 
   useEffect(() => {
     form.setFieldsValue({
       ...rowData,
       dueDate: moment(rowData?.dueDate),
-      logoURL: rowData?.logo
+      logoURL: rowData?.logo,
     });
     if (rowData?.logo) {
       setFileList([
@@ -87,9 +107,9 @@ const UpdateSiteForm = ({ form }: FormProps) => {
     setPreviewOpen(true);
   };
 
-  const handleChange: UploadProps['onChange'] = ({ fileList: newFileList }) => {
+  const handleChange: UploadProps["onChange"] = ({ fileList: newFileList }) => {
     setFileList(newFileList);
-  }
+  };
   const uploadButton = (
     <button style={{ border: 0, background: "none" }} type="button">
       <PlusOutlined />
@@ -101,8 +121,8 @@ const UpdateSiteForm = ({ form }: FormProps) => {
     <Form form={form}>
       <div className="flex flex-col">
         <div className="flex flex-row flex-wrap">
-          <Form.Item name='id' className="hidden">
-            <Input/>
+          <Form.Item name="id" className="hidden">
+            <Input />
           </Form.Item>
           <Form.Item
             name="name"
@@ -145,17 +165,8 @@ const UpdateSiteForm = ({ form }: FormProps) => {
           </Form.Item>
         </div>
         <div className="flex flex-row flex-wrap">
-          <Form.Item
-            name="siteCode"
-            rules={[{ required: true, message: Strings.requiredSiteCode }]}
-          >
-            <Input
-              size="large"
-              maxLength={6}
-              showCount
-              placeholder={Strings.siteCode}
-              addonBefore={<CiBarcode />}
-            />
+          <Form.Item name="siteCode" className="w-36">
+            <Input size="large" disabled addonBefore={<CiBarcode />} />
           </Form.Item>
           <Form.Item
             name="siteBusinessName"
@@ -299,10 +310,11 @@ const UpdateSiteForm = ({ form }: FormProps) => {
             placeholder={Strings.email}
           />
         </Form.Item>
-        <div className="flex justify-between flex-row flex-wrap">
-           <Form.Item
+        <div className="flex flex-row flex-wrap">
+          <Form.Item
             name="dueDate"
             rules={[{ required: true, message: Strings.requiredDueDate }]}
+            className="mr-2"
           >
             <DatePicker
               size="large"
@@ -315,6 +327,7 @@ const UpdateSiteForm = ({ form }: FormProps) => {
             rules={[
               { required: true, message: Strings.requiredMonthlyPayment },
             ]}
+            className="mr-2"
           >
             <InputNumber
               size="large"
@@ -326,12 +339,12 @@ const UpdateSiteForm = ({ form }: FormProps) => {
           <Form.Item
             name="currency"
             rules={[{ required: true, message: Strings.requiredCurrency }]}
+            className="w-72"
           >
-            <Input
+            <Select
               size="large"
-              maxLength={3}
+              options={currencyOptions()}
               placeholder={Strings.currency}
-              addonBefore={<MdCurrencyExchange />}
             />
           </Form.Item>
         </div>
@@ -346,9 +359,9 @@ const UpdateSiteForm = ({ form }: FormProps) => {
             addonBefore={<LuHistory />}
           />
         </Form.Item>
-        <Form.Item name='logoURL' className="hidden">
-            <Input/>
-          </Form.Item>
+        <Form.Item name="logoURL" className="hidden">
+          <Input />
+        </Form.Item>
         <Form.Item
           name="logo"
           label={Strings.logo}
@@ -373,14 +386,15 @@ const UpdateSiteForm = ({ form }: FormProps) => {
               preview={{
                 visible: previewOpen,
                 onVisibleChange: (visible) => setPreviewOpen(visible),
-                afterOpenChange: (visible) => !visible && setPreviewImage(Strings.empty),
+                afterOpenChange: (visible) =>
+                  !visible && setPreviewImage(Strings.empty),
               }}
               src={previewImage}
             />
           )}
         </Form.Item>
         <Form.Item name="status" className="hidden">
-          <Input/>
+          <Input />
         </Form.Item>
       </div>
     </Form>

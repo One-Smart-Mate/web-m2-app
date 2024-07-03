@@ -11,6 +11,7 @@ export interface Site {
   cellular: string;
   logo: string;
   status: string;
+  siteCode: string;
 }
 
 export interface SiteUpdateForm {

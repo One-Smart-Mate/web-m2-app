@@ -24,10 +24,13 @@ import Constants from "../../utils/Constants";
 import { uploadImageToFirebaseAndGetURL } from "../../config/firebaseUpload";
 import { useAppDispatch, useAppSelector } from "../../core/store";
 import {
+  resetGeneratedSiteCode,
   resetSiteUpdatedIndicator,
   selectSiteUpdatedIndicator,
+  setGeneratedSiteCode,
 } from "../../core/genericReducer";
 import PageTitle from "../../components/PageTitle";
+import { generateShortUUID } from "../../utils/Extensions";
 
 interface stateType {
   companyId: string;
@@ -92,13 +95,21 @@ const Sites = () => {
       name.toLowerCase().includes(search.toLowerCase())
     );
   };
-
+  const isSiteCodeNotUnique = (siteCode: string): boolean => {
+    return data.some((item) => item.siteCode === siteCode);
+  };
   const handleOnClickCreateButton = () => {
+    var uuid;
+    do {
+      uuid = generateShortUUID();
+    } while (isSiteCodeNotUnique(uuid));
+    dispatch(setGeneratedSiteCode(uuid));
     setModalOpen(true);
   };
 
   const handleOnCancelButton = () => {
     if (!modalIsLoading) {
+      dispatch(resetGeneratedSiteCode());
       setModalOpen(false);
     }
   };
@@ -131,7 +142,11 @@ const Sites = () => {
           values.dueDate.format(Constants.DATE_FORMAT),
           values.monthlyPayment,
           values.currency,
-          values.appHistoryDays
+          values.appHistoryDays,
+          values.userLicense,
+          values.userLicense === Strings.concurrente
+            ? values.userQuantity
+            : null
         )
       ).unwrap();
       setModalOpen(false);
@@ -147,7 +162,7 @@ const Sites = () => {
     <>
       <div className="h-full flex flex-col">
         <div className="flex flex-col items-center m-3">
-          <PageTitle mainText={Strings.sitesOf} subText={companyName}/>
+          <PageTitle mainText={Strings.sitesOf} subText={companyName} />
           <div className="flex flex-col md:flex-row flex-wrap items-center md:justify-between w-full">
             <div className="flex flex-col md:flex-row items-center flex-1 mb-1 md:mb-0">
               <Space className="w-full md:w-auto mb-1 md:mb-0">

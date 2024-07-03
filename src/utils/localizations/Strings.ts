@@ -81,11 +81,13 @@ export default class Strings {
   static requiredSiteType = "Please enter the site type";
   static requiredDueDate = "Please enter the due date";
   static requiredMonthlyPayment = "Please enter the monthly payment";
-  static requiredCurrency = "Please enter the currency";
+  static requiredCurrency = "Please selet the currency";
   static requiredAppHistoryDays = "Please enter app history days";
   static companies = "companies";
   static companiesUpperCase = "Companies";
   static users = "Users";
+  static requiredUserLicense = "Please select the user license"
+
 
   //sites
   static site = "Site";
@@ -100,6 +102,13 @@ export default class Strings {
   static monthlyPayment = "Monthly payment";
   static currency = "Currency";
   static appHistoryDays = "App history days";
+  static userLicense = "User license"
+  static concurrent  = "Concurrent"
+  static named = "Named"
+  static concurrente  = "concurrente"
+  static nombrado = "nombrado"
+  static quantity = "Quantity"
+  static requiredAdditionalField  = "Please input the additional field"
 
   //CardTypes
   static methodology = "Methodology name";

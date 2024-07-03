@@ -2,6 +2,13 @@ import { RuleObject } from "antd/lib/form";
 import User from "../data/user/user";
 import Routes from "../utils/Routes";
 import Strings from "./localizations/Strings";
+import { v4 as uuidv4 } from "uuid";
+
+export const generateShortUUID = (): string => {
+  const fullUUID = uuidv4();
+  const shortUUID = fullUUID.replace(/-/g, "").substring(0, 6).toUpperCase();
+  return shortUUID;
+}
 
 export const validateEmail = (
   _: RuleObject,
