@@ -8,7 +8,7 @@ export const generateShortUUID = (): string => {
   const fullUUID = uuidv4();
   const shortUUID = fullUUID.replace(/-/g, "").substring(0, 6).toUpperCase();
   return shortUUID;
-}
+};
 
 export const validateEmail = (
   _: RuleObject,
@@ -79,6 +79,21 @@ export const getStatusAndText = (
     return {
       status: "error",
       text: Strings.inactive,
+    };
+  }
+};
+export const getCardStatusAndText = (
+  input: string
+): { status: "error" | "success"; text: string } => {
+  if (input === "A" || input === "P" || input === "V") {
+    return {
+      status: "success",
+      text: Strings.open,
+    };
+  } else {
+    return {
+      status: "error",
+      text: Strings.closed,
     };
   }
 };
