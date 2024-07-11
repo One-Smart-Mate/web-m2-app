@@ -174,6 +174,12 @@ export default class Strings {
   static createLevel = "Create level for";
   static updateLevel = "Update level";
   static createNodefor = "Create node for";
+  static cardsOf = "Cards of:";
+  static cardType = "Card type";
+  static preclassifier = "Preclassifier";
+  static area = "Area";
+  static createdBy = "Created by";
+  static date = "Date";
 
   //general actions
   static edit = "Edit";
@@ -189,6 +195,8 @@ export default class Strings {
   //status
   static active = "Active";
   static inactive = "Inactive";
+  static open = "Open";
+  static closed = "Closed"
 
   static preclassifiersof = "Preclassifiers of:";
   static updatePreclassifier = "Update preclassifier";
