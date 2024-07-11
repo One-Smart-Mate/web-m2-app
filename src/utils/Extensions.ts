@@ -48,14 +48,32 @@ export const enum UserRoles {
   ADMIN,
 }
 
+export const formatDate = (date: string) => {
+  const dateObject: Date = new Date(date);
+  const options: Intl.DateTimeFormatOptions = {
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    hour: "numeric",
+    minute: "numeric",
+    timeZone: "America/Chicago",
+    timeZoneName: "short",
+  };
+  const formattedDate = new Intl.DateTimeFormat("en-US", options).format(
+    dateObject
+  );
+  return formattedDate;
+};
+
 export const RESPONSIVE_LIST = {
-  gutter: 4,
+  gutter: 20,
   xs: 1,
   sm: 2,
   md: 2,
-  lg: 3,
+  lg: 2,
   xl: 3,
-  xxl: 4,
+  xxl: 5,
 };
 
 export const RESPONSIVE_AVATAR = {

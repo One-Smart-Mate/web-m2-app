@@ -5,8 +5,9 @@ import Strings from "../../utils/localizations/Strings";
 import { useLocation } from "react-router-dom";
 import PageTitle from "../../components/PageTitle";
 import { useGetCardsMutation } from "../../services/cardService";
-import { Card } from "../../data/card/card";
-import CardTable from "./components/CardTable";
+import PaginatedList from "../../components/PaginatedList";
+import InformationPanel from "./components/Card";
+import { CardInterface } from "../../data/card/card";
 
 interface stateType {
   siteId: string;
@@ -18,9 +19,9 @@ const Cards = () => {
   const [isLoading, setLoading] = useState(false);
   const { state } = useLocation();
   const { siteId, siteName } = state as stateType;
-  const [data, setData] = useState<Card[]>([]);
+  const [data, setData] = useState<CardInterface[]>([]);
   const [querySearch, setQuerySearch] = useState(Strings.empty);
-  const [dataBackup, setDataBackup] = useState<Card[]>([]);
+  const [dataBackup, setDataBackup] = useState<CardInterface[]>([]);
 
   const handleOnSearch = (event: any) => {
     const getSearch = event.target.value;
@@ -34,7 +35,7 @@ const Cards = () => {
     setQuerySearch(getSearch);
   };
 
-  const search = (item: Card, search: string) => {
+  const search = (item: CardInterface, search: string) => {
     const { creatorName, areaName, cardTypeMethodologyName } = item;
 
     return (
@@ -79,8 +80,12 @@ const Cards = () => {
             <div className="flex mb-1 md:mb-0 md:justify-end w-full md:w-auto"></div>
           </div>
         </div>
-        <div className="flex-1 overflow-auto">
-          <CardTable data={data} isLoading={isLoading} />
+        <div className="flex-1 overflow-y-auto overflow-x-clip">
+          <PaginatedList
+            data={data}
+            ItemComponent={InformationPanel}
+            isLoading={isLoading}
+          />
         </div>
       </div>
     </>

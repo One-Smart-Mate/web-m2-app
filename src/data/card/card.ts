@@ -1,5 +1,6 @@
-export interface Card {
+export interface CardInterface {
   id: string;
+  siteCardId: string;
   status: string;
   cardCreationDate: string;
   cardDueDate: string;

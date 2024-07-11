@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { List, Pagination } from "antd";
+import React from "react";
+import { List } from "antd";
 import { RESPONSIVE_LIST } from "../utils/Extensions";
 import Constants from "../utils/Constants";
 
@@ -10,37 +10,24 @@ interface Props<T> {
 }
 
 const PaginatedList = <T,>({ data, ItemComponent, isLoading }: Props<T>) => {
-  const [currentPage, setCurrentPage] = useState(1);
-
-  const startIndex = (currentPage - 1) * Constants.PAGE_SIZE;
-  const endIndex = startIndex + Constants.PAGE_SIZE;
-  const currentData = data.slice(startIndex, endIndex);
-
-  const onPageChange = (page: number) => {
-    setCurrentPage(page);
-  };
-
   return (
     <>
       <List
         loading={isLoading}
         grid={RESPONSIVE_LIST}
-        dataSource={currentData}
+        dataSource={data}
+        pagination={{
+          showSizeChanger: true,
+          defaultPageSize: Constants.PAGE_SIZE,
+          total: data.length,
+          pageSizeOptions: Constants.PAGE_SIZE_OPTIONS,
+        }}
         renderItem={(item) => (
           <List.Item>
             <ItemComponent data={item} />
           </List.Item>
         )}
       />
-      {data.length > Constants.PAGE_SIZE && (
-        <Pagination
-          className="flex justify-end"
-          total={data.length}
-          pageSize={Constants.PAGE_SIZE}
-          current={currentPage}
-          onChange={onPageChange}
-        />
-      )}
     </>
   );
 };
