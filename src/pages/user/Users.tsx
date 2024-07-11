@@ -12,8 +12,17 @@ import { UserTable } from "../../data/user/user";
 import UserTableComponent from "./components/UserTable";
 import ModalForm from "../../components/ModalForm";
 import RegisterUserForm from "./components/RegisterUserForm";
-import { NotificationSuccess, handleErrorNotification, handleSucccessNotification } from "../../utils/Notifications";
+import {
+  NotificationSuccess,
+  handleErrorNotification,
+  handleSucccessNotification,
+} from "../../utils/Notifications";
 import { CreateUser } from "../../data/user/user.request";
+import { useAppDispatch, useAppSelector } from "../../core/store";
+import {
+  resetUserUpdatedIndicator,
+  selectUserUpdatedIndicator,
+} from "../../core/genericReducer";
 
 const Users = () => {
   const [getUsers] = useGetUsersMutation();
@@ -24,6 +33,8 @@ const Users = () => {
   const [modalIsOpen, setModalOpen] = useState(false);
   const [registerUser] = useCreateUserMutation();
   const [modalIsLoading, setModalLoading] = useState(false);
+  const dispatch = useAppDispatch();
+  const isSiteUpdated = useAppSelector(selectUserUpdatedIndicator);
 
   const handleOnClickCreateButton = () => {
     setModalOpen(true);
@@ -33,6 +44,13 @@ const Users = () => {
       setModalOpen(false);
     }
   };
+
+  useEffect(() => {
+    if (isSiteUpdated) {
+      handleGetUsers();
+      dispatch(resetUserUpdatedIndicator());
+    }
+  }, [isSiteUpdated, dispatch]);
 
   const handleGetUsers = async () => {
     setLoading(true);

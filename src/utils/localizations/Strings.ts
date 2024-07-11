@@ -2,6 +2,7 @@ export default class Strings {
   static login = "Log in";
   static logout = "Log out";
   static password = "Password";
+  static updatePassword = "Update password";
   static confirmPassword = "Confirm password";
   static uploadCardDataWithDataNet = "Upload card with data net";
   static uploadCardEvidenceWithDataNet = "Upload card evidence with data net";
@@ -14,6 +15,7 @@ export default class Strings {
   static logoutModalTittle = "Are you sure you want to log out?";
   static logutModalContent = "You are about to log out of your account.";
   static white = "white";
+  static updateUser = "Update user";
 
   //errors login form
   static requiredEmail = "Please input your e-mail address!";

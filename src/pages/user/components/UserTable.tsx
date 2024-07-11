@@ -5,6 +5,7 @@ import Strings from "../../../utils/localizations/Strings";
 import { Space, Table, Tag } from "antd";
 import Constants from "../../../utils/Constants";
 import { Role, UserTable } from "../../../data/user/user";
+import UpdateUserButton from "./UpdateUserButton";
 
 interface PrioritiesTableProps {
   data: UserTable[];
@@ -52,7 +53,9 @@ const UserTableComponent = ({ data, isLoading }: PrioritiesTableProps) => {
           return (
             <Space>
               {record.roles.map((role: Role) => (
-                <Tag color="blue" key={role.id}>{role.name}</Tag>
+                <Tag color="blue" key={role.id}>
+                  {role.name}
+                </Tag>
               ))}
             </Space>
           );
@@ -62,9 +65,16 @@ const UserTableComponent = ({ data, isLoading }: PrioritiesTableProps) => {
         title: Strings.site,
         key: "site",
         render: (record) => {
+          return <Space>{record.site.name}</Space>;
+        },
+        sorter: (a, b) => a.site.name.localeCompare(b.site.name),
+      },
+      {
+        title: Strings.actions,
+        render: (record) => {
           return (
             <Space>
-              {record.site.name}
+              <UpdateUserButton userId={record.id} />
             </Space>
           );
         },
@@ -79,9 +89,7 @@ const UserTableComponent = ({ data, isLoading }: PrioritiesTableProps) => {
     onExpand: handleExpand,
     showExpandColumn: false,
     expandedRowRender: (_: UserTable) => (
-      <Space className="flex justify-end">
-        
-      </Space>
+      <Space className="flex justify-end"></Space>
     ),
   };
 
