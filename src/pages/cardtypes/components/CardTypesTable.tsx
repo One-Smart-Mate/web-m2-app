@@ -117,7 +117,7 @@ const CardTypesTable = ({ data, isLoading }: TableProps) => {
         pagination={{
           defaultPageSize: Constants.PAGE_SIZE,
           showSizeChanger: true,
-          pageSizeOptions: ["3", "6", "9"],
+          pageSizeOptions: Constants.PAGE_SIZE_OPTIONS,
         }}
         key={data.length}
         scroll={{ y: tableHeight }}

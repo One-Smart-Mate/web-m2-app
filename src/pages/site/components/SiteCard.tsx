@@ -8,6 +8,7 @@ import ViewPrioritiesButton from "./ViewPrioritiesButton";
 import ViewCardTypesButton from "./ViewCardTypesButton";
 import UpdateSite from "./UpdateSite";
 import ViewLevelsButton from "./ViewLevelsButton";
+import ViewCardsButton from "./ViewCardsButton";
 
 interface CompanyCardProps {
   data: Company;
@@ -22,25 +23,23 @@ const SiteCard = ({ data }: CompanyCardProps) => {
   const items: MenuProps["items"] = [
     {
       key: "1",
-      label: (
-        <ViewPrioritiesButton siteId={data.id} siteName={data.name}/>
-      ),
+      label: <ViewPrioritiesButton siteId={data.id} siteName={data.name} />,
     },
     {
       key: "2",
-      label: <ViewLevelsButton siteId={data.id} siteName={data.name}/>,
+      label: <ViewLevelsButton siteId={data.id} siteName={data.name} />,
     },
     {
       key: "3",
-      label: <ViewCardTypesButton siteId={data.id} siteName={data.name}/>,
+      label: <ViewCardTypesButton siteId={data.id} siteName={data.name} />,
     },
     {
       key: "4",
-      label: <CustomButton type="action">{Strings.viewCards}</CustomButton>,
+      label: <ViewCardsButton siteId={data.id} siteName={data.name} />,
     },
     {
       key: "5",
-      label: <UpdateSite siteId={data.id}/>
+      label: <UpdateSite siteId={data.id} />,
     },
     {
       key: "6",

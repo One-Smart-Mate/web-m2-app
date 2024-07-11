@@ -5,6 +5,7 @@ const CardTypesAllBySite = "/cardTypes/all";
 const PreclassifiersAllByCardType = "/preclassifier/all"
 const Users = "/users"
 const LevelsAllByCardType = "/level/all"
+const AllCardsBySite = "/card/all"
 
 
 export default {
@@ -14,5 +15,6 @@ export default {
   CardTypesAllBySite,
   PreclassifiersAllByCardType,
   Users,
-  LevelsAllByCardType
+  LevelsAllByCardType,
+  AllCardsBySite
 };

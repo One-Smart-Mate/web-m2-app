@@ -13,7 +13,7 @@ export default class Strings {
   static welcome = "Welcome!";
   static logoutModalTittle = "Are you sure you want to log out?";
   static logutModalContent = "You are about to log out of your account.";
-  static white = "white"
+  static white = "white";
 
   //errors login form
   static requiredEmail = "Please input your e-mail address!";
@@ -86,8 +86,7 @@ export default class Strings {
   static companies = "companies";
   static companiesUpperCase = "Companies";
   static users = "Users";
-  static requiredUserLicense = "Please select the user license"
-
+  static requiredUserLicense = "Please select the user license";
 
   //sites
   static site = "Site";
@@ -102,13 +101,13 @@ export default class Strings {
   static monthlyPayment = "Monthly payment";
   static currency = "Currency";
   static appHistoryDays = "App history days";
-  static userLicense = "User license"
-  static concurrent  = "Concurrent"
-  static named = "Named"
-  static concurrente  = "concurrente"
-  static nombrado = "nombrado"
-  static quantity = "Quantity"
-  static requiredAdditionalField  = "Please input the additional field"
+  static userLicense = "User license";
+  static concurrent = "Concurrent";
+  static named = "Named";
+  static concurrente = "concurrente";
+  static nombrado = "nombrado";
+  static quantity = "Quantity";
+  static requiredAdditionalField = "Please input the additional field";
 
   //CardTypes
   static methodology = "Methodology name";
@@ -138,7 +137,8 @@ export default class Strings {
   static durationClose = "Duration close";
   static quantityCreateForProvisionalSolution =
     "Quantity create for provisional solution";
-  static durationCreateForProvisionalSolution = "Duration create for provisional solution";
+  static durationCreateForProvisionalSolution =
+    "Duration create for provisional solution";
   //cardtype methodology
   static M = "M";
   static C = "C";
@@ -172,6 +172,12 @@ export default class Strings {
   static createLevel = "Create level for";
   static updateLevel = "Update level";
   static createNodefor = "Create node for";
+  static cardsOf = "Cards of:";
+  static cardType = "Card type";
+  static preclassifier = "Preclassifier";
+  static area = "Area";
+  static createdBy = "Created by";
+  static date = "Date";
 
   //general actions
   static edit = "Edit";
@@ -187,6 +193,8 @@ export default class Strings {
   //status
   static active = "Active";
   static inactive = "Inactive";
+  static open = "Open";
+  static closed = "Closed"
 
   static preclassifiersof = "Preclassifiers of:";
   static updatePreclassifier = "Update preclassifier";
