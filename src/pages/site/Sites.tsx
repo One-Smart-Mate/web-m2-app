@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import {
   useCreateSiteMutation,
-  useGetSitesMutation,
+  useGetCompanySitesMutation,
 } from "../../services/siteService";
 import Strings from "../../utils/localizations/Strings";
 import { useLocation } from "react-router-dom";
@@ -38,7 +38,7 @@ interface stateType {
 }
 
 const Sites = () => {
-  const [getSites] = useGetSitesMutation();
+  const [getSites] = useGetCompanySitesMutation();
   const { state } = useLocation();
   const { companyId, companyName } = state as stateType;
   const [data, setData] = useState<Site[]>([]);

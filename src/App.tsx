@@ -15,8 +15,6 @@ function App() {
           colorLinkActive: "#e73773",
           linkHoverDecoration: "underline",
           colorBgLayout: "#e2e8f0",
-          colorIcon: "white",
-          colorIconHover: "white",
         },
         components: {
           Card: {
