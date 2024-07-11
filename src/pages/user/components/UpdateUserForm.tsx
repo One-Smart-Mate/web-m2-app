@@ -4,12 +4,14 @@ import { FaRegUser } from "react-icons/fa";
 import { FiUpload } from "react-icons/fi";
 import Strings from "../../../utils/localizations/Strings";
 import { validateEmail } from "../../../utils/Extensions";
-import { useEffect, useState } from "react";
-import { Role, UserTable } from "../../../data/user/user";
+import { useEffect, useMemo, useState } from "react";
+import { Role, UserTable, UserUpdateForm } from "../../../data/user/user";
 import { useGetRolesMutation } from "../../../services/roleService";
 import { Site } from "../../../data/site/site";
 import { useGetSitesMutation } from "../../../services/siteService";
 import { useGetUsersMutation } from "../../../services/userService";
+import { useAppSelector } from "../../../core/store";
+import { selectCurrentRowData } from "../../../core/genericReducer";
 
 type FormInstance = GetRef<typeof Form>;
 
@@ -17,7 +19,7 @@ interface FormProps {
   form: FormInstance;
 }
 
-const RegisterUserForm = ({ form }: FormProps) => {
+const UpdateUserForm = ({ form }: FormProps) => {
   const [getRoles] = useGetRolesMutation();
   const [getSites] = useGetSitesMutation();
   const [getUsers] = useGetUsersMutation();
@@ -27,11 +29,16 @@ const RegisterUserForm = ({ form }: FormProps) => {
   const [selectedRoles, setSelectedRoles] = useState<Role[]>([]);
   const [selectedSite, setSelectedSite] = useState(null);
   const [isPasswordVisible, setPasswordVisible] = useState(false);
+  const rowData = useAppSelector(
+    selectCurrentRowData
+  ) as unknown as UserUpdateForm;
 
   const handleGetData = async () => {
-    const rolesResponse = await getRoles().unwrap();
-    const sitesResponse = await getSites().unwrap();
-    const usersResponse = await getUsers().unwrap();
+    const [rolesResponse, sitesResponse, usersResponse] = await Promise.all([
+      getRoles().unwrap(),
+      getSites().unwrap(),
+      getUsers().unwrap(),
+    ]);
     setRoles(rolesResponse);
     setSites(sitesResponse);
     setUsers(usersResponse);
@@ -41,12 +48,18 @@ const RegisterUserForm = ({ form }: FormProps) => {
     handleGetData();
   }, []);
 
-  const siteOptions = () => {
+  useEffect(() => {
+    if (sites.length > 0 && users.length > 0 && roles.length > 0) {
+      form.setFieldsValue({ ...rowData });
+    }
+  }, [sites, roles]);
+
+  const siteOptions = useMemo(() => {
     return sites.map((site) => {
-      const filteredUsers = users.filter((user) => user.site.id === site.id);
-      const userCount = filteredUsers.length;
-      const userCountDisplay = userCount < 10 ? `0${userCount}` : userCount;
-      const userQuantityDisplay =
+      let filteredUsers = users.filter((user) => user.site.id === site.id);
+      let userCount = filteredUsers.length;
+      let userCountDisplay = userCount < 10 ? `0${userCount}` : userCount;
+      let userQuantityDisplay =
         Number(site.userQuantity) < 10
           ? `0${site.userQuantity}`
           : site.userQuantity;
@@ -78,7 +91,7 @@ const RegisterUserForm = ({ form }: FormProps) => {
         ),
       };
     });
-  };
+  }, [sites, users]);
 
   const filteredOptions = roles.filter((o) => !selectedRoles.includes(o));
 
@@ -86,6 +99,9 @@ const RegisterUserForm = ({ form }: FormProps) => {
     <Form form={form} layout="vertical">
       <div className="flex flex-col">
         <div className="flex flex-row flex-wrap">
+          <Form.Item className="hidden" name="id">
+            <Input />
+          </Form.Item>
           <Form.Item
             name="name"
             validateFirst
@@ -124,10 +140,7 @@ const RegisterUserForm = ({ form }: FormProps) => {
           <Form.Item
             name="password"
             validateFirst
-            rules={[
-              { min: 8, message: Strings.passwordLenght },
-              { required: true, message: Strings.requiredPassword },
-            ]}
+            rules={[{ min: 8, message: Strings.passwordLenght }]}
             className="flex-1 mr-1"
           >
             <Input.Password
@@ -135,7 +148,7 @@ const RegisterUserForm = ({ form }: FormProps) => {
               minLength={8}
               addonBefore={<LockOutlined />}
               type="password"
-              placeholder={Strings.password}
+              placeholder={Strings.updatePassword}
               visibilityToggle={{
                 visible: isPasswordVisible,
                 onVisibleChange: setPasswordVisible,
@@ -148,13 +161,17 @@ const RegisterUserForm = ({ form }: FormProps) => {
             dependencies={["password"]}
             className="flex-1"
             rules={[
-              { required: true, message: Strings.requiredConfirmPassword },
               ({ getFieldValue }) => ({
                 validator(_, value) {
-                  if (!value || getFieldValue("password") === value) {
-                    return Promise.resolve();
+                  if (!value && getFieldValue("password")) {
+                    return Promise.reject(new Error(Strings.requiredPassword));
                   }
-                  return Promise.reject(new Error(Strings.passwordsDoNotMatch));
+                  if (value && getFieldValue("password") !== value) {
+                    return Promise.reject(
+                      new Error(Strings.passwordsDoNotMatch)
+                    );
+                  }
+                  return Promise.resolve();
                 },
               }),
             ]}
@@ -189,7 +206,7 @@ const RegisterUserForm = ({ form }: FormProps) => {
             placeholder={Strings.site}
             value={selectedSite}
             onChange={setSelectedSite}
-            options={siteOptions()}
+            options={siteOptions}
             showSearch
             filterOption={(input, option) => {
               if (!option) {
@@ -259,9 +276,12 @@ const RegisterUserForm = ({ form }: FormProps) => {
             }))}
           />
         </Form.Item>
+        <Form.Item className="hidden" name="status">
+          <Input />
+        </Form.Item>
       </div>
     </Form>
   );
 };
 
-export default RegisterUserForm;
+export default UpdateUserForm;

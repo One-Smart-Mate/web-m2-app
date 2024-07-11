@@ -32,15 +32,26 @@ interface Site {
 }
 
 export interface UserTable {
-  id: string
+  id: string;
   name: string;
   email: string;
   roles: Role[];
   site: Site;
 }
 
-export interface Responsible{
-  id: string,
-  name: string,
-  email: string
+export interface Responsible {
+  id: string;
+  name: string;
+  email: string;
+}
+
+export interface UserUpdateForm {
+  id: string;
+  name: string;
+  email: string;
+  roles: string[];
+  siteId: string;
+  uploadCardDataWithDataNet: number;
+  uploadCardEvidenceWithDataNet: number;
+  status: string;
 }
