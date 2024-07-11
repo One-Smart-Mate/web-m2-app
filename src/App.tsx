@@ -15,26 +15,24 @@ function App() {
           colorLinkActive: "#e73773",
           linkHoverDecoration: "underline",
           colorBgLayout: "#e2e8f0",
-          colorIcon: 'white',
-          colorIconHover: 'white',
         },
         components: {
           Card: {
             colorBgContainer: "#001529",
-            colorPrimary: 'white',
-            colorTextHeading: 'white',
+            colorPrimary: "white",
+            colorTextHeading: "white",
           },
-          Table:{
-            headerBg: '#001529',
-            headerColor: 'white',
-            headerSortHoverBg: '#011e39',
-            headerSortActiveBg: '#011e39',
+          Table: {
+            headerBg: "#001529",
+            headerColor: "white",
+            headerSortHoverBg: "#011e39",
+            headerSortActiveBg: "#011e39",
           },
           Modal: {
             colorIcon: "black",
             colorIconHover: "#e73773",
-          }
-        }
+          },
+        },
       }}
     >
       <Routes>

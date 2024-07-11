@@ -12,6 +12,8 @@ export interface Site {
   logo: string;
   status: string;
   siteCode: string;
+  userLicense: string;
+  userQuantity: string;
 }
 
 export interface SiteUpdateForm {
