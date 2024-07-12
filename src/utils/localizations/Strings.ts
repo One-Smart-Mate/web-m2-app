@@ -159,6 +159,7 @@ export default class Strings {
 
   //Priority
   static prioritiesOf = "Priorities of:";
+  static priority = "Priority";
   static code = "Code";
   static description = "Description";
   static daysNumber = "Days number";
@@ -175,11 +176,15 @@ export default class Strings {
   static updateLevel = "Update level";
   static createNodefor = "Create node for";
   static cardsOf = "Cards of:";
+  static cardDetailsOf = "Card details of:";
   static cardType = "Card type";
   static preclassifier = "Preclassifier";
   static area = "Area";
   static createdBy = "Created by";
   static date = "Date";
+  static mechanic  = "Mechanic"
+  static creator = "Creator"
+  static comments = "Comments"
 
   //general actions
   static edit = "Edit";
@@ -196,7 +201,7 @@ export default class Strings {
   static active = "Active";
   static inactive = "Inactive";
   static open = "Open";
-  static closed = "Closed"
+  static closed = "Closed";
 
   static preclassifiersof = "Preclassifiers of:";
   static updatePreclassifier = "Update preclassifier";

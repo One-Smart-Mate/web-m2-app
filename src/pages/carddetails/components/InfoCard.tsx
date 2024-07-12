@@ -1,81 +1,99 @@
 import { Card } from "antd";
-import { formatDate, getCardStatusAndText } from "../../../utils/Extensions";
-import { CardInterface } from "../../../data/card/card";
+import { getCardStatusAndText } from "../../../utils/Extensions";
 import Strings from "../../../utils/localizations/Strings";
 import CustomTag from "../../../components/CustomTag";
-import { useNavigate } from "react-router-dom";
-import Routes from "../../../utils/Routes";
+import { CardInterface } from "../../../data/card/card";
+import { useEffect } from "react";
 
 interface CardProps {
   data: CardInterface;
+  isLoading: boolean;
 }
 
-const InformationPanel = ({ data }: CardProps) => {
-  const { status, text } = getCardStatusAndText(data.status);
-  const navigate = useNavigate();
+const InfoCard = ({
+  data: {
+    cardDueDate,
+    status,
+    cardTypeMethodologyName,
+    preclassifierCode,
+    preclassifierDescription,
+    priorityCode,
+    priorityDescription,
+    creatorName,
+    commentsAtCardCreation,
+    mechanicName,
+  },
+  isLoading,
+}: CardProps) => {
+  const cardStatus = getCardStatusAndText(status);
+  useEffect(() => {
+    console.log(cardDueDate);
+  });
   return (
     <Card
       title={
         <h2 className="mt-2 text-xl font-semibold mb-4 text-black text-center">
-          {data.cardTypeMethodologyName} {data.siteCardId}
+          Information
         </h2>
       }
       className="max-w-sm h-96 mx-auto bg-gray-100 rounded-xl shadow-md"
-      onClick={() => {
-        navigate(Routes.CardDetails, {
-          state: {
-            cardId: data.id,
-            cardName: `${data.cardTypeMethodologyName} ${data.siteCardId}`,
-          },
-        });
-      }}
-      hoverable
+      loading={isLoading}
     >
       <div className="grid gap-x-2 md:gap-x-0 gap-y-1 grid-cols-3 text-black font-medium">
-        <span>{Strings.status}</span>
-        <CustomTag className="col-span-2 w-min text-sm" color={status}>
-          {text}
+        <span>{Strings.dueDate}</span>
+        <div className="col-span-2">
+          <p className="max-w-48 w-fit text-white bg-card-fields rounded-lg p-1">
+            {cardDueDate}
+          </p>
+        </div>
+
+        <span>{Strings.cardType}</span>
+        <CustomTag
+          className="col-span-2 w-min text-sm"
+          color={cardStatus.status}
+        >
+          {cardStatus.text}
         </CustomTag>
 
         <span>{Strings.cardType}</span>
         <div className="col-span-2">
           <p className="max-w-48 w-fit text-white bg-card-fields rounded-lg p-1">
-            {data.cardTypeMethodologyName}
+            {cardTypeMethodologyName}
           </p>
         </div>
 
         <span>{Strings.preclassifier}</span>
         <div className="col-span-2">
           <p className="max-w-48 w-fit text-white bg-card-fields rounded-lg p-1">
-            {data.preclassifierCode} {data.preclassifierDescription}
+            {preclassifierCode} - {preclassifierDescription}
           </p>
         </div>
 
-        <span>{Strings.area}</span>
+        <span>{Strings.priority}</span>
         <div className="col-span-2">
           <p className="max-w-48 w-fit text-white bg-card-fields rounded-lg p-1">
-            {data.areaName}
+            {priorityCode} - {priorityDescription}
           </p>
         </div>
 
-        <span>{Strings.createdBy}</span>
+        <span>{Strings.mechanic}</span>
         <div className="col-span-2">
           <p className="max-w-48 w-fit text-white bg-card-fields rounded-lg p-1">
-            {data.creatorName}
+            {mechanicName || "N/A"}
           </p>
         </div>
 
-        <span>{Strings.date}</span>
+        <span>{Strings.creator}</span>
         <div className="col-span-2">
           <p className="max-w-48 w-fit text-white bg-card-fields rounded-lg p-1">
-            {formatDate(data.cardCreationDate)}
+            {creatorName}
           </p>
         </div>
 
-        <span>{Strings.dueDate}</span>
+        <span>{Strings.comments}</span>
         <div className="col-span-2">
           <p className="max-w-48 w-fit text-white bg-card-fields rounded-lg p-1">
-            {data.cardDueDate}
+            {commentsAtCardCreation || "N/A"}
           </p>
         </div>
       </div>
@@ -83,4 +101,4 @@ const InformationPanel = ({ data }: CardProps) => {
   );
 };
 
-export default InformationPanel;
+export default InfoCard;
