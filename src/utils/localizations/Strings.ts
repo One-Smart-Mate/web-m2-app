@@ -167,6 +167,7 @@ export default class Strings {
 
   //Priority
   static prioritiesOf = "Priorities of:";
+  static priority = "Priority";
   static code = "Code";
   static enterCode = "Enter the code!";
   static description = "Description";
@@ -184,11 +185,15 @@ export default class Strings {
   static updateLevel = "Update level";
   static createNodefor = "Create node for";
   static cardsOf = "Cards of:";
+  static cardDetailsOf = "Card details of:";
   static cardType = "Card type";
   static problemType = "Problem type";
   static area = "Area";
   static createdBy = "Created by";
   static date = "Date";
+  static mechanic  = "Mechanic"
+  static creator = "Creator"
+  static comments = "Comments"
 
   //general actions
   static edit = "Edit";

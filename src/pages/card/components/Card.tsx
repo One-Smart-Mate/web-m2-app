@@ -3,6 +3,8 @@ import { formatDate, getCardStatusAndText } from "../../../utils/Extensions";
 import { CardInterface } from "../../../data/card/card";
 import Strings from "../../../utils/localizations/Strings";
 import CustomTag from "../../../components/CustomTag";
+import { useNavigate } from "react-router-dom";
+import Routes from "../../../utils/Routes";
 
 interface CardProps {
   data: CardInterface;
@@ -10,6 +12,7 @@ interface CardProps {
 
 const InformationPanel = ({ data }: CardProps) => {
   const { status, text } = getCardStatusAndText(data.status);
+  const navigate = useNavigate();
   return (
     <Card
       title={
@@ -18,12 +21,14 @@ const InformationPanel = ({ data }: CardProps) => {
         </h2>
       }
       className="max-w-sm h-96 mx-auto bg-gray-100 rounded-xl shadow-md"
-      onClick={() =>
-        console.log(
-          "Hola tarjeta",
-          data.cardTypeMethodologyName + data.siteCardId
-        )
-      }
+      onClick={() => {
+        navigate(Routes.CardDetails, {
+          state: {
+            cardId: data.id,
+            cardName: `${data.cardTypeMethodologyName} ${data.siteCardId}`,
+          },
+        });
+      }}
       hoverable
     >
       <div className="grid gap-x-2 md:gap-x-1 gap-y-1 grid-cols-3 text-black font-medium">
