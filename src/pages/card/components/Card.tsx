@@ -26,7 +26,7 @@ const InformationPanel = ({ data }: CardProps) => {
       }
       hoverable
     >
-      <div className="grid gap-x-2 md:gap-x-0 gap-y-1 grid-cols-3 text-black font-medium">
+      <div className="grid gap-x-2 md:gap-x-1 gap-y-1 grid-cols-3 text-black font-medium">
         <span>{Strings.status}</span>
         <CustomTag className="col-span-2 w-min text-sm" color={status}>
           {text}
@@ -39,7 +39,7 @@ const InformationPanel = ({ data }: CardProps) => {
           </p>
         </div>
 
-        <span>{Strings.preclassifier}</span>
+        <span>{Strings.problemType}</span>
         <div className="col-span-2">
           <p className="max-w-48 w-fit text-white bg-card-fields rounded-lg p-1">
             {data.preclassifierCode} {data.preclassifierDescription}
