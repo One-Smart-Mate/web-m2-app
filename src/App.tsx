@@ -4,6 +4,8 @@ import { Route, Routes } from "react-router-dom";
 import { adminRoutes } from "./pages/routes/Routes";
 import LoginPage from "./pages/auth/Login";
 import PrivateRoutes from "./components/PrivateRoutes";
+import ResetPassword from "./pages/auth/ResetPassword";
+import { ResetPasswordRoute } from "./utils/Routes";
 
 function App() {
   return (
@@ -37,7 +39,7 @@ function App() {
     >
       <Routes>
         <Route index path="/" element={<LoginPage />} />
-
+        <Route path={ResetPasswordRoute} element={<ResetPassword />} />
         <Route element={<PrivateRoutes />}>
           <Route element={<BaseLayout />}>
             {adminRoutes.map((value, index) => (

@@ -69,3 +69,25 @@ export class UpdateUser {
     this.status = status;
   }
 }
+
+export class SendResetCode {
+  email: string;
+  resetCode: string;
+
+  constructor(email: string, resetCode: string) {
+    this.email = email;
+    this.resetCode = resetCode;
+  }
+}
+
+export class ResetPasswordClass {
+  email: string;
+  resetCode: string;
+  newPassword: string;
+
+  constructor(email: string, resetCode: string, newPassword: string) {
+    this.email = email;
+    this.resetCode = resetCode;
+    this.newPassword = newPassword;
+  }
+}
