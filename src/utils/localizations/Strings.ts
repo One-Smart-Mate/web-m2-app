@@ -185,7 +185,7 @@ export default class Strings {
   static createNodefor = "Create node for";
   static cardsOf = "Cards of:";
   static cardType = "Card type";
-  static preclassifier = "Preclassifier";
+  static problemType = "Problem type";
   static area = "Area";
   static createdBy = "Created by";
   static date = "Date";
