@@ -1,5 +1,10 @@
 import { Responsible, UserTable, UserUpdateForm } from "../data/user/user";
-import { CreateUser, UpdateUser } from "../data/user/user.request";
+import {
+  CreateUser,
+  ResetPasswordClass,
+  SendResetCode,
+  UpdateUser,
+} from "../data/user/user.request";
 import { apiSlice } from "./apiSlice";
 
 export const userService = apiSlice.injectEndpoints({
@@ -30,6 +35,28 @@ export const userService = apiSlice.injectEndpoints({
         body: { ...user },
       }),
     }),
+    sendCodeToEmail: builder.mutation<void, string>({
+      query: (email) => ({
+        url: "/users/send-code",
+        method: "POST",
+        body: { email },
+      }),
+    }),
+    sendCodeToVerify: builder.mutation<void, SendResetCode>({
+      query: (sendResetCode) => ({
+        url: "/users/verify-code",
+        method: "POST",
+        body: { ...sendResetCode },
+      }),
+      transformResponse: (response: { data: any }) => response.data,
+    }),
+    resetPassword: builder.mutation<void, ResetPasswordClass>({
+      query: (resetPassword) => ({
+        url: "/users/reset-password",
+        method: "POST",
+        body: { ...resetPassword },
+      }),
+    }),
   }),
 });
 
@@ -39,4 +66,7 @@ export const {
   useCreateUserMutation,
   useGetUserMutation,
   useUpdateUserMutation,
+  useSendCodeToEmailMutation,
+  useSendCodeToVerifyMutation,
+  useResetPasswordMutation,
 } = userService;

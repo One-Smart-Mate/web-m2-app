@@ -5,13 +5,14 @@ import { useLoginMutation } from "../../services/authService";
 import { LoginRequest } from "../../data/user/user.request";
 import { useAppDispatch } from "../../core/store";
 import { setCredentials } from "../../core/authReducer";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useSessionStorage } from "../../core/useSessionStorage";
 import User from "../../data/user/user";
 import { handleErrorNotification } from "../../utils/Notifications";
 import Meta from "antd/es/card/Meta";
 import { getInitRoute, validateEmail } from "../../utils/Extensions";
 import Strings from "../../utils/localizations/Strings";
+import { ResetPasswordRoute } from "../../utils/Routes";
 
 const LoginPage = () => {
   const [isPasswordVisible, setPasswordVisible] = React.useState(false);
@@ -86,9 +87,9 @@ const LoginPage = () => {
             />
           </Form.Item>
           <Form.Item>
-            <a className="text-white" href="">
+            <Link className="text-white" to={ResetPasswordRoute}>
               {Strings.forgotPassword}
-            </a>
+            </Link>
             <Button
               loading={isLoading}
               block

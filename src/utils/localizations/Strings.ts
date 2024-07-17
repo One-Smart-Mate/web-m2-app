@@ -1,7 +1,9 @@
 export default class Strings {
   static login = "Log in";
+  static sendCode = "Send code";
   static logout = "Log out";
   static password = "Password";
+  static newPassword = "New password";
   static updatePassword = "Update password";
   static confirmPassword = "Confirm password";
   static uploadCardDataWithDataNet = "Upload card with data net";
@@ -12,6 +14,12 @@ export default class Strings {
   static clearFiltersAndSorters = "Clear filters and sorters";
   static empty = "";
   static welcome = "Welcome!";
+  static resetPassword = "Reset password";
+  static sendCodeMessage =
+    "Enter your email address and we will send you a code to reset your password.";
+  static enterTheCode =
+    "Enter the code that we have sent to you in your e-mail. Please note that the code expires in 24 hours.";
+  static enterTheNewPassword = "Please enter the new password.";
   static logoutModalTittle = "Are you sure you want to log out?";
   static logutModalContent = "You are about to log out of your account.";
   static white = "white";
@@ -160,6 +168,7 @@ export default class Strings {
   //Priority
   static prioritiesOf = "Priorities of:";
   static code = "Code";
+  static enterCode = "Enter the code!";
   static description = "Description";
   static daysNumber = "Days number";
 
@@ -196,7 +205,7 @@ export default class Strings {
   static active = "Active";
   static inactive = "Inactive";
   static open = "Open";
-  static closed = "Closed"
+  static closed = "Closed";
 
   static preclassifiersof = "Preclassifiers of:";
   static updatePreclassifier = "Update preclassifier";
