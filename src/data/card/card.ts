@@ -13,6 +13,12 @@ export interface CardInterface {
   priorityDescription: string;
   commentsAtCardCreation: string;
   mechanicName: string;
+  userProvisionalSolutionName: string;
+  cardProvisionalSolutionDate: string;
+  commentsAtCardProvisionalSolution: string;
+  userDefinitiveSolutionName: string;
+  cardDefinitiveSolutionDate: string;
+  commentsAtCardDefinitiveSolution: string;
   evidences: Evidences[];
 }
 
@@ -24,4 +30,9 @@ interface Evidences {
   evidenceType: string;
   status: string;
   createdAt: string;
+}
+
+export interface CardDetailsInterface {
+  card: CardInterface;
+  evidences: Evidences[];
 }

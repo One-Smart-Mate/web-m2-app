@@ -2,98 +2,85 @@ import { Card } from "antd";
 import { getCardStatusAndText } from "../../../utils/Extensions";
 import Strings from "../../../utils/localizations/Strings";
 import CustomTag from "../../../components/CustomTag";
-import { CardInterface } from "../../../data/card/card";
-import { useEffect } from "react";
+import { CardDetailsInterface } from "../../../data/card/card";
 
 interface CardProps {
-  data: CardInterface;
+  data: CardDetailsInterface | null;
   isLoading: boolean;
 }
 
-const InfoCard = ({
-  data: {
-    cardDueDate,
-    status,
-    cardTypeMethodologyName,
-    preclassifierCode,
-    preclassifierDescription,
-    priorityCode,
-    priorityDescription,
-    creatorName,
-    commentsAtCardCreation,
-    mechanicName,
-  },
-  isLoading,
-}: CardProps) => {
-  const cardStatus = getCardStatusAndText(status);
-  useEffect(() => {
-    console.log(cardDueDate);
-  });
+const InfoCard = ({ data, isLoading }: CardProps) => {
+  if (!data) {
+    return (
+      <Card
+        className="max-w-sm bg-gray-100 rounded-xl shadow-md"
+        loading={isLoading}
+      />
+    );
+  }
+  const { card } = data;
+
+  const cardStatus = getCardStatusAndText(card.status);
+
   return (
     <Card
       title={
         <h2 className="mt-2 text-xl font-semibold mb-4 text-black text-center">
-          Information
+          {Strings.information}
         </h2>
       }
-      className="max-w-sm h-96 mx-auto bg-gray-100 rounded-xl shadow-md"
-      loading={isLoading}
+      className="w-fit bg-gray-100 rounded-xl shadow-md"
     >
-      <div className="grid gap-x-2 md:gap-x-0 gap-y-1 grid-cols-3 text-black font-medium">
-        <span>{Strings.dueDate}</span>
-        <div className="col-span-2">
+      <div className="space-y-1 flex-wrap text-black font-medium">
+        <div className=" flex flex-row gap-2">
+          <span className="w-10">{Strings.dueDate}</span>
           <p className="max-w-48 w-fit text-white bg-card-fields rounded-lg p-1">
-            {cardDueDate}
+            {card.cardDueDate}
           </p>
         </div>
-
-        <span>{Strings.cardType}</span>
-        <CustomTag
-          className="col-span-2 w-min text-sm"
-          color={cardStatus.status}
-        >
-          {cardStatus.text}
-        </CustomTag>
-
-        <span>{Strings.cardType}</span>
-        <div className="col-span-2">
+        <div className=" flex gap-2">
+          <span className="w-10">{Strings.status}</span>
+          <div>
+            <CustomTag className="w-fit text-sm" color={cardStatus.status}>
+              {cardStatus.text}
+            </CustomTag>
+          </div>
+        </div>
+        <div className=" flex gap-2">
+          <span className="w-10">{Strings.cardType}</span>
           <p className="max-w-48 w-fit text-white bg-card-fields rounded-lg p-1">
-            {cardTypeMethodologyName}
+            {card.cardTypeMethodologyName}
           </p>
         </div>
-
-        <span>{Strings.preclassifier}</span>
-        <div className="col-span-2">
+        <div className="flex gap-2">
+          <span className="w-10">{Strings.preclassifier}</span>
           <p className="max-w-48 w-fit text-white bg-card-fields rounded-lg p-1">
-            {preclassifierCode} - {preclassifierDescription}
+            {card.preclassifierCode} - {card.preclassifierDescription}
           </p>
         </div>
-
-        <span>{Strings.priority}</span>
-        <div className="col-span-2">
+        <div></div>
+        <div>
+          <span>{Strings.priority}</span>
           <p className="max-w-48 w-fit text-white bg-card-fields rounded-lg p-1">
-            {priorityCode} - {priorityDescription}
+            {card.priorityCode} - {card.priorityDescription}
           </p>
         </div>
-
-        <span>{Strings.mechanic}</span>
-        <div className="col-span-2">
+        <div>
+          <span>{Strings.mechanic}</span>
           <p className="max-w-48 w-fit text-white bg-card-fields rounded-lg p-1">
-            {mechanicName || "N/A"}
+            {card.mechanicName || "N/A"}
           </p>
         </div>
-
-        <span>{Strings.creator}</span>
-        <div className="col-span-2">
+        <div>
+          <span>{Strings.creator}</span>
           <p className="max-w-48 w-fit text-white bg-card-fields rounded-lg p-1">
-            {creatorName}
+            {card.creatorName}
           </p>
         </div>
-
-        <span>{Strings.comments}</span>
-        <div className="col-span-2">
+        <div>
+          <span>{Strings.comments}</span>
           <p className="max-w-48 w-fit text-white bg-card-fields rounded-lg p-1">
-            {commentsAtCardCreation || "N/A"}
+            {card.commentsAtCardCreation || Strings.NA}
           </p>
         </div>
       </div>

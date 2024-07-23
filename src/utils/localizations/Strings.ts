@@ -16,6 +16,20 @@ export default class Strings {
   static logutModalContent = "You are about to log out of your account.";
   static white = "white";
   static updateUser = "Update user";
+  static information = "Information";
+  static definitiveSolution = "Definitive solution";
+  static provisionalSolution = "Provisional solution";
+  static provisionalUser = "Provisional user";
+  static provisionalDate = "Provisional date";
+  static definitiveUser = "Definitive user";
+  static definitiveDate = "Definitive date";
+  static provisionalComments = "Provisional comments";
+  static definitiveComments = "Definitive comments";
+  static NA = "N/A";
+  static images = "Images";
+  static videos = "Videos";
+  static audios = "Audios";
+  static evidences = "Evidences";
 
   //errors login form
   static requiredEmail = "Please input your e-mail address!";
@@ -182,9 +196,9 @@ export default class Strings {
   static area = "Area";
   static createdBy = "Created by";
   static date = "Date";
-  static mechanic  = "Mechanic"
-  static creator = "Creator"
-  static comments = "Comments"
+  static mechanic = "Mechanic";
+  static creator = "Creator";
+  static comments = "Comments";
 
   //general actions
   static edit = "Edit";
