@@ -1,4 +1,4 @@
-import { CardInterface } from "../data/card/card";
+import { CardDetailsInterface, CardInterface } from "../data/card/card";
 import { apiSlice } from "./apiSlice";
 
 export const cardService = apiSlice.injectEndpoints({
@@ -7,9 +7,10 @@ export const cardService = apiSlice.injectEndpoints({
       query: (siteId) => `/card/all/${siteId}`,
       transformResponse: (response: { data: CardInterface[] }) => response.data,
     }),
-    getCardDetails: builder.mutation<CardInterface, string>({
+    getCardDetails: builder.mutation<CardDetailsInterface, string>({
       query: (id) => `/card/${id}`,
-      transformResponse: (response: { data: CardInterface }) => response.data,
+      transformResponse: (response: { data: CardDetailsInterface }) =>
+        response.data,
     }),
   }),
 });
