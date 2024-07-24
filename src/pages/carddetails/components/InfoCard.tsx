@@ -6,15 +6,14 @@ import { CardDetailsInterface } from "../../../data/card/card";
 
 interface CardProps {
   data: CardDetailsInterface | null;
-  isLoading: boolean;
 }
 
-const InfoCard = ({ data, isLoading }: CardProps) => {
+const InfoCard = ({ data }: CardProps) => {
   if (!data) {
     return (
       <Card
-        className="max-w-sm bg-gray-100 rounded-xl shadow-md"
-        loading={isLoading}
+        className="min-w-80 min-h-80 bg-gray-100 rounded-xl shadow-md"
+        loading={true}
       />
     );
   }
@@ -29,60 +28,76 @@ const InfoCard = ({ data, isLoading }: CardProps) => {
           {Strings.information}
         </h2>
       }
-      className="w-fit bg-gray-100 rounded-xl shadow-md"
+      className="bg-gray-100 rounded-xl shadow-md"
     >
-      <div className="space-y-1 flex-wrap text-black font-medium">
-        <div className=" flex flex-row gap-2">
-          <span className="w-10">{Strings.dueDate}</span>
-          <p className="max-w-48 w-fit text-white bg-card-fields rounded-lg p-1">
-            {card.cardDueDate}
-          </p>
+      <div className="space-y-2 flex-wrap md:w-80 text-black font-medium">
+        <div className=" flex flex-row gap-5">
+          <span className="w-16">{Strings.dueDate}</span>
+          <div>
+            <p className="max-w-48 w-fit text-white bg-card-fields rounded-lg p-1">
+              {card.cardDueDate || Strings.NA}
+            </p>
+          </div>
         </div>
-        <div className=" flex gap-2">
-          <span className="w-10">{Strings.status}</span>
+        <div className=" flex gap-5">
+          <span className="w-16">{Strings.status}</span>
           <div>
             <CustomTag className="w-fit text-sm" color={cardStatus.status}>
               {cardStatus.text}
             </CustomTag>
           </div>
         </div>
-        <div className=" flex gap-2">
-          <span className="w-10">{Strings.cardType}</span>
-          <p className="max-w-48 w-fit text-white bg-card-fields rounded-lg p-1">
-            {card.cardTypeMethodologyName}
-          </p>
+        <div className=" flex gap-5">
+          <span className="w-16">{Strings.cardType}</span>
+          <div>
+            <p className="max-w-48 w-fit text-white bg-card-fields rounded-lg p-1">
+              {card.cardTypeMethodologyName || Strings.NA}
+            </p>
+          </div>
         </div>
-
-        <span>{Strings.problemType}</span>
-        <div className="col-span-2">
-          <p className="max-w-48 w-fit text-white bg-card-fields rounded-lg p-1">
-            {card.preclassifierCode} - {card.preclassifierDescription}
-          </p>
+        <div className=" flex gap-5">
+          <span className="w-16">{Strings.problemType}</span>
+          <div>
+            <p className="max-w-48 w-fit text-white bg-card-fields rounded-lg p-1">
+              {card.preclassifierCode
+                ? `${card.preclassifierCode} - ${card.preclassifierDescription}`
+                : Strings.NA}
+            </p>
+          </div>
         </div>
-        <div></div>
-        <div>
-          <span>{Strings.priority}</span>
-          <p className="max-w-48 w-fit text-white bg-card-fields rounded-lg p-1">
-            {card.priorityCode} - {card.priorityDescription}
-          </p>
+        <div className=" flex gap-5">
+          <span className="w-16">{Strings.priority}</span>
+          <div>
+            <p className="max-w-48 w-fit text-white bg-card-fields rounded-lg p-1">
+              {card.priorityCode
+                ? `${card.priorityCode} - ${card.priorityDescription}`
+                : Strings.NA}
+            </p>
+          </div>
         </div>
-        <div>
-          <span>{Strings.mechanic}</span>
-          <p className="max-w-48 w-fit text-white bg-card-fields rounded-lg p-1">
-            {card.mechanicName || "N/A"}
-          </p>
+        <div className=" flex gap-5">
+          <span className="w-16">{Strings.mechanic || Strings.NA}</span>
+          <div>
+            <p className="max-w-48 w-fit text-white bg-card-fields rounded-lg p-1">
+              {card.mechanicName || "N/A"}
+            </p>
+          </div>
         </div>
-        <div>
-          <span>{Strings.creator}</span>
-          <p className="max-w-48 w-fit text-white bg-card-fields rounded-lg p-1">
-            {card.creatorName}
-          </p>
+        <div className=" flex gap-5">
+          <span className="w-16">{Strings.creator || Strings.NA}</span>
+          <div>
+            <p className="max-w-48 w-fit text-white bg-card-fields rounded-lg p-1">
+              {card.creatorName || Strings.NA}
+            </p>
+          </div>
         </div>
-        <div>
-          <span>{Strings.comments}</span>
-          <p className="max-w-48 w-fit text-white bg-card-fields rounded-lg p-1">
-            {card.commentsAtCardCreation || Strings.NA}
-          </p>
+        <div className=" flex gap-5">
+          <span className="w-16">{Strings.comments || Strings.NA}</span>
+          <div>
+            <p className="max-w-48 w-fit text-white bg-card-fields rounded-lg p-1">
+              {card.commentsAtCardCreation || Strings.NA}
+            </p>
+          </div>
         </div>
       </div>
     </Card>

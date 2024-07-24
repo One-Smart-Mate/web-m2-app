@@ -22,7 +22,7 @@ export interface CardInterface {
   evidences: Evidences[];
 }
 
-interface Evidences {
+export interface Evidences {
   id: string;
   cardId: string;
   siteId: string;

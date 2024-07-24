@@ -1,8 +1,8 @@
 import {
   DatePicker,
   Form,
+  FormInstance,
   GetProp,
-  GetRef,
   Image,
   Input,
   InputNumber,
@@ -37,8 +37,6 @@ import { SiteUpdateForm } from "../../../data/site/site";
 import moment from "moment";
 import { useGetCurrenciesMutation } from "../../../services/currencyService";
 import { Currency } from "../../../data/currency/currency";
-
-type FormInstance = GetRef<typeof Form>;
 
 interface FormProps {
   form: FormInstance;

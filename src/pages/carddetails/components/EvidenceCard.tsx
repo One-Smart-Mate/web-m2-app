@@ -1,114 +1,85 @@
-import { Card, Carousel, Image, List } from "antd";
+import { Card, Carousel, Empty } from "antd";
 import Strings from "../../../utils/localizations/Strings";
-import { CardDetailsInterface } from "../../../data/card/card";
+import { Evidences } from "../../../data/card/card";
+import sectionsTitlesCardDetails from "../../../components/SectionsTitlesCardDetails";
+import CustomImage from "../../../components/CustomImage";
+import { isImageURL, isVideoURL } from "../../../utils/Extensions";
+import { useEffect, useRef } from "react";
 
 interface CardProps {
-  data: CardDetailsInterface | null;
-  isLoading: boolean;
+  data: Evidences[] | null;
 }
 
-const EvidenceCard = ({ data, isLoading }: CardProps) => {
+const EvidenceCard = ({ data }: CardProps) => {
   if (!data) {
     return (
       <Card
-        className="max-w-xs mx-auto bg-gray-100 rounded-xl shadow-md"
-        loading={isLoading}
+        className="min-h-96 min-w-96 bg-gray-100 rounded-xl shadow-md"
+        loading={true}
       />
     );
   }
+  const images = data.filter((evidence) => isImageURL(evidence.evidenceName));
+  const videos = data.filter((evidence) => isVideoURL(evidence.evidenceName));
 
-  const sectionsTitle = (title: string) => {
-    return (
-      <div className="rounded-md p-1 mb-1 bg-white">
-        <h1>{title}</h1>
-      </div>
-    );
+  const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
+
+  const handleBeforeChange = (from: number) => {
+    if (videoRefs.current[from]) {
+      videoRefs.current[from]?.pause();
+    }
   };
 
-  const { evidences } = data;
+  useEffect(() => {
+    return () => {
+      videoRefs.current = [];
+    };
+  }, []);
 
-  const audios = [
-    {
-      name: '"https://www.learningcontainer.com/wp-content/uploads/2020/02/Kalimba.mp3?_=1"',
-    },
-    {
-      name: '"https://www.learningcontainer.com/wp-content/uploads/2020/02/Kalimba.mp3?_=1"',
-    },
-    {
-      name: '"https://www.learningcontainer.com/wp-content/uploads/2020/02/Kalimba.mp3?_=1"',
-    },
-    {
-      name: '"https://www.learningcontainer.com/wp-content/uploads/2020/02/Kalimba.mp3?_=1"',
-    },
-    {
-      name: '"https://www.learningcontainer.com/wp-content/uploads/2020/02/Kalimba.mp3?_=1"',
-    },
-  ];
+  const renderCustomEmpty = () => (
+    <div className="flex h-full justify-center">
+      <Empty className="mt-16" image={Empty.PRESENTED_IMAGE_SIMPLE} />
+    </div>
+  );
 
   return (
-    <Card
-      title={
-        <h2 className="mt-2 text-xl font-semibold mb-4 text-black text-center">
-          {Strings.evidences}
-        </h2>
-      }
-      className="  bg-gray-100 rounded-xl shadow-md"
-      loading={isLoading}
-    >
-      <div className="flex text-black font-medium flex-row flex-wrap gap-2">
-        <div className="w-72 rounded-lg p-1 bg-card-fields">
-          {sectionsTitle(Strings.images)}
-          <Carousel draggable infinite={false}>
-            <div>
-              <Image width={280} src={evidences[0].evidenceName} />
-            </div>
-            <div>
-              <Image
-              width={290}
-              className="my-20"
-                src={
-                  "https://th.bing.com/th/id/R.18f14463a91f8316ec8daea09ab5baaf?rik=1ONxPv6onaga7A&pid=ImgRaw&r=0"
-                }
-              />
-            </div>
-          </Carousel>
-        </div>
-        <div className="w-72 rounded-lg p-1 bg-card-fields">
-          {sectionsTitle(Strings.videos)}
-          <Carousel arrows draggable infinite={false}>
-            <div>
-              <video className="size-96" controls>
-                <source src={evidences[1].evidenceName} />
-              </video>
-            </div>
-            <div>
-              <video className="size-96" controls>
-                <source
-                  src={
-                    "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4"
-                  }
-                />
-              </video>
-            </div>
-          </Carousel>
-        </div>
-        <div className="w-72 rounded-lg p-1 bg-card-fields">
-          {sectionsTitle(Strings.audios)}
-          <List
-            className="h-96 px-2 overflow-auto"
-            dataSource={audios}
-            renderItem={(item) => (
-              <List.Item>
-                <audio controls>
-                  <source
-                    src={
-                      "https://www.learningcontainer.com/wp-content/uploads/2020/02/Kalimba.mp3?_=1"
-                    }
+    <Card className="  bg-gray-100 rounded-xl shadow-md">
+      <div className="flex text-black   font-medium flex-row justify-center flex-wrap gap-1">
+        <div className="md:w-72 w-60 rounded-lg p-1 bg-card-fields">
+          {sectionsTitlesCardDetails(Strings.images)}
+          {images.length > 0 ? (
+            <Carousel arrows infinite={false}>
+              {images.map((image) => (
+                <div key={image.id}>
+                  <CustomImage
+                    src={image.evidenceName}
+                    alt={`Image of evidence with ID ${image.id}`}
                   />
-                </audio>
-              </List.Item>
-            )}
-          />
+                </div>
+              ))}
+            </Carousel>
+          ) : (
+            renderCustomEmpty()
+          )}
+        </div>
+        <div className="md:w-72 w-60 rounded-lg p-1 bg-card-fields">
+          {sectionsTitlesCardDetails(Strings.videos)}
+          {videos.length > 0 ? (
+            <Carousel arrows infinite={false} beforeChange={handleBeforeChange}>
+              {videos.map((video, index) => (
+                <div key={video.id}>
+                  <video
+                    ref={(el) => (videoRefs.current[index] = el)}
+                    className="size-96"
+                    src={video.evidenceName}
+                    controls
+                  />
+                </div>
+              ))}
+            </Carousel>
+          ) : (
+            renderCustomEmpty()
+          )}
         </div>
       </div>
     </Card>

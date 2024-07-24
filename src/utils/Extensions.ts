@@ -3,6 +3,29 @@ import User from "../data/user/user";
 import Routes from "../utils/Routes";
 import Strings from "./localizations/Strings";
 import { v4 as uuidv4 } from "uuid";
+import Constants from "./Constants";
+import { Evidences } from "../data/card/card";
+
+export const isAudioURL = (url: string) => {
+  return Constants.AUDIO_FORMATS.some((ext) => url.includes(ext));
+};
+
+export const isImageURL = (url: string) => {
+  return Constants.IMAGE_FORMATS.some((ext) => url.includes(ext));
+};
+
+export const isVideoURL = (url: string) => {
+  return Constants.VIDEO_FORMATS.some((ext) => url.includes(ext));
+};
+
+export const hasVideos = (evidenceArray: Evidences[]) =>
+  evidenceArray.some((evidence) => isVideoURL(evidence.evidenceName));
+
+export const hasAudios = (evidenceArray: Evidences[]) =>
+  evidenceArray.some((evidence) => isAudioURL(evidence.evidenceName));
+
+export const hasImages = (evidenceArray: Evidences[]) =>
+  evidenceArray.some((evidence) => isImageURL(evidence.evidenceName));
 
 export const generateShortUUID = (): string => {
   const fullUUID = uuidv4();
@@ -115,12 +138,3 @@ export const getCardStatusAndText = (
     };
   }
 };
-
-/* const confirmPasswordValidator = ({ getFieldValue }) => ({
-  validator(_, value) {
-    if (!value || getFieldValue("password") === value) {
-      return Promise.resolve();
-    }
-    return Promise.reject(new Error(Strings.passwordsDoNotMatch));
-  },
-}); */

@@ -4,16 +4,12 @@ import { CardDetailsInterface } from "../../../data/card/card";
 
 interface CardProps {
   data: CardDetailsInterface | null;
-  isLoading: boolean;
 }
 
-const DefinitiveSolutionCard = ({ data, isLoading }: CardProps) => {
+const DefinitiveSolutionCard = ({ data }: CardProps) => {
   if (!data) {
     return (
-      <Card
-        className="max-w-sm bg-gray-100 rounded-xl shadow-md"
-        loading={isLoading}
-      />
+      <Card className="w-64 bg-gray-100 rounded-xl shadow-md" loading={true} />
     );
   }
   const { card } = data;
@@ -25,28 +21,32 @@ const DefinitiveSolutionCard = ({ data, isLoading }: CardProps) => {
           {Strings.definitiveSolution}
         </h2>
       }
-      className="max-w-xs bg-gray-100 rounded-xl shadow-md"
+      className=" bg-gray-100 rounded-xl shadow-md"
     >
-      <div className="grid gap-x-2 md:gap-x-0 gap-y-1 grid-cols-3 text-black font-medium">
-        <span>{Strings.definitiveUser}</span>
-        <div className="col-span-2">
-          <p className="max-w-48 w-fit text-white bg-card-fields rounded-lg p-1">
-            {card.userDefinitiveSolutionName || Strings.NA}
-          </p>
+      <div className="space-y-2 flex-wrap w-64 text-black font-medium">
+        <div className=" flex flex-row gap-5">
+          <span className="w-16">{Strings.definitiveUser}</span>
+          <div>
+            <p className="max-w-48 w-fit text-white bg-card-fields rounded-lg p-1">
+              {card.userDefinitiveSolutionName || Strings.NA}
+            </p>
+          </div>
         </div>
-
-        <span>{Strings.definitiveDate}</span>
-        <div className="col-span-2">
-          <p className="max-w-48 w-fit text-white bg-card-fields rounded-lg p-1">
-            {card.cardDefinitiveSolutionDate || Strings.NA}
-          </p>
+        <div className=" flex flex-row gap-5">
+          <span className="w-16">{Strings.definitiveDate}</span>
+          <div>
+            <p className="max-w-48 w-fit text-white bg-card-fields rounded-lg p-1">
+              {card.cardDefinitiveSolutionDate || Strings.NA}
+            </p>
+          </div>
         </div>
-
-        <span>{Strings.definitiveComments}</span>
-        <div className="col-span-2">
-          <p className="max-w-48 w-fit text-white bg-card-fields rounded-lg p-1">
-            {card.commentsAtCardDefinitiveSolution || Strings.NA}
-          </p>
+        <div className=" flex flex-row gap-5">
+          <span className="w-16">{Strings.definitiveComments}</span>
+          <div>
+            <p className="max-w-48 w-fit text-white bg-card-fields rounded-lg p-1">
+              {card.commentsAtCardDefinitiveSolution || Strings.NA}
+            </p>
+          </div>
         </div>
       </div>
     </Card>

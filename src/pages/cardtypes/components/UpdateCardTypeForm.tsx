@@ -3,8 +3,8 @@ import {
   ColorPicker,
   ColorPickerProps,
   Form,
+  FormInstance,
   GetProp,
-  GetRef,
   Input,
   InputNumber,
   Select,
@@ -25,8 +25,6 @@ import { Responsible } from "../../../data/user/user";
 import { GoDeviceCameraVideo } from "react-icons/go";
 import { IoHeadsetOutline } from "react-icons/io5";
 type Color = GetProp<ColorPickerProps, "value">;
-
-type FormInstance = GetRef<typeof Form>;
 
 interface FormProps {
   form: FormInstance;

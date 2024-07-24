@@ -4,16 +4,12 @@ import { CardDetailsInterface } from "../../../data/card/card";
 
 interface CardProps {
   data: CardDetailsInterface | null;
-  isLoading: boolean;
 }
 
-const ProvisionalSolutionCard = ({ data, isLoading }: CardProps) => {
+const ProvisionalSolutionCard = ({ data }: CardProps) => {
   if (!data) {
     return (
-      <Card
-        className="max-w-md  mx-auto bg-gray-100 rounded-xl shadow-md"
-        loading={isLoading}
-      />
+      <Card className="w-64 bg-gray-100 rounded-xl shadow-md" loading={true} />
     );
   }
   const { card } = data;
@@ -25,28 +21,32 @@ const ProvisionalSolutionCard = ({ data, isLoading }: CardProps) => {
           {Strings.provisionalSolution}
         </h2>
       }
-      className="max-w-xs bg-gray-100 rounded-xl shadow-md"
+      className=" bg-gray-100 rounded-xl shadow-md"
     >
-      <div className="grid gap-x-2 md:gap-x-0 gap-y-1 grid-cols-3 text-black font-medium">
-        <span>{Strings.provisionalUser}</span>
-        <div className="col-span-2">
-          <p className="max-w-48 w-fit text-white bg-card-fields rounded-lg p-1">
-            {card.userDefinitiveSolutionName || Strings.NA}
-          </p>
+      <div className="space-y-2 flex-wrap w-64 text-black font-medium">
+        <div className=" flex flex-row gap-5">
+          <span className="w-16">{Strings.provisionalUser}</span>
+          <div>
+            <p className="max-w-48 w-fit text-white bg-card-fields rounded-lg p-1">
+              {card.userProvisionalSolutionName || Strings.NA}
+            </p>
+          </div>
         </div>
-
-        <span>{Strings.provisionalDate}</span>
-        <div className="col-span-2">
-          <p className="max-w-48 w-fit text-white bg-card-fields rounded-lg p-1">
-            {card.cardDefinitiveSolutionDate || Strings.NA}
-          </p>
+        <div className=" flex flex-row gap-5">
+          <span className="w-16">{Strings.provisionalDate}</span>
+          <div>
+            <p className="max-w-48 w-fit text-white bg-card-fields rounded-lg p-1">
+              {card.cardProvisionalSolutionDate || Strings.NA}
+            </p>
+          </div>
         </div>
-
-        <span>{Strings.provisionalComments}</span>
-        <div className="col-span-2">
-          <p className="max-w-48 w-fit text-white bg-card-fields rounded-lg p-1">
-            {card.commentsAtCardDefinitiveSolution || Strings.NA}
-          </p>
+        <div className=" flex flex-row gap-5">
+          <span className="w-16">{Strings.provisionalComments}</span>
+          <div>
+            <p className="max-w-48 w-fit text-white bg-card-fields rounded-lg p-1">
+              {card.commentsAtCardProvisionalSolution || Strings.NA}
+            </p>
+          </div>
         </div>
       </div>
     </Card>

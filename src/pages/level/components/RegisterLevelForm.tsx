@@ -1,4 +1,4 @@
-import { Form, GetRef, Input, Select } from "antd";
+import { Form, FormInstance, Input, Select } from "antd";
 import Strings from "../../../utils/localizations/Strings";
 import { BsCardText } from "react-icons/bs";
 import { LuTextCursor } from "react-icons/lu";
@@ -7,8 +7,6 @@ import { useEffect, useState } from "react";
 import { selectSiteId } from "../../../core/genericReducer";
 import { useGetSiteResponsiblesMutation } from "../../../services/userService";
 import { Responsible } from "../../../data/user/user";
-
-type FormInstance = GetRef<typeof Form>;
 
 interface FormProps {
   form: FormInstance;
@@ -71,9 +69,7 @@ const RegisterLevelForm = ({ form }: FormProps) => {
         <Form.Item
           name="responsibleId"
           validateFirst
-          rules={[
-            { required: true, message: Strings.requiredResponsableId },
-          ]}
+          rules={[{ required: true, message: Strings.requiredResponsableId }]}
           className="flex-1"
         >
           <Select size="large" placeholder={Strings.responsible}>

@@ -1,4 +1,4 @@
-import { Form, GetRef, Input, InputNumber } from "antd";
+import { Form, FormInstance, Input, InputNumber } from "antd";
 import Strings from "../../../utils/localizations/Strings";
 import { BsCardText } from "react-icons/bs";
 import { CiBarcode } from "react-icons/ci";
@@ -7,8 +7,6 @@ import { useAppSelector } from "../../../core/store";
 import { Site } from "../../../data/site/site";
 import { selectCurrentRowData } from "../../../core/genericReducer";
 import { useEffect } from "react";
-
-type FormInstance = GetRef<typeof Form>;
 
 interface FormProps {
   form: FormInstance;
@@ -73,8 +71,8 @@ const UpdatePriorityForm = ({ form }: FormProps) => {
           />
         </Form.Item>
         <Form.Item name="status" className="hidden">
-            <Input />
-          </Form.Item>
+          <Input />
+        </Form.Item>
       </div>
     </Form>
   );

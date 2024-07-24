@@ -1,15 +1,16 @@
-import { Form, GetRef, Input, Select } from "antd";
+import { Form, FormInstance, Input, Select } from "antd";
 import Strings from "../../../utils/localizations/Strings";
 import { BsCardText } from "react-icons/bs";
 import { LuTextCursor } from "react-icons/lu";
 import { useAppSelector } from "../../../core/store";
 import { useEffect, useState } from "react";
-import { selectCurrentRowData, selectSiteId } from "../../../core/genericReducer";
+import {
+  selectCurrentRowData,
+  selectSiteId,
+} from "../../../core/genericReducer";
 import { useGetSiteResponsiblesMutation } from "../../../services/userService";
 import { Responsible } from "../../../data/user/user";
 import { Level } from "../../../data/level/level";
-
-type FormInstance = GetRef<typeof Form>;
 
 interface FormProps {
   form: FormInstance;

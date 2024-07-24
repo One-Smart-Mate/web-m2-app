@@ -1,12 +1,10 @@
-import { Form, GetRef, Input } from "antd";
+import { Form, FormInstance, Input } from "antd";
 import Strings from "../../../utils/localizations/Strings";
 import { BsCardText } from "react-icons/bs";
 import { CiBarcode } from "react-icons/ci";
 import { useEffect } from "react";
 import { useAppSelector } from "../../../core/store";
 import { selectCurrentRowData } from "../../../core/genericReducer";
-
-type FormInstance = GetRef<typeof Form>;
 
 interface FormProps {
   form: FormInstance;

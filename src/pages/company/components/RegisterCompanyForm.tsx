@@ -1,7 +1,7 @@
 import {
   Form,
+  FormInstance,
   GetProp,
-  GetRef,
   Image,
   Input,
   InputNumber,
@@ -20,8 +20,6 @@ import { HiDevicePhoneMobile } from "react-icons/hi2";
 import { TiPlusOutline } from "react-icons/ti";
 import Strings from "../../../utils/localizations/Strings";
 import { useState } from "react";
-
-type FormInstance = GetRef<typeof Form>;
 
 interface FormProps {
   form: FormInstance;
@@ -87,7 +85,8 @@ const RegisterCompanyForm = ({ form }: FormProps) => {
             validateFirst
             rules={[
               { required: true, message: Strings.requiredRFC },
-              { max: 13 }, {min: 12}
+              { max: 13 },
+              { min: 12 },
             ]}
           >
             <Input
@@ -162,9 +161,7 @@ const RegisterCompanyForm = ({ form }: FormProps) => {
               placeholder={Strings.phone}
             />
           </Form.Item>
-          <Form.Item
-            name="extension"
-          >
+          <Form.Item name="extension">
             <InputNumber
               size="large"
               maxLength={5}
