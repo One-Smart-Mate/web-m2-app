@@ -1,8 +1,8 @@
 import {
   DatePicker,
   Form,
+  FormInstance,
   GetProp,
-  GetRef,
   Image,
   Input,
   InputNumber,
@@ -38,8 +38,6 @@ import { Currency } from "../../../data/currency/currency";
 import { useAppSelector } from "../../../core/store";
 import { selectGeneratedSiteCode } from "../../../core/genericReducer";
 import { AiOutlineNumber } from "react-icons/ai";
-
-type FormInstance = GetRef<typeof Form>;
 
 interface FormProps {
   form: FormInstance;

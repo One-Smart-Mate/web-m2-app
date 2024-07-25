@@ -1,9 +1,7 @@
 import React from "react";
 import { Form, Modal } from "antd";
-import type { GetRef } from "antd";
+import type { FormInstance } from "antd";
 import Strings from "../utils/localizations/Strings";
-
-type FormInstance = GetRef<typeof Form>;
 
 interface ModalUpdateFormProps {
   open: boolean;

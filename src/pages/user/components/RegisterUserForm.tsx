@@ -1,4 +1,4 @@
-import { Form, GetRef, Input, InputNumber, Select } from "antd";
+import { Form, FormInstance, Input, InputNumber, Select } from "antd";
 import { LockOutlined, MailOutlined } from "@ant-design/icons";
 import { FaRegUser } from "react-icons/fa";
 import { FiUpload } from "react-icons/fi";
@@ -10,8 +10,6 @@ import { useGetRolesMutation } from "../../../services/roleService";
 import { Site } from "../../../data/site/site";
 import { useGetSitesMutation } from "../../../services/siteService";
 import { useGetUsersMutation } from "../../../services/userService";
-
-type FormInstance = GetRef<typeof Form>;
 
 interface FormProps {
   form: FormInstance;

@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import { useAppSelector } from "../../../core/store";
 import {
   Form,
+  FormInstance,
   GetProp,
-  GetRef,
   Image,
   Input,
   InputNumber,
@@ -22,8 +22,6 @@ import { PlusOutlined, MailOutlined } from "@ant-design/icons";
 import { SlCompass } from "react-icons/sl";
 import { Company } from "../../../data/company/company";
 import { selectCurrentRowData } from "../../../core/genericReducer";
-
-type FormInstance = GetRef<typeof Form>;
 
 interface FormProps {
   form: FormInstance;
@@ -48,7 +46,7 @@ const UpdateCompanyForm = ({ form }: FormProps) => {
   useEffect(() => {
     form.setFieldsValue({
       ...rowData,
-      logoURL: rowData?.logo
+      logoURL: rowData?.logo,
     });
     if (rowData?.logo) {
       setFileList([
@@ -221,9 +219,9 @@ const UpdateCompanyForm = ({ form }: FormProps) => {
             placeholder={Strings.email}
           />
         </Form.Item>
-        <Form.Item name='logoURL' className="hidden">
-            <Input/>
-          </Form.Item>
+        <Form.Item name="logoURL" className="hidden">
+          <Input />
+        </Form.Item>
         <Form.Item
           name="logo"
           label={Strings.logo}

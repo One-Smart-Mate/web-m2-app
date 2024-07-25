@@ -3,8 +3,8 @@ import {
   ColorPicker,
   ColorPickerProps,
   Form,
+  FormInstance,
   GetProp,
-  GetRef,
   Input,
   InputNumber,
   Select,
@@ -23,8 +23,6 @@ import { CardTypesCatalog } from "../../../data/cardtypes/cardTypes";
 import { IoHeadsetOutline } from "react-icons/io5";
 import { GoDeviceCameraVideo } from "react-icons/go";
 type Color = GetProp<ColorPickerProps, "value">;
-
-type FormInstance = GetRef<typeof Form>;
 
 interface FormProps {
   form: FormInstance;
@@ -125,11 +123,7 @@ const RegisterCardTypeForm = ({ form }: FormProps) => {
             className="mr-3"
           >
             <ColorPicker value={color} onChange={setColor}>
-              <Button
-                size="large"
-                className="w-32 border"
-                style={btnStyle}
-              >
+              <Button size="large" className="w-32 border" style={btnStyle}>
                 {Strings.color}
               </Button>
             </ColorPicker>
