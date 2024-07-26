@@ -111,7 +111,7 @@ export const RESPONSIVE_AVATAR = {
 export const getStatusAndText = (
   input: string
 ): { status: "error" | "success"; text: string } => {
-  if (input === "A") {
+  if (input === Strings.activeStatus) {
     return {
       status: "success",
       text: Strings.active,

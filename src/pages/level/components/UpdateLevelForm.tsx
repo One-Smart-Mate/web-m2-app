@@ -11,6 +11,8 @@ import {
 import { useGetSiteResponsiblesMutation } from "../../../services/userService";
 import { Responsible } from "../../../data/user/user";
 import { Level } from "../../../data/level/level";
+import { useGetStatusMutation } from "../../../services/statusService";
+import { Status } from "../../../data/status/status";
 
 interface FormProps {
   form: FormInstance;
@@ -18,25 +20,36 @@ interface FormProps {
 
 const UpdateLevelForm = ({ form }: FormProps) => {
   const [getResponsibles] = useGetSiteResponsiblesMutation();
+  const [getStatus] = useGetStatusMutation();
   const siteId = useAppSelector(selectSiteId);
-  const [data, setData] = useState<Responsible[]>([]);
+  const [responsibles, setResponsibles] = useState<Responsible[]>([]);
+  const [statuses, setStatuses] = useState<Status[]>([]);
   const rowData = useAppSelector(selectCurrentRowData) as unknown as Level;
 
-  const handleGetResponsibles = async () => {
-    const responsibles = await getResponsibles(siteId).unwrap();
-    setData(responsibles);
+  const handleGetData = async () => {
+    const [responsiblesResponse, statusResponse] = await Promise.all([
+      getResponsibles(siteId).unwrap(),
+      getStatus().unwrap(),
+    ]);
+    setResponsibles(responsiblesResponse);
+    setStatuses(statusResponse);
   };
   useEffect(() => {
-    handleGetResponsibles();
+    handleGetData();
     form.setFieldsValue({ ...rowData });
   }, []);
 
-  const selectOptions = () => {
-    return data.map((responsible) => (
-      <Select.Option key={responsible.id} value={responsible.id}>
-        {responsible.name}
-      </Select.Option>
-    ));
+  const responsibleOptions = () => {
+    return responsibles.map((responsible) => ({
+      value: responsible.id,
+      label: responsible.name,
+    }));
+  };
+  const statusOptions = () => {
+    return statuses.map((status) => ({
+      value: status.statusCode,
+      label: status.statusName,
+    }));
   };
   return (
     <Form form={form}>
@@ -65,7 +78,7 @@ const UpdateLevelForm = ({ form }: FormProps) => {
               { required: true, message: Strings.requiredDescription },
               { max: 100 },
             ]}
-            className="flex-1"
+            className="w-2/3"
           >
             <Input
               size="large"
@@ -75,19 +88,23 @@ const UpdateLevelForm = ({ form }: FormProps) => {
             />
           </Form.Item>
         </div>
-        <Form.Item
-          name="responsibleId"
-          validateFirst
-          rules={[{ required: true, message: Strings.requiredResponsableId }]}
-          className="flex-1"
-        >
-          <Select size="large" placeholder={Strings.responsible}>
-            {selectOptions()}
-          </Select>
-        </Form.Item>
-        <Form.Item name="status" className="hidden">
-          <Input />
-        </Form.Item>
+        <div className="flex flex-wrap">
+          <Form.Item
+            name="responsibleId"
+            validateFirst
+            rules={[{ required: true, message: Strings.requiredResponsableId }]}
+            className="mr-1 w-80"
+          >
+            <Select
+              size="large"
+              placeholder={Strings.responsible}
+              options={responsibleOptions()}
+            />
+          </Form.Item>
+          <Form.Item name="status" className="w-60">
+            <Select size="large" options={statusOptions()} />
+          </Form.Item>
+        </div>
       </div>
     </Form>
   );
