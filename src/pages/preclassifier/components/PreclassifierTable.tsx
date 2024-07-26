@@ -4,7 +4,6 @@ import { ColumnsType } from "antd/es/table";
 import Strings from "../../../utils/localizations/Strings";
 import { getStatusAndText } from "../../../utils/Extensions";
 import { Badge, Space, Table } from "antd";
-import CustomButton from "../../../components/CustomButtons";
 import Constants from "../../../utils/Constants";
 import UpdatePreclassierButton from "./UpdatePreclassifierButton";
 
@@ -56,7 +55,6 @@ const PreclassifierTable = ({ data, isLoading }: TableProps) => {
           return (
             <Space className="flex justify-end">
               <UpdatePreclassierButton preclassifierId={data.id} />
-              <CustomButton type="cancel">{Strings.delete}</CustomButton>
             </Space>
           );
         },

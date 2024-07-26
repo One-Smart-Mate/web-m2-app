@@ -1,20 +1,38 @@
-import { Form, FormInstance, Input } from "antd";
+import { Form, FormInstance, Input, Select } from "antd";
 import Strings from "../../../utils/localizations/Strings";
 import { BsCardText } from "react-icons/bs";
 import { CiBarcode } from "react-icons/ci";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useAppSelector } from "../../../core/store";
 import { selectCurrentRowData } from "../../../core/genericReducer";
+import { useGetStatusMutation } from "../../../services/statusService";
+import { Status } from "../../../data/status/status";
 
 interface FormProps {
   form: FormInstance;
 }
 
 const UpdatePreclassifierForm = ({ form }: FormProps) => {
+  const [getStatus] = useGetStatusMutation();
+  const [statuses, setStatuses] = useState<Status[]>([]);
   const rowData = useAppSelector(
     selectCurrentRowData
   ) as unknown as Preclassifier;
+
+  const handleGetData = async () => {
+    const statusResponse = await getStatus().unwrap();
+    setStatuses(statusResponse);
+  };
+
+  const statusOptions = () => {
+    return statuses.map((status) => ({
+      value: status.statusCode,
+      label: status.statusName,
+    }));
+  };
+
   useEffect(() => {
+    handleGetData();
     form.setFieldsValue({
       ...rowData,
       code: rowData.preclassifierCode,
@@ -24,7 +42,7 @@ const UpdatePreclassifierForm = ({ form }: FormProps) => {
   return (
     <Form form={form}>
       <div className="flex flex-col">
-        <div className="flex flex-row flex-wrap">
+        <div className="flex flex-row justify-between flex-wrap">
           <Form.Item name="id" className="hidden">
             <Input />
           </Form.Item>
@@ -32,7 +50,6 @@ const UpdatePreclassifierForm = ({ form }: FormProps) => {
             name="code"
             validateFirst
             rules={[{ required: true, message: Strings.requiredCode }]}
-            className="mr-1"
           >
             <Input
               size="large"
@@ -45,7 +62,6 @@ const UpdatePreclassifierForm = ({ form }: FormProps) => {
             name="description"
             validateFirst
             rules={[{ required: true, message: Strings.requiredDescription }]}
-            className="flex-1"
           >
             <Input
               size="large"
@@ -54,8 +70,8 @@ const UpdatePreclassifierForm = ({ form }: FormProps) => {
               placeholder={Strings.description}
             />
           </Form.Item>
-          <Form.Item name="status" className="hidden">
-            <Input />
+          <Form.Item name="status" className="w-60">
+            <Select size="large" options={statusOptions()} />
           </Form.Item>
         </div>
       </div>

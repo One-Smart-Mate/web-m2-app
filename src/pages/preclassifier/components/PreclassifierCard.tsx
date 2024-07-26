@@ -2,7 +2,6 @@ import { Card, Dropdown, MenuProps, Tag, theme } from "antd";
 import { getStatusAndText } from "../../../utils/Extensions";
 import { SlOptionsVertical } from "react-icons/sl";
 import Strings from "../../../utils/localizations/Strings";
-import CustomButton from "../../../components/CustomButtons";
 import UpdatePreclassierButton from "./UpdatePreclassifierButton";
 
 interface CardProps {
@@ -18,16 +17,8 @@ const PreclassifierCard = ({ data }: CardProps) => {
   const items: MenuProps["items"] = [
     {
       key: "1",
-      label: (
-        <UpdatePreclassierButton preclassifierId={data.id}/>
-      ),
+      label: <UpdatePreclassierButton preclassifierId={data.id} />,
     },
-    {
-      key: "2",
-      label: (
-        <CustomButton type="cancel">{Strings.delete}</CustomButton>
-      ),
-    }
   ];
 
   const titleCard = (
