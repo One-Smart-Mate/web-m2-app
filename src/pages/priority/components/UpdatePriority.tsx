@@ -83,7 +83,7 @@ const UpdatePriority = ({ priorityId }: ButtonEditProps) => {
           open={modalIsOpen}
           onCancel={handleOnCancelButton}
           FormComponent={UpdatePriorityForm}
-          title={Strings.updateCompany}
+          title={Strings.updatePriority}
           isLoading={modalIsLoading}
         />
       </Form.Provider>

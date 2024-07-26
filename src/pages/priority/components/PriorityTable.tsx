@@ -1,11 +1,10 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useMemo, useRef } from "react";
 import { useTableHeight } from "../../../utils/tableHeight";
 import { ColumnsType } from "antd/es/table";
 import { Priority } from "../../../data/priority/priority";
 import Strings from "../../../utils/localizations/Strings";
 import { getStatusAndText } from "../../../utils/Extensions";
 import { Badge, Space, Table } from "antd";
-import CustomButton from "../../../components/CustomButtons";
 import Constants from "../../../utils/Constants";
 import UpdatePriority from "./UpdatePriority";
 
@@ -17,17 +16,6 @@ interface PrioritiesTableProps {
 const PriorityTable = ({ data, isLoading }: PrioritiesTableProps) => {
   const contentRef = useRef<HTMLDivElement>(null);
   const tableHeight = useTableHeight(contentRef);
-  const [expandedRowKeys, setExpandedRowKeys] = useState<React.Key[]>([]);
-
-  useEffect(() => {
-    const allRowKeys = data.map(item => item.id);
-    setExpandedRowKeys(allRowKeys);
-  }, [data]);
-
-  const handleExpand = (expanded: boolean, record: Priority) => {
-    const keys = expanded ? [...expandedRowKeys, record.id] : expandedRowKeys.filter(key => key !== record.id);
-    setExpandedRowKeys(keys);
-  };
 
   const columns: ColumnsType<Priority> = useMemo(
     () => [
@@ -69,21 +57,19 @@ const PriorityTable = ({ data, isLoading }: PrioritiesTableProps) => {
         onFilter: (value, record) => record.status === value,
         ellipsis: true,
       },
+      {
+        title: Strings.actions,
+        render: (data) => {
+          return (
+            <Space>
+              <UpdatePriority priorityId={data.id} />
+            </Space>
+          );
+        },
+      },
     ],
     [Strings, getStatusAndText]
   );
-
-  const actionsRow = {
-    expandedRowKeys,
-    onExpand: handleExpand,
-    showExpandColumn: false,
-    expandedRowRender: (data: Priority) => (
-      <Space className="flex justify-end">
-        <UpdatePriority priorityId={data.id}/>
-        <CustomButton type="cancel">{Strings.delete}</CustomButton>
-      </Space>
-    ),
-  };
 
   return (
     <div className="h-full" ref={contentRef}>
@@ -100,7 +86,6 @@ const PriorityTable = ({ data, isLoading }: PrioritiesTableProps) => {
         }}
         key={data.length}
         scroll={{ y: tableHeight }}
-        expandable={actionsRow}
       />
     </div>
   );
