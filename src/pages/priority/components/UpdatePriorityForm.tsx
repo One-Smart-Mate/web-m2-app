@@ -1,4 +1,4 @@
-import { Form, FormInstance, Input, InputNumber } from "antd";
+import { Form, FormInstance, Input, InputNumber, Select } from "antd";
 import Strings from "../../../utils/localizations/Strings";
 import { BsCardText } from "react-icons/bs";
 import { CiBarcode } from "react-icons/ci";
@@ -6,15 +6,32 @@ import { AiOutlineFieldNumber } from "react-icons/ai";
 import { useAppSelector } from "../../../core/store";
 import { Site } from "../../../data/site/site";
 import { selectCurrentRowData } from "../../../core/genericReducer";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { Status } from "../../../data/status/status";
+import { useGetStatusMutation } from "../../../services/statusService";
 
 interface FormProps {
   form: FormInstance;
 }
 
 const UpdatePriorityForm = ({ form }: FormProps) => {
+  const [getStatus] = useGetStatusMutation();
+  const [statuses, setStatuses] = useState<Status[]>([]);
   const rowData = useAppSelector(selectCurrentRowData) as unknown as Site;
+
+  const handleGetData = async () => {
+    const statusesResponse = await getStatus().unwrap();
+    setStatuses(statusesResponse);
+  };
+
+  const statusOptions = () => {
+    return statuses.map((status) => ({
+      value: status.statusCode,
+      label: status.statusName,
+    }));
+  };
   useEffect(() => {
+    handleGetData();
     form.setFieldsValue({ ...rowData });
   }, []);
   return (
@@ -57,22 +74,24 @@ const UpdatePriorityForm = ({ form }: FormProps) => {
             />
           </Form.Item>
         </div>
-        <Form.Item
-          name="priorityDays"
-          validateFirst
-          rules={[{ required: true, message: Strings.requiredDaysNumber }]}
-          className="flex-1"
-        >
-          <InputNumber
-            size="large"
-            maxLength={3}
-            addonBefore={<AiOutlineFieldNumber />}
-            placeholder={Strings.daysNumber}
-          />
-        </Form.Item>
-        <Form.Item name="status" className="hidden">
-          <Input />
-        </Form.Item>
+        <div className="flex flex-wrap">
+          <Form.Item
+            name="priorityDays"
+            validateFirst
+            rules={[{ required: true, message: Strings.requiredDaysNumber }]}
+            className="mr-1"
+          >
+            <InputNumber
+              size="large"
+              maxLength={3}
+              addonBefore={<AiOutlineFieldNumber />}
+              placeholder={Strings.daysNumber}
+            />
+          </Form.Item>
+          <Form.Item name="status" className="w-60">
+            <Select size="large" options={statusOptions()} />
+          </Form.Item>
+        </div>
       </div>
     </Form>
   );

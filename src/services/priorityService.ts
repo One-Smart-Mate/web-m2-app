@@ -5,7 +5,7 @@ import { apiSlice } from "./apiSlice";
 export const priorityService = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
         getPriorities: builder.mutation<Priority[], string>({
-            query: (id) => `/priority/all/${id}`,
+            query: (id) => `/priority/site/${id}`,
             transformResponse: (response: {data: Priority[]}) => response.data
         }),
         createPriority: builder.mutation<void, CreatePriority>({
