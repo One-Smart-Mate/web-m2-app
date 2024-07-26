@@ -24,6 +24,8 @@ import { useGetSiteResponsiblesMutation } from "../../../services/userService";
 import { Responsible } from "../../../data/user/user";
 import { GoDeviceCameraVideo } from "react-icons/go";
 import { IoHeadsetOutline } from "react-icons/io5";
+import { useGetStatusMutation } from "../../../services/statusService";
+import { Status } from "../../../data/status/status";
 type Color = GetProp<ColorPickerProps, "value">;
 
 interface FormProps {
@@ -35,8 +37,10 @@ const UpdateCardTypeForm = ({ form }: FormProps) => {
     selectCurrentRowData
   ) as unknown as CardTypeUpdateForm;
   const [getResponsibles] = useGetSiteResponsiblesMutation();
+  const [getStatus] = useGetStatusMutation();
   const siteId = useAppSelector(selectSiteId);
   const [responsibles, setResponsibles] = useState<Responsible[]>([]);
+  const [statuses, setStatuses] = useState<Status[]>([]);
   const [color, setColor] = useState<Color>(Strings.empty);
 
   const bgColor = useMemo<string>(
@@ -49,14 +53,24 @@ const UpdateCardTypeForm = ({ form }: FormProps) => {
   };
 
   const handleGetData = async () => {
-    const response = await getResponsibles(siteId).unwrap();
-    setResponsibles(response);
+    const [responsiblesResponse, statusResponse] = await Promise.all([
+      getResponsibles(siteId).unwrap(),
+      getStatus().unwrap(),
+    ]);
+    setResponsibles(responsiblesResponse);
+    setStatuses(statusResponse);
   };
 
   const responsibleOptions = () => {
     return responsibles.map((responsible) => ({
       value: responsible.id,
       label: responsible.name,
+    }));
+  };
+  const statusOptions = () => {
+    return statuses.map((status) => ({
+      value: status.statusCode,
+      label: status.statusName,
     }));
   };
   useEffect(() => {
@@ -262,8 +276,8 @@ const UpdateCardTypeForm = ({ form }: FormProps) => {
           </Form.Item>
         </div>
         <h1 className="font-semibold">{Strings.durationClose}</h1>
-        <div className="flex flex-row flex-wrap">
-          <Form.Item name="audiosDurationClose" validateFirst className="mr-2">
+        <div className="flex flex-row justify-between flex-wrap">
+          <Form.Item name="audiosDurationClose" validateFirst>
             <InputNumber
               size="large"
               maxLength={10}
@@ -279,8 +293,8 @@ const UpdateCardTypeForm = ({ form }: FormProps) => {
               placeholder={Strings.videosDurationClose}
             />
           </Form.Item>
-          <Form.Item className="hidden" name="status">
-            <Input />
+          <Form.Item className="w-60" name="status">
+            <Select size="large" options={statusOptions()} />
           </Form.Item>
         </div>
       </div>

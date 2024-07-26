@@ -101,7 +101,7 @@ const UpdateCardType = ({ id }: ButtonEditProps) => {
           open={modalIsOpen}
           onCancel={handleOnCancelButton}
           FormComponent={UpdateCardTypeForm}
-          title={Strings.updateCompany}
+          title={Strings.updateCardType}
           isLoading={modalIsLoading}
         />
       </Form.Provider>

@@ -3,7 +3,6 @@ import { getStatusAndText } from "../../../utils/Extensions";
 import { SlOptionsVertical } from "react-icons/sl";
 import Strings from "../../../utils/localizations/Strings";
 import { CardTypes } from "../../../data/cardtypes/cardTypes";
-import CustomButton from "../../../components/CustomButtons";
 import ViewPreclassifiersButton from "./ViewPreclassifiersButton";
 import UpdateCardType from "./UpdateCardType";
 
@@ -20,19 +19,16 @@ const CardTypesCard = ({ data }: CardProps) => {
   const items: MenuProps["items"] = [
     {
       key: "1",
-      label: (
-        <UpdateCardType id={data.id}/>
-      ),
-    },
-    {
-      key: "2",
-      label: (
-        <CustomButton type="cancel">{Strings.delete}</CustomButton>
-      ),
+      label: <UpdateCardType id={data.id} />,
     },
     {
       key: "5",
-      label: <ViewPreclassifiersButton cardTypeId={data.id} cardTypeName={data.name}/>
+      label: (
+        <ViewPreclassifiersButton
+          cardTypeId={data.id}
+          cardTypeName={data.name}
+        />
+      ),
     },
   ];
 
@@ -86,7 +82,9 @@ const CardTypesCard = ({ data }: CardProps) => {
         </div>
         <div className="flex flex-row flex-wrap">
           <h1 className="font-semibold mr-1">{Strings.color}: </h1>
-          <div style={{ backgroundColor: `#${data.color}`, width: 50, height: 20 }} />
+          <div
+            style={{ backgroundColor: `#${data.color}`, width: 50, height: 20 }}
+          />
         </div>
       </div>
     </Card>

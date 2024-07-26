@@ -38,7 +38,7 @@ export default class Strings {
   static videos = "Videos";
   static audios = "Audios";
   static evidences = "Evidences";
-
+  
   //errors login form
   static requiredEmail = "Please input your e-mail address!";
   static requiredPassword = "Please input your password!";
@@ -166,6 +166,7 @@ export default class Strings {
   //cardtype methodology
   static M = "M";
   static C = "C";
+  static updateCardType = "Update card type"
 
   //roles
   static roles = "Roles";
