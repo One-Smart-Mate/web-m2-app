@@ -4,7 +4,6 @@ import { ColumnsType } from "antd/es/table";
 import Strings from "../../../utils/localizations/Strings";
 import { getStatusAndText } from "../../../utils/Extensions";
 import { Badge, Space, Table } from "antd";
-import CustomButton from "../../../components/CustomButtons";
 import Constants from "../../../utils/Constants";
 import { CardTypes } from "../../../data/cardtypes/cardTypes";
 import ViewPreclassifiersButton from "./ViewPreclassifiersButton";
@@ -99,9 +98,11 @@ const CardTypesTable = ({ data, isLoading }: TableProps) => {
     showExpandColumn: false,
     expandedRowRender: (data: CardTypes) => (
       <Space className="flex justify-end">
-        <ViewPreclassifiersButton cardTypeId={data.id} cardTypeName={data.name} />
-        <UpdateCardType id={data.id}/>
-        <CustomButton type="cancel">{Strings.delete}</CustomButton>
+        <ViewPreclassifiersButton
+          cardTypeId={data.id}
+          cardTypeName={data.name}
+        />
+        <UpdateCardType id={data.id} />
       </Space>
     ),
   };
@@ -112,7 +113,7 @@ const CardTypesTable = ({ data, isLoading }: TableProps) => {
         loading={isLoading}
         size="middle"
         columns={columns}
-        rowKey='id'
+        rowKey="id"
         dataSource={data}
         pagination={{
           defaultPageSize: Constants.PAGE_SIZE,
