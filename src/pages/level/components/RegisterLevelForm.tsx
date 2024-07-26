@@ -56,7 +56,7 @@ const RegisterLevelForm = ({ form }: FormProps) => {
               { required: true, message: Strings.requiredDescription },
               { max: 100 },
             ]}
-            className="flex-1"
+            className="w-2/3"
           >
             <Input
               size="large"
