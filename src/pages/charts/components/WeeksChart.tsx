@@ -11,6 +11,7 @@ import {
 } from "recharts";
 import { Weeks } from "../../../data/charts/charts";
 import { useGetWeeksChartDataMutation } from "../../../services/chartService";
+import Strings from "../../../utils/localizations/Strings";
 
 export interface ChartProps {
   siteId: string;
@@ -66,14 +67,14 @@ const WeeksChart = ({ siteId }: ChartProps) => {
             if (props.active && props.payload && props.payload.length) {
               return (
                 <div className="bg-card-fields text-white py-2 px-4 rounded-md shadow-lg">
-                  <p>Year: {props.payload[0].payload.year}</p>
-                  <p>Week: {props.label}</p>
+                  <p>{Strings.year} {props.payload[0].payload.year}</p>
+                  <p>{Strings.week} {props.label}</p>
                   <p>
-                    Cumulative issued:{" "}
+                    {Strings.cumulativeIssued}{" "}
                     {props.payload[0].payload.cumulativeIssued}
                   </p>
                   <p>
-                    Cumulative eradicated:{" "}
+                    {Strings.cumulativeEradicated}{" "}
                     {props.payload[0].payload.cumulativeEradicated}
                   </p>
                 </div>

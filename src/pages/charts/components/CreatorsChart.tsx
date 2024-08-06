@@ -10,6 +10,7 @@ import {
 } from "recharts";
 import { Creators } from "../../../data/charts/charts";
 import { useGetCreatorsChartDataMutation } from "../../../services/chartService";
+import Strings from "../../../utils/localizations/Strings";
 
 export interface ChartProps {
   siteId: string;
@@ -37,8 +38,12 @@ const CreatorsChart = ({ siteId }: ChartProps) => {
                     className="bg-card-fields md:text-sm text-xs w-52 md:w-auto text-white py-2 px-4 rounded-md shadow-lg"
                     key={index}
                   >
-                    <p>Creator: {item.payload.creator}</p>
-                    <p>Total cards: {item.payload.totalCards}</p>
+                    <p>
+                      {Strings.creatorChart} {item.payload.creator}
+                    </p>
+                    <p>
+                      {Strings.totalCards} {item.payload.totalCards}
+                    </p>
                   </div>
                 );
               })}

@@ -9,6 +9,7 @@ import {
 } from "recharts";
 import { getColorForMethodology } from "../../../utils/Extensions";
 import { CardTypesCatalog } from "../../../data/cardtypes/cardTypes";
+import Strings from "../../../utils/localizations/Strings";
 
 export interface ChartProps {
   methodologies: Methodology[];
@@ -75,8 +76,8 @@ const MethodologiesChart = ({
                   className="bg-card-fields md:text-sm text-xs w-52 md:w-auto text-white py-2 px-4 rounded-md shadow-lg"
                   key={index}
                 >
-                  <p>Methodology: {item.payload.methodology}</p>
-                  <p>Total cards: {item.payload.totalCards}</p>
+                  <p>{Strings.methodologyChart} {item.payload.methodology}</p>
+                  <p>{Strings.totalCards} {item.payload.totalCards}</p>
                 </div>
               ))}
             </div>

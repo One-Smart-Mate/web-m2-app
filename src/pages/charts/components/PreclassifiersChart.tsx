@@ -14,6 +14,7 @@ import {
 import { getColorForMethodology } from "../../../utils/Extensions";
 import { useGetPreclassifiersChartDataMutation } from "../../../services/chartService";
 import { CardTypesCatalog } from "../../../data/cardtypes/cardTypes";
+import Strings from "../../../utils/localizations/Strings";
 
 export interface ChartProps {
   siteId: string;
@@ -43,9 +44,15 @@ const PreclassifiersChart = ({ siteId, methodologiesCatalog }: ChartProps) => {
                     className="bg-card-fields md:text-sm text-xs w-52 md:w-auto text-white py-2 px-4 rounded-md shadow-lg"
                     key={index}
                   >
-                    <p>Preclassifier: {item.payload.preclassifier}</p>
-                    <p>Total cards: {item.payload.totalCards}</p>
-                    <p>Methodology: {item.payload.methodology}</p>
+                    <p>
+                      {Strings.preclassifierChart} {item.payload.preclassifier}
+                    </p>
+                    <p>
+                      {Strings.totalCards} {item.payload.totalCards}
+                    </p>
+                    <p>
+                      {Strings.methodologyChart} {item.payload.methodology}
+                    </p>
                   </div>
                 );
               })}

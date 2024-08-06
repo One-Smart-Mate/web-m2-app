@@ -218,6 +218,15 @@ export default class Strings {
   static cardAreas = "Card areas";
   static cardCreators = "Card creators";
   static tagMonitoring = "tagMonitoring";
+  static totalCards = "Total cards:";
+  static areaChart = "Area:"
+  static creatorChart = "Creator:"
+  static methodologyChart = "Methodology:"
+  static preclassifierChart = "Preclassifier:"
+  static year = "Year:"
+  static week = "Week:"
+  static cumulativeIssued = "Cumulative issued:"
+  static cumulativeEradicated = "Cumulative eradicated:"
 
   //general actions
   static edit = "Edit";

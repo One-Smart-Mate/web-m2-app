@@ -10,6 +10,7 @@ import {
 } from "recharts";
 import { Areas } from "../../../data/charts/charts";
 import { useGetAreasChartDataMutation } from "../../../services/chartService";
+import Strings from "../../../utils/localizations/Strings";
 
 export interface ChartProps {
   siteId: string;
@@ -37,8 +38,12 @@ const AreasChart = ({ siteId }: ChartProps) => {
                     className="bg-card-fields md:text-sm text-xs w-52 md:w-auto text-white py-2 px-4 rounded-md shadow-lg"
                     key={item.payload.area}
                   >
-                    <p>Area: {item.payload.area}</p>
-                    <p>Total cards: {item.payload.totalCards}</p>
+                    <p>
+                      {Strings.areaChart} {item.payload.area}
+                    </p>
+                    <p>
+                      {Strings.totalCards} {item.payload.totalCards}
+                    </p>
                   </div>
                 );
               })}
