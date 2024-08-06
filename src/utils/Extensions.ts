@@ -5,6 +5,30 @@ import Strings from "./localizations/Strings";
 import { v4 as uuidv4 } from "uuid";
 import Constants from "./Constants";
 import { Evidences } from "../data/card/card";
+import { CardTypesCatalog } from "../data/cardtypes/cardTypes";
+
+const colors = [
+  "#5a5e7c",
+  "#567064",
+  "#6a6750",
+  "#6b4e3d",
+  "#536d78",
+  "#5b6e54",
+  "#6e6e48",
+  "#5a5e7c",
+  "#536d78",
+  "#567064",
+];
+
+export const getColorForMethodology = (
+  methodologies: CardTypesCatalog[],
+  methodology: string
+) => {
+  const index = methodologies.findIndex(
+    (m) => m.cardTypeMethodologyName === methodology
+  );
+  return colors[index % colors.length];
+};
 
 export const isAudioURL = (url: string) => {
   return Constants.AUDIO_FORMATS.some((ext) => url.includes(ext));

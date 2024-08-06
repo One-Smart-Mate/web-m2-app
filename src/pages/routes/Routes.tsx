@@ -1,4 +1,4 @@
-import { ItemType } from "antd/es/menu/hooks/useItems";
+import { ItemType } from "antd/es/menu/interface";
 import { MenuProps } from "antd";
 import { Route } from "./models/Route";
 import User from "../../data/user/user";
@@ -15,6 +15,7 @@ import { MdOutlineManageAccounts } from "react-icons/md";
 import Levels from "../level/Levels";
 import Cards from "../card/Cards";
 import CardDetails from "../carddetails/CardDetails";
+import Charts from "../charts/Charts";
 
 const companies = new Route(
   "Companies",
@@ -87,6 +88,14 @@ const cardDetails = new Route(
   <></>
 );
 
+const charts = new Route(
+  "Charts",
+  "charts",
+  Routes.Charts,
+  <Charts />,
+  <></>
+);
+
 const adminRoutes: Route[] = [
   companies,
   users,
@@ -97,6 +106,7 @@ const adminRoutes: Route[] = [
   levels,
   cards,
   cardDetails,
+  charts
 ];
 
 const adminRoutesSiderOptions = (): ItemType[] => {
