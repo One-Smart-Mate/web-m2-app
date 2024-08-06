@@ -9,6 +9,7 @@ const LevelsAllByCardType = "/level/all";
 const AllCardsBySite = "/card/all";
 export const ResetPasswordRoute = "/reset-password";
 const CardDetails = "/card/details";
+const Charts = "/charts";
 
 export default {
   AdminDirectionHome,
@@ -21,4 +22,5 @@ export default {
   AllCardsBySite,
   Login,
   CardDetails,
+  Charts,
 };

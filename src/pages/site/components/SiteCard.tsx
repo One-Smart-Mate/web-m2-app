@@ -9,6 +9,7 @@ import ViewCardTypesButton from "./ViewCardTypesButton";
 import UpdateSite from "./UpdateSite";
 import ViewLevelsButton from "./ViewLevelsButton";
 import ViewCardsButton from "./ViewCardsButton";
+import ViewChartsButton from "./ViewChartsButton";
 
 interface CompanyCardProps {
   data: Company;
@@ -44,6 +45,10 @@ const SiteCard = ({ data }: CompanyCardProps) => {
     {
       key: "6",
       label: <CustomButton type="action">{Strings.importExcel}</CustomButton>,
+    },
+    {
+      key: "7",
+      label: <ViewChartsButton siteId={data.id} siteName={data.name} />,
     },
   ];
 

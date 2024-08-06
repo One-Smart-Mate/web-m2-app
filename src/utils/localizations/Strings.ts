@@ -95,6 +95,7 @@ export default class Strings {
   static viewLevels = "View levels";
   static viewCardTypes = "View card types";
   static viewCards = "View cards";
+  static viewCharts = "View charts";
   static importExcel = "Import excel";
 
   //erros sites form
@@ -210,6 +211,22 @@ export default class Strings {
   static mechanic = "Mechanic";
   static creator = "Creator";
   static comments = "Comments";
+
+  //charts
+  static chartsOf = "Charts of:";
+  static anomalies = "Anomalies";
+  static cardAreas = "Card areas";
+  static cardCreators = "Card creators";
+  static tagMonitoring = "tagMonitoring";
+  static totalCards = "Total cards:";
+  static areaChart = "Area:"
+  static creatorChart = "Creator:"
+  static methodologyChart = "Methodology:"
+  static preclassifierChart = "Preclassifier:"
+  static year = "Year:"
+  static week = "Week:"
+  static cumulativeIssued = "Cumulative issued:"
+  static cumulativeEradicated = "Cumulative eradicated:"
 
   //general actions
   static edit = "Edit";
