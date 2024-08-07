@@ -17,6 +17,10 @@ export const userService = apiSlice.injectEndpoints({
       query: (siteId) => `/users/all/${siteId}`,
       transformResponse: (response: { data: Responsible[] }) => response.data,
     }),
+    getSiteUsers: builder.mutation<UserTable[], string>({
+      query: (siteId) => `/users/site/${siteId}`,
+      transformResponse: (response: { data: UserTable[] }) => response.data,
+    }),
     createUser: builder.mutation<void, CreateUser>({
       query: (user) => ({
         url: "/users/create",
@@ -69,4 +73,5 @@ export const {
   useSendCodeToEmailMutation,
   useSendCodeToVerifyMutation,
   useResetPasswordMutation,
+  useGetSiteUsersMutation,
 } = userService;

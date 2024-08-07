@@ -13,6 +13,7 @@ import UpdateSite from "./UpdateSite";
 import ViewLevelsButton from "./ViewLevelsButton";
 import ViewCardsButton from "./ViewCardsButton";
 import ViewChartsButton from "./ViewChartsButton";
+import ViewUsersButton from "./ViewUsersButton";
 
 interface TableProps {
   data: Site[];
@@ -140,6 +141,7 @@ const SiteTable = ({ data, isLoading }: TableProps) => {
     expandedRowRender: (data: Site) => (
       <Space className="flex justify-end">
         <ViewChartsButton siteId={data.id} siteName={data.name} />
+        <ViewUsersButton siteId={data.id} siteName={data.name} />
         <ViewPrioritiesButton siteId={data.id} siteName={data.name} />
         <ViewLevelsButton siteId={data.id} siteName={data.name} />
         <ViewCardTypesButton siteId={data.id} siteName={data.name} />

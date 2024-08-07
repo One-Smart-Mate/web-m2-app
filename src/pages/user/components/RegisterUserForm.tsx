@@ -1,7 +1,6 @@
-import { Form, FormInstance, Input, InputNumber, Select } from "antd";
+import { Checkbox, Form, FormInstance, Input, Select } from "antd";
 import { LockOutlined, MailOutlined } from "@ant-design/icons";
 import { FaRegUser } from "react-icons/fa";
-import { FiUpload } from "react-icons/fi";
 import Strings from "../../../utils/localizations/Strings";
 import { validateEmail } from "../../../utils/Extensions";
 import { useEffect, useState } from "react";
@@ -202,41 +201,19 @@ const RegisterUserForm = ({ form }: FormProps) => {
         <div className="flex flex-row flex-wrap">
           <Form.Item
             name="uploadCardDataWithDataNet"
-            validateFirst
-            rules={[
-              {
-                required: true,
-                message: Strings.requiredInfo,
-              },
-            ]}
+            valuePropName="checked"
+            label={Strings.uploadCardDataWithDataNet}
             className="mr-1"
           >
-            <InputNumber
-              size="large"
-              min={0}
-              max={127}
-              addonBefore={<FiUpload />}
-              placeholder={Strings.uploadCardDataWithDataNet}
-            />
+            <Checkbox value={1}>{Strings.enable}</Checkbox>
           </Form.Item>
           <Form.Item
             name="uploadCardEvidenceWithDataNet"
-            validateFirst
-            rules={[
-              {
-                required: true,
-                message: Strings.requiredInfo,
-              },
-            ]}
+            valuePropName="checked"
+            label={Strings.uploadCardEvidenceWithDataNet}
             className="flex-1"
           >
-            <InputNumber
-              size="large"
-              max={127}
-              min={0}
-              addonBefore={<FiUpload />}
-              placeholder={Strings.uploadCardEvidenceWithDataNet}
-            />
+            <Checkbox value={1}>{Strings.enable}</Checkbox>
           </Form.Item>
         </div>
         <Form.Item

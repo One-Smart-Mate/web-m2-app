@@ -16,6 +16,7 @@ import Levels from "../level/Levels";
 import Cards from "../card/Cards";
 import CardDetails from "../carddetails/CardDetails";
 import Charts from "../charts/Charts";
+import SiteUsers from "../user/SiteUsers";
 
 const companies = new Route(
   "Companies",
@@ -37,6 +38,14 @@ const users = new Route(
   "users",
   Routes.Users,
   <Users />,
+  <MdOutlineManageAccounts />
+);
+
+const siteUsers = new Route(
+  "Manage site users",
+  "site users",
+  Routes.SiteUsers,
+  <SiteUsers />,
   <MdOutlineManageAccounts />
 );
 
@@ -88,13 +97,7 @@ const cardDetails = new Route(
   <></>
 );
 
-const charts = new Route(
-  "Charts",
-  "charts",
-  Routes.Charts,
-  <Charts />,
-  <></>
-);
+const charts = new Route("Charts", "charts", Routes.Charts, <Charts />, <></>);
 
 const adminRoutes: Route[] = [
   companies,
@@ -106,7 +109,8 @@ const adminRoutes: Route[] = [
   levels,
   cards,
   cardDetails,
-  charts
+  charts,
+  siteUsers,
 ];
 
 const adminRoutesSiderOptions = (): ItemType[] => {

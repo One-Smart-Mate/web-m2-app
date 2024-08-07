@@ -10,6 +10,7 @@ import UpdateSite from "./UpdateSite";
 import ViewLevelsButton from "./ViewLevelsButton";
 import ViewCardsButton from "./ViewCardsButton";
 import ViewChartsButton from "./ViewChartsButton";
+import ViewUsersButton from "./ViewUsersButton";
 
 interface CompanyCardProps {
   data: Company;
@@ -49,6 +50,10 @@ const SiteCard = ({ data }: CompanyCardProps) => {
     {
       key: "7",
       label: <ViewChartsButton siteId={data.id} siteName={data.name} />,
+    },
+    {
+      key: "8",
+      label: <ViewUsersButton siteId={data.id} siteName={data.name} />,
     },
   ];
 

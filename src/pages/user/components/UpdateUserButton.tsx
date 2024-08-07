@@ -20,12 +20,14 @@ import {
   useUpdateUserMutation,
 } from "../../../services/userService";
 import { UpdateUser } from "../../../data/user/user.request";
+import UpdateSiteUserForm from "./UpdateSiteUserForm";
 
 interface ButtonEditProps {
   userId: string;
+  isSiteUserstable: boolean;
 }
 
-const UpdateUserButton = ({ userId }: ButtonEditProps) => {
+const UpdateUserButton = ({ userId, isSiteUserstable }: ButtonEditProps) => {
   const [modalIsOpen, setModalOpen] = useState(false);
   const [modalIsLoading, setModalLoading] = useState(false);
   const [dataIsLoading, setDataLoading] = useState(false);
@@ -58,8 +60,8 @@ const UpdateUserButton = ({ userId }: ButtonEditProps) => {
           values.email.trim(),
           Number(values.siteId),
           values.password,
-          values.uploadCardDataWithDataNet,
-          values.uploadCardEvidenceWithDataNet,
+          values.uploadCardDataWithDataNet ? 1 : 0,
+          values.uploadCardEvidenceWithDataNet ? 1 : 0,
           values.roles,
           values.status
         )
@@ -87,7 +89,7 @@ const UpdateUserButton = ({ userId }: ButtonEditProps) => {
         <ModalUpdateForm
           open={modalIsOpen}
           onCancel={handleOnCancelButton}
-          FormComponent={UpdateUserForm}
+          FormComponent={isSiteUserstable ? UpdateSiteUserForm : UpdateUserForm}
           title={Strings.updateUser}
           isLoading={modalIsLoading}
         />
