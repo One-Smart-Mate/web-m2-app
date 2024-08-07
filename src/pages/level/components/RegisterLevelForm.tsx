@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { selectSiteId } from "../../../core/genericReducer";
 import { useGetSiteResponsiblesMutation } from "../../../services/userService";
 import { Responsible } from "../../../data/user/user";
+import { CiBarcode } from "react-icons/ci";
 
 interface FormProps {
   form: FormInstance;
@@ -56,7 +57,7 @@ const RegisterLevelForm = ({ form }: FormProps) => {
               { required: true, message: Strings.requiredDescription },
               { max: 100 },
             ]}
-            className="w-2/3"
+            className="md:flex-1 w-2/3"
           >
             <Input
               size="large"
@@ -66,16 +67,31 @@ const RegisterLevelForm = ({ form }: FormProps) => {
             />
           </Form.Item>
         </div>
-        <Form.Item
-          name="responsibleId"
-          validateFirst
-          rules={[{ required: true, message: Strings.requiredResponsableId }]}
-          className="flex-1"
-        >
-          <Select size="large" placeholder={Strings.responsible}>
-            {selectOptions()}
-          </Select>
-        </Form.Item>
+        <div className="flex flex-wrap gap-1">
+          <Form.Item
+            name="responsibleId"
+            validateFirst
+            rules={[{ required: true, message: Strings.requiredResponsableId }]}
+            className="flex-1"
+          >
+            <Select size="large" placeholder={Strings.responsible}>
+              {selectOptions()}
+            </Select>
+          </Form.Item>
+          <Form.Item
+            name="levelMachineId"
+            validateFirst
+            rules={[{ required: true, message: Strings.requiredResponsableId }]}
+            className="md:flex-1 w-2/3"
+          >
+            <Input
+              size="large"
+              maxLength={50}
+              addonBefore={<CiBarcode />}
+              placeholder={Strings.levelMachineId}
+            />
+          </Form.Item>
+        </div>
       </div>
     </Form>
   );

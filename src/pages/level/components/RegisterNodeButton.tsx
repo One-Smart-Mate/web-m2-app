@@ -11,11 +11,14 @@ import {
 } from "../../../utils/Notifications";
 import { CreateNode } from "../../../data/level/level.request";
 import { useAppDispatch, useAppSelector } from "../../../core/store";
-import { selectSiteId, setLevelCreatedIndicator } from "../../../core/genericReducer";
+import {
+  selectSiteId,
+  setLevelCreatedIndicator,
+} from "../../../core/genericReducer";
 import RegisterLevelForm from "./RegisterLevelForm";
 interface Props {
   superiorId: string;
-  nodesName: string[] 
+  nodesName: string[];
 }
 
 const RegisterNodeButton = ({ superiorId, nodesName }: Props) => {
@@ -23,7 +26,7 @@ const RegisterNodeButton = ({ superiorId, nodesName }: Props) => {
   const [registerLevel] = useCreateLevelMutation();
   const [modalIsLoading, setModalLoading] = useState(false);
   const siteId = useAppSelector(selectSiteId);
-  const dispatch = useAppDispatch()
+  const dispatch = useAppDispatch();
 
   const handleOnClickCreateButton = () => {
     setModalOpen(true);
@@ -42,11 +45,12 @@ const RegisterNodeButton = ({ superiorId, nodesName }: Props) => {
           values.description.trim(),
           Number(values.responsibleId),
           Number(siteId),
-          Number(superiorId)
+          Number(superiorId),
+          values.levelMachineId.trim()
         )
       ).unwrap();
       setModalOpen(false);
-      dispatch(setLevelCreatedIndicator())
+      dispatch(setLevelCreatedIndicator());
       handleSucccessNotification(NotificationSuccess.REGISTER);
     } catch (error) {
       handleErrorNotification(error);
@@ -74,7 +78,7 @@ const RegisterNodeButton = ({ superiorId, nodesName }: Props) => {
           open={modalIsOpen}
           onCancel={handleOnCancelButton}
           FormComponent={RegisterLevelForm}
-          title={`${Strings.createNodefor} - ${nodesName.join(' - ')}`}
+          title={`${Strings.createNodefor} - ${nodesName.join(" - ")}`}
           isLoading={modalIsLoading}
         />
       </Form.Provider>
