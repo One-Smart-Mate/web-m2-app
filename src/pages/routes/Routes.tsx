@@ -3,7 +3,7 @@ import { MenuProps } from "antd";
 import { Route } from "./models/Route";
 import User from "../../data/user/user";
 import { UserRoles, getUserRol } from "../../utils/Extensions";
-import { BsBuildings } from "react-icons/bs";
+import { BsBarChartLine, BsBuildings } from "react-icons/bs";
 import Routes from "../../utils/Routes";
 import Company from "../company/Companies";
 import Priorities from "../priority/Priorities";
@@ -11,125 +11,280 @@ import Sites from "../site/Sites";
 import CardTypess from "../cardtypes/CardTypes";
 import Preclassifiers from "../preclassifier/Preclassifiers";
 import Users from "../user/Users";
-import { MdOutlineManageAccounts } from "react-icons/md";
+import { MdLowPriority, MdOutlineManageAccounts } from "react-icons/md";
 import Levels from "../level/Levels";
 import Cards from "../card/Cards";
 import CardDetails from "../carddetails/CardDetails";
 import Charts from "../charts/Charts";
 import SiteUsers from "../user/SiteUsers";
+import { PiMapPinAreaLight } from "react-icons/pi";
+import { TbCards } from "react-icons/tb";
+import { BiCategory } from "react-icons/bi";
 
-const companies = new Route(
+const adminCompanies = new Route(
   "Companies",
   "companies",
-  Routes.AdminDirectionHome,
+  Routes.AdminPrefix + Routes.AdminDirectionHome,
   <Company />,
   <BsBuildings />
 );
-const priorities = new Route(
+const adminPriorities = new Route(
   "Priorities",
   "priorities",
-  Routes.PriorityAll,
+  Routes.AdminPrefix + Routes.PriorityAll,
   <Priorities />,
   <></>
 );
 
-const users = new Route(
+const adminUsers = new Route(
   "Manage users",
   "users",
-  Routes.Users,
+  Routes.AdminPrefix + Routes.Users,
   <Users />,
   <MdOutlineManageAccounts />
 );
 
-const siteUsers = new Route(
+const adminSiteUsers = new Route(
   "Manage site users",
   "site users",
-  Routes.SiteUsers,
+  Routes.AdminPrefix + Routes.SiteUsers,
   <SiteUsers />,
   <MdOutlineManageAccounts />
 );
 
-const sites = new Route(
+const adminSites = new Route(
   "Sites",
   "sites",
-  Routes.SitesAllByCompany,
-  <Sites />,
+  Routes.AdminPrefix + Routes.SitesAllByCompany,
+  <Sites rol={UserRoles.ADMIN} />,
   <></>
 );
 
-const cardTypes = new Route(
+const adminCardTypes = new Route(
   "Card types",
   "cardtypes",
-  Routes.CardTypesAllBySite,
-  <CardTypess />,
+  Routes.AdminPrefix + Routes.CardTypesAllBySite,
+  <CardTypess rol={UserRoles.ADMIN} />,
   <></>
 );
 
-const preclassifiers = new Route(
+const adminPreclassifiers = new Route(
   "Preclassifiers",
   "preclassifiers",
-  Routes.PreclassifiersAllByCardType,
+  Routes.AdminPrefix + Routes.PreclassifiersAllByCardType,
   <Preclassifiers />,
   <></>
 );
 
-const levels = new Route(
+const adminLevels = new Route(
   "Levels",
   "levels",
-  Routes.LevelsAllByCardType,
+  Routes.AdminPrefix + Routes.LevelsAllByCardType,
   <Levels />,
   <></>
 );
 
-const cards = new Route(
+const adminCards = new Route(
   "Cards",
   "cards",
-  Routes.AllCardsBySite,
-  <Cards />,
+  Routes.AdminPrefix + Routes.AllCardsBySite,
+  <Cards rol={UserRoles.ADMIN} />,
   <></>
 );
 
-const cardDetails = new Route(
+const adminCardDetails = new Route(
   "Card details",
   "carddetails",
-  Routes.CardDetails,
+  Routes.AdminPrefix + Routes.CardDetails,
   <CardDetails />,
   <></>
 );
 
-const charts = new Route("Charts", "charts", Routes.Charts, <Charts />, <></>);
-
-const adminRoutes: Route[] = [
-  companies,
-  users,
-  priorities,
-  sites,
-  cardTypes,
-  preclassifiers,
-  levels,
-  cards,
-  cardDetails,
-  charts,
-  siteUsers,
-];
+const adminCharts = new Route(
+  "Charts",
+  "charts",
+  Routes.AdminPrefix + Routes.Charts,
+  <Charts />,
+  <></>
+);
 
 const adminRoutesSiderOptions = (): ItemType[] => {
   const items: MenuProps["items"] = [
-    getItem(companies.label, companies.fullPath, companies.icon),
-    getItem(users.label, users.fullPath, users.icon),
+    getItem(adminCompanies.label, adminCompanies.fullPath, adminCompanies.icon),
+    getItem(adminUsers.label, adminUsers.fullPath, adminUsers.icon),
+  ];
+  return items;
+};
+
+const adminRoutes: Route[] = [
+  adminCompanies,
+  adminUsers,
+  adminPriorities,
+  adminSites,
+  adminCardTypes,
+  adminPreclassifiers,
+  adminLevels,
+  adminCards,
+  adminCardDetails,
+  adminCharts,
+  adminSiteUsers,
+];
+
+const sysAdminCharts = new Route(
+  "Charts",
+  "charts",
+  Routes.SysadminPrefix + Routes.Charts,
+  <Charts />,
+  <BsBarChartLine />
+);
+
+const sysAdminSite = new Route(
+  "Site",
+  "sites",
+  Routes.SysadminPrefix + Routes.Site,
+  <Sites rol={UserRoles.SYSADMIN} />,
+  <BsBuildings />
+);
+
+const sysAdminSiteUsers = new Route(
+  "Manage site users",
+  "site users",
+  Routes.SysadminPrefix + Routes.SiteUsers,
+  <SiteUsers />,
+  <MdOutlineManageAccounts />
+);
+
+const sysAdminPriorities = new Route(
+  "Priorities",
+  "priorities",
+  Routes.SysadminPrefix + Routes.PriorityAll,
+  <Priorities />,
+  <MdLowPriority />
+);
+
+const sysAdminLevels = new Route(
+  "Levels",
+  "levels",
+  Routes.SysadminPrefix + Routes.LevelsAllByCardType,
+  <Levels />,
+  <PiMapPinAreaLight />
+);
+
+const sysAdminCardTypes = new Route(
+  "Card types",
+  "cardtypes",
+  Routes.SysadminPrefix + Routes.CardTypesAllBySite,
+  <CardTypess rol={UserRoles.SYSADMIN} />,
+  <BiCategory />
+);
+
+const sysAdminCards = new Route(
+  "Cards",
+  "cards",
+  Routes.SysadminPrefix + Routes.AllCardsBySite,
+  <Cards rol={UserRoles.SYSADMIN} />,
+  <TbCards />
+);
+
+const sysAdminCardDetails = new Route(
+  "Card details",
+  "carddetails",
+  Routes.SysadminPrefix + Routes.CardDetails,
+  <CardDetails />,
+  <></>
+);
+
+const sysAdminPreclassifiers = new Route(
+  "Preclassifiers",
+  "preclassifiers",
+  Routes.SysadminPrefix + Routes.PreclassifiersAllByCardType,
+  <Preclassifiers />,
+  <></>
+);
+
+const sysAdminRoutes: Route[] = [
+  sysAdminCharts,
+  sysAdminSite,
+  sysAdminSiteUsers,
+  sysAdminPriorities,
+  sysAdminLevels,
+  sysAdminCardTypes,
+  sysAdminCards,
+  sysAdminPreclassifiers,
+  sysAdminCardDetails,
+];
+
+const sysAdminRoutesSiderOptions = (): ItemType[] => {
+  const items: MenuProps["items"] = [
+    getItem(sysAdminSite.label, sysAdminSite.fullPath, sysAdminSite.icon),
+    getItem(
+      sysAdminSiteUsers.label,
+      sysAdminSiteUsers.fullPath,
+      sysAdminSiteUsers.icon
+    ),
+    getItem(sysAdminCharts.label, sysAdminCharts.fullPath, sysAdminCharts.icon),
+    getItem(
+      sysAdminPriorities.label,
+      sysAdminPriorities.fullPath,
+      sysAdminPriorities.icon
+    ),
+    getItem(sysAdminLevels.label, sysAdminLevels.fullPath, sysAdminLevels.icon),
+    getItem(
+      sysAdminCardTypes.label,
+      sysAdminCardTypes.fullPath,
+      sysAdminCardTypes.icon
+    ),
+    getItem(sysAdminCards.label, sysAdminCards.fullPath, sysAdminCards.icon),
+  ];
+  return items;
+};
+
+const mechanicCards = new Route(
+  "Cards",
+  "cards",
+  Routes.MechanicPrefix + Routes.AllCardsBySite,
+  <Cards rol={UserRoles.MECHANIC} />,
+  <TbCards />
+);
+
+const mechanicCardDetails = new Route(
+  "Card details",
+  "carddetails",
+  Routes.MechanicPrefix + Routes.CardDetails,
+  <CardDetails />,
+  <></>
+);
+
+const mechanicRoutes: Route[] = [mechanicCards, mechanicCardDetails];
+
+const mechanicRoutesSiderOptions = (): ItemType[] => {
+  const items: MenuProps["items"] = [
+    getItem(mechanicCards.label, mechanicCards.fullPath, mechanicCards.icon),
   ];
   return items;
 };
 
 const getUserSiderOptions = (user: User): ItemType[] => {
   const rol = getUserRol(user);
-  if (rol == UserRoles.ADMIN) {
-    return adminRoutesSiderOptions();
+  switch (rol) {
+    case UserRoles.ADMIN:
+      return adminRoutesSiderOptions();
+    case UserRoles.SYSADMIN:
+      return sysAdminRoutesSiderOptions();
+    case UserRoles.MECHANIC:
+      return mechanicRoutesSiderOptions();
   }
   return [];
 };
 
-export { adminRoutesSiderOptions, adminRoutes, getUserSiderOptions };
+export {
+  adminRoutesSiderOptions,
+  adminRoutes,
+  getUserSiderOptions,
+  sysAdminRoutes,
+  mechanicRoutes,
+  mechanicRoutesSiderOptions,
+};
 
 function getItem(
   label: React.ReactNode,

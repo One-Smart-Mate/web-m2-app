@@ -22,20 +22,15 @@ import {
   resetUserUpdatedIndicator,
   selectUserUpdatedIndicator,
 } from "../../core/genericReducer";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import RegisterSiteUserForm from "./components/RegisterSiteUserForm";
-
-interface stateType {
-  siteId: string;
-  siteName: string;
-}
+import { UnauthorizedRoute } from "../../utils/Routes";
 
 const SiteUsers = () => {
   const [getUsers] = useGetSiteUsersMutation();
   const [data, setData] = useState<UserTable[]>([]);
   const [isLoading, setLoading] = useState(false);
-  const { state } = useLocation();
-  const { siteId, siteName } = state as stateType;
+  const location = useLocation();
   const [querySearch, setQuerySearch] = useState(Strings.empty);
   const [dataBackup, setDataBackup] = useState<UserTable[]>([]);
   const [modalIsOpen, setModalOpen] = useState(false);
@@ -43,6 +38,7 @@ const SiteUsers = () => {
   const [modalIsLoading, setModalLoading] = useState(false);
   const dispatch = useAppDispatch();
   const isSiteUpdated = useAppSelector(selectUserUpdatedIndicator);
+  const navigate = useNavigate();
 
   const handleOnClickCreateButton = () => {
     setModalOpen(true);
@@ -61,8 +57,12 @@ const SiteUsers = () => {
   }, [isSiteUpdated, dispatch]);
 
   const handleGetUsers = async () => {
+    if (!location.state) {
+      navigate(UnauthorizedRoute);
+      return;
+    }
     setLoading(true);
-    const response = await getUsers(siteId).unwrap();
+    const response = await getUsers(location.state.siteId).unwrap();
     setData(response);
     setDataBackup(response);
     setLoading(false);
@@ -101,7 +101,7 @@ const SiteUsers = () => {
         new CreateUser(
           values.name.trim(),
           values.email.trim(),
-          Number(siteId),
+          Number(location.state.siteId),
           values.password,
           values.uploadCardDataWithDataNet ? 1 : 0,
           values.uploadCardEvidenceWithDataNet ? 1 : 0,
@@ -122,7 +122,10 @@ const SiteUsers = () => {
     <>
       <div className="h-full flex flex-col">
         <div className="flex flex-col items-center m-3">
-          <PageTitle mainText={Strings.usersOf} subText={siteName} />
+          <PageTitle
+            mainText={Strings.usersOf}
+            subText={location?.state?.siteName}
+          />
           <div className="flex flex-col md:flex-row flex-wrap items-center md:justify-between w-full">
             <div className="flex flex-col md:flex-row items-center flex-1 mb-1 md:mb-0">
               <Space className="w-full md:w-auto mb-1 md:mb-0">
@@ -162,7 +165,7 @@ const SiteUsers = () => {
           open={modalIsOpen}
           onCancel={handleOnCancelButton}
           FormComponent={RegisterSiteUserForm}
-          title={`${Strings.createUserFor} ${siteName}`}
+          title={`${Strings.createUserFor} ${location?.state?.siteName}`}
           isLoading={modalIsLoading}
         />
       </Form.Provider>

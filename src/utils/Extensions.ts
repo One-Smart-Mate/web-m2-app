@@ -73,26 +73,59 @@ export const validateEmail = (
 
 export const getInitRoute = (user: User): string => {
   const adminRole = "admin";
+  const sysAdminRole = "sysadmin";
+  const mechanic = "mechanic";
 
   const isAdmin = user.roles?.some(
     (role) => role.trim().toLowerCase() === adminRole
   );
+  if (isAdmin) {
+    return Routes.AdminPrefix + Routes.AdminDirectionHome;
+  }
+  const isSysAdmin = user.roles?.some(
+    (role) => role.trim().toLowerCase() === sysAdminRole
+  );
+  const isMechanic = user.roles?.some(
+    (role) => role.trim().toLowerCase() === mechanic
+  );
 
-  return isAdmin ? Routes.AdminDirectionHome : "";
+  return isSysAdmin
+    ? Routes.SysadminPrefix + Routes.Site
+    : isMechanic
+    ? Routes.MechanicPrefix + Routes.AllCardsBySite
+    : "/";
 };
 
 export const getUserRol = (user: User): UserRoles | null => {
   const adminRole = "admin";
+  const sysAdminRole = "sysadmin";
+  const mechanic = "mechanic";
 
   const isAdmin = user.roles?.some(
     (role) => role.trim().toLowerCase() === adminRole
   );
+  if (isAdmin) {
+    return UserRoles.ADMIN;
+  }
+  const isSysAdmin = user.roles?.some(
+    (role) => role.trim().toLowerCase() === sysAdminRole
+  );
+  const isMechanic = user.roles?.some(
+    (role) => role.trim().toLowerCase() === mechanic
+  );
 
-  return isAdmin ? UserRoles.ADMIN : null;
+  return isSysAdmin
+    ? UserRoles.SYSADMIN
+    : isMechanic
+    ? UserRoles.MECHANIC
+    : UserRoles.UNDEFINED;
 };
 
 export const enum UserRoles {
   ADMIN,
+  SYSADMIN,
+  MECHANIC,
+  UNDEFINED,
 }
 
 export const formatDate = (date: string) => {

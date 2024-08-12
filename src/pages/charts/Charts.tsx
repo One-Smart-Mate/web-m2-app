@@ -1,4 +1,4 @@
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import PageTitle from "../../components/PageTitle";
 import Strings from "../../utils/localizations/Strings";
 import AreasChart from "./components/AreasChart";
@@ -13,24 +13,26 @@ import { Card, Empty } from "antd";
 import { getColorForMethodology } from "../../utils/Extensions";
 import { useGetMethodologiesChartDataMutation } from "../../services/chartService";
 import { Methodology } from "../../data/charts/charts";
-interface stateType {
-  siteId: string;
-  siteName: string;
-}
+import { UnauthorizedRoute } from "../../utils/Routes";
 
 const Charts = () => {
-  const { state } = useLocation();
-  const { siteId, siteName } = state as stateType;
+  const location = useLocation();
   const [getMethodologiesCatalog] = useGetCardTypesCatalogsMutation();
   const [getMethodologies] = useGetMethodologiesChartDataMutation();
   const [methodologiesCatalog, setMethodologiesCatalog] = useState<
     CardTypesCatalog[]
   >([]);
   const [methodologies, setMethodologies] = useState<Methodology[]>([]);
+  const navigate = useNavigate();
+
   const handleGetMethodologiesCatalog = async () => {
+    if (!location.state) {
+      navigate(UnauthorizedRoute);
+      return
+    }
     const [response, response2] = await Promise.all([
       getMethodologiesCatalog().unwrap(),
-      getMethodologies(siteId).unwrap(),
+      getMethodologies(location.state.siteId).unwrap(),
     ]);
 
     setMethodologiesCatalog(response);
@@ -44,7 +46,10 @@ const Charts = () => {
     <>
       <div className="h-full flex flex-col">
         <div className="flex flex-col gap-2 items-center m-3">
-          <PageTitle mainText={Strings.chartsOf} subText={siteName} />
+          <PageTitle
+            mainText={Strings.chartsOf}
+            subText={location?.state?.siteName}
+          />
         </div>
         <div className="flex-1 overflow-auto">
           {methodologies.length > 0 ? (
@@ -82,7 +87,7 @@ const Charts = () => {
                     <div className="flex flex-wrap gap-1">
                       <div className="md:flex-1 w-full h-60">
                         <PreclassifiersChart
-                          siteId={siteId}
+                          siteId={location?.state?.siteId}
                           methodologiesCatalog={methodologiesCatalog}
                         />
                       </div>
@@ -108,7 +113,7 @@ const Charts = () => {
                   className="md:flex-1 w-full mx-auto bg-gray-100 rounded-xl shadow-md"
                 >
                   <div className="w-full h-60">
-                    <AreasChart siteId={siteId} />
+                    <AreasChart siteId={location?.state?.siteId} />
                   </div>
                 </Card>
                 <Card
@@ -122,7 +127,7 @@ const Charts = () => {
                   className="md:flex-1 w-full mx-auto bg-gray-100 rounded-xl shadow-md"
                 >
                   <div className="w-full h-60">
-                    <CreatorsChart siteId={siteId} />
+                    <CreatorsChart siteId={location?.state?.siteId} />
                   </div>
                 </Card>
               </div>
@@ -138,7 +143,7 @@ const Charts = () => {
                   className="md:flex-1 w-full mx-auto bg-gray-100 rounded-xl shadow-md"
                 >
                   <div className="w-full h-60">
-                    <WeeksChart siteId={siteId} />
+                    <WeeksChart siteId={location?.state?.siteId} />
                   </div>
                 </Card>
               </div>

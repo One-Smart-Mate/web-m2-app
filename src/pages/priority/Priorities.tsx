@@ -4,12 +4,12 @@ import {
   useGetPrioritiesMutation,
 } from "../../services/priorityService";
 import { Priority } from "../../data/priority/priority";
-import { Form, Input, Space } from "antd";
+import { Form, Input, List, Space } from "antd";
 import { IoIosSearch } from "react-icons/io";
 import Strings from "../../utils/localizations/Strings";
 import CustomButton from "../../components/CustomButtons";
 import PriorityTable from "./components/PriorityTable";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import ModalForm from "../../components/ModalForm";
 import { CreatePriority } from "../../data/priority/priority.request";
 import {
@@ -26,17 +26,12 @@ import {
 import PageTitle from "../../components/PageTitle";
 import PaginatedList from "../../components/PaginatedList";
 import PriorityCard from "./components/PriorityCard";
-
-interface stateType {
-  siteId: string;
-  siteName: string;
-}
+import { UnauthorizedRoute } from "../../utils/Routes";
 
 const Priorities = () => {
   const [getPriorities] = useGetPrioritiesMutation();
   const [isLoading, setLoading] = useState(false);
-  const { state } = useLocation();
-  const { siteId, siteName } = state as stateType;
+  const location = useLocation();
   const [data, setData] = useState<Priority[]>([]);
   const [querySearch, setQuerySearch] = useState(Strings.empty);
   const [dataBackup, setDataBackup] = useState<Priority[]>([]);
@@ -45,6 +40,7 @@ const Priorities = () => {
   const [modalIsLoading, setModalLoading] = useState(false);
   const dispatch = useAppDispatch();
   const isPriorityUpdated = useAppSelector(selectPriorityUpdatedIndicator);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (isPriorityUpdated) {
@@ -85,27 +81,26 @@ const Priorities = () => {
   };
 
   const handleGetPriorities = async () => {
-    setLoading(true);
-    if (siteId) {
-      try {
-        const response = await getPriorities(siteId).unwrap();
-        setData(response);
-        setDataBackup(response);
-      } catch (error) {}
+    if (!location.state) {
+      navigate(UnauthorizedRoute);
+      return;
     }
+    const response = await getPriorities(location.state.siteId).unwrap();
+    setData(response);
+    setDataBackup(response);
     setLoading(false);
   };
 
   useEffect(() => {
     handleGetPriorities();
-  }, [state, getPriorities]);
+  }, []);
 
   const handleOnFormCreateFinish = async (values: any) => {
     try {
       setModalLoading(true);
       await registerPriority(
         new CreatePriority(
-          Number(siteId),
+          Number(location?.state?.siteId),
           values.code.trim(),
           values.description.trim(),
           values.daysNumber
@@ -125,7 +120,10 @@ const Priorities = () => {
     <>
       <div className="h-full flex flex-col">
         <div className="flex flex-col gap-2 items-center m-3">
-          <PageTitle mainText={Strings.prioritiesOf} subText={siteName} />
+          <PageTitle
+            mainText={Strings.prioritiesOf}
+            subText={location?.state?.siteName}
+          />
           <div className="flex flex-col md:flex-row flex-wrap items-center md:justify-between w-full">
             <div className="flex flex-col md:flex-row items-center flex-1 mb-1 md:mb-0">
               <Space className="w-full md:w-auto mb-1 md:mb-0">
@@ -153,9 +151,13 @@ const Priorities = () => {
         </div>
         <div className="flex-1 overflow-auto lg:hidden">
           <PaginatedList
-            data={data}
-            ItemComponent={PriorityCard}
-            isLoading={isLoading}
+            dataSource={data}
+            renderItem={(item: Priority, index: number) => (
+              <List.Item>
+                <PriorityCard key={index} data={item} />
+              </List.Item>
+            )}
+            loading={isLoading}
           />
         </div>
       </div>
@@ -168,7 +170,7 @@ const Priorities = () => {
           open={modalIsOpen}
           onCancel={handleOnCancelButton}
           FormComponent={RegisterPriorityForm}
-          title={Strings.createPriority.concat(` ${siteName}`)}
+          title={Strings.createPriority.concat(` ${location?.state?.siteName}`)}
           isLoading={modalIsLoading}
         />
       </Form.Provider>

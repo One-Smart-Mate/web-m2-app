@@ -10,7 +10,6 @@ import { CardInterface, Evidences } from "../../../data/card/card";
 import Strings from "../../../utils/localizations/Strings";
 import CustomTag from "../../../components/CustomTag";
 import { useNavigate } from "react-router-dom";
-import Routes from "../../../utils/Routes";
 import { useMemo } from "react";
 import { AiOutlinePicture } from "react-icons/ai";
 import { IoHeadsetOutline } from "react-icons/io5";
@@ -18,9 +17,10 @@ import { GoDeviceCameraVideo } from "react-icons/go";
 
 interface CardProps {
   data: CardInterface;
+  cardDetailsRoute: string;
 }
 
-const InformationPanel = ({ data }: CardProps) => {
+const InformationPanel = ({ data, cardDetailsRoute }: CardProps) => {
   const { status, text } = getCardStatusAndText(data.status);
   const navigate = useNavigate();
 
@@ -54,7 +54,7 @@ const InformationPanel = ({ data }: CardProps) => {
       }
       className="max-w-sm h-96 mx-auto bg-gray-100 rounded-xl shadow-md"
       onClick={() => {
-        navigate(Routes.CardDetails, {
+        navigate(cardDetailsRoute, {
           state: {
             cardId: data.id,
             cardName: `${data.cardTypeMethodologyName} ${data.siteCardId}`,

@@ -13,8 +13,13 @@ import User from "../../data/user/user";
 import Strings from "../../utils/localizations/Strings";
 import { useAppSelector } from "../../core/store";
 import { selectCurrentUser } from "../../core/authReducer";
-import { RESPONSIVE_AVATAR } from "../../utils/Extensions";
+import {
+  getUserRol,
+  RESPONSIVE_AVATAR,
+  UserRoles,
+} from "../../utils/Extensions";
 import Logout from "../auth/Logout";
+import Routes, { UnauthorizedRoute } from "../../utils/Routes";
 
 const { Header, Sider, Content } = Layout;
 
@@ -27,12 +32,46 @@ const BaseLayout: React.FC = () => {
   const [selectedPath, setSelectedPath] = useState("");
   const [getSessionUser] = useSessionStorage<User>(Strings.empty);
 
+  const validateRoute = () => {
+    const route = location.pathname.split("/");
+
+    const isAdminRoute = route[1] === Routes.AdminPrefix.substring(1);
+
+    const isReceptionistRoute = route[1] === Routes.SysadminPrefix.substring(1);
+
+    const user = getSessionUser() as User;
+    const rol = getUserRol(user);
+    if (
+      isAdminRoute &&
+      (rol == UserRoles.SYSADMIN || rol == UserRoles.MECHANIC)
+    ) {
+      navigate(UnauthorizedRoute, { replace: true });
+    }
+    if (isReceptionistRoute && rol == UserRoles.MECHANIC) {
+      navigate(UnauthorizedRoute, { replace: true });
+    }
+  };
+
   useEffect(() => {
     setSelectedPath(location.pathname);
+    validateRoute();
   }, [location]);
 
   const handleOnClick = (data: any) => {
-    navigate(data.key);
+    const user = getSessionUser() as User;
+    const rol = getUserRol(user);
+    if (rol === UserRoles.ADMIN) {
+      navigate(data.key);
+    } else {
+      navigate(data.key, {
+        state: {
+          companyId: user.companyId,
+          companyName: user.companyName,
+          siteName: user.siteName,
+          siteId: user.siteId,
+        },
+      });
+    }
   };
   //----------
 
@@ -50,13 +89,13 @@ const BaseLayout: React.FC = () => {
         collapsible
         collapsed={isCollapsed}
       >
-          <div className="m-2 flex justify-center bg-white">
-            <Avatar
-              size={RESPONSIVE_AVATAR}
-              src={<img src={user?.logo} alt={Strings.logo} />}
-              shape="square"
-            />
-          </div>
+        <div className="m-2 flex justify-center bg-white">
+          <Avatar
+            size={RESPONSIVE_AVATAR}
+            src={<img src={user?.logo} alt={Strings.logo} />}
+            shape="square"
+          />
+        </div>
         <Menu
           theme="dark"
           mode="inline"
@@ -65,7 +104,7 @@ const BaseLayout: React.FC = () => {
           items={getUserSiderOptions(getSessionUser() as User)}
         />
         <div className="bottom-10 left-3 absolute">
-          <Logout/>
+          <Logout />
         </div>
       </Sider>
       <Layout>

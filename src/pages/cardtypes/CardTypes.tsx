@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import { Form, Input, Space } from "antd";
+import { Form, Input, List, Space } from "antd";
 import { IoIosSearch } from "react-icons/io";
 import Strings from "../../utils/localizations/Strings";
 import CustomButton from "../../components/CustomButtons";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import CardTypesTable from "./components/CardTypesTable";
 import { CardTypes } from "../../data/cardtypes/cardTypes";
 import {
@@ -27,17 +27,17 @@ import {
 } from "../../core/genericReducer";
 import { useAppDispatch, useAppSelector } from "../../core/store";
 import PageTitle from "../../components/PageTitle";
+import { UserRoles } from "../../utils/Extensions";
+import Routes, { UnauthorizedRoute } from "../../utils/Routes";
 
-interface stateType {
-  siteId: string;
-  siteName: string;
+interface CardTypeProps {
+  rol: UserRoles;
 }
 
-const CardTypess = () => {
+const CardTypess = ({ rol }: CardTypeProps) => {
   const [getCardTypes] = useGetCardTypesMutation();
   const [isLoading, setLoading] = useState(false);
-  const { state } = useLocation();
-  const { siteId, siteName } = state as stateType;
+  const location = useLocation();
   const [data, setData] = useState<CardTypes[]>([]);
   const [querySearch, setQuerySearch] = useState(Strings.empty);
   const [dataBackup, setDataBackup] = useState<CardTypes[]>([]);
@@ -46,6 +46,7 @@ const CardTypess = () => {
   const [modalIsLoading, setModalLoading] = useState(false);
   const dispatch = useAppDispatch();
   const isCardTypeUpdated = useAppSelector(selectCardTypeUpdatedIndicator);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (isCardTypeUpdated) {
@@ -86,21 +87,28 @@ const CardTypess = () => {
   };
 
   const handleGetPriorities = async () => {
-    setLoading(true);
-    if (siteId) {
-      try {
-        const response = await getCardTypes(siteId).unwrap();
-        setData(response);
-        setDataBackup(response);
-      } catch (error) {}
-      dispatch(setSiteId(siteId));
+    if (!location.state) {
+      navigate(UnauthorizedRoute);
+      return
     }
+    setLoading(true);
+    const response = await getCardTypes(location.state.siteId).unwrap();
+    setData(response);
+    setDataBackup(response);
+    dispatch(setSiteId(location.state.siteId));
     setLoading(false);
+  };
+
+  const buildPreclassifiersRoute = () => {
+    if (rol === UserRoles.ADMIN)
+      return Routes.AdminPrefix + Routes.PreclassifiersAllByCardType;
+
+    return Routes.SysadminPrefix + Routes.PreclassifiersAllByCardType;
   };
 
   useEffect(() => {
     handleGetPriorities();
-  }, [state, getCardTypes]);
+  }, []);
 
   const handleOnFormCreateFinish = async (values: any) => {
     try {
@@ -111,7 +119,7 @@ const CardTypess = () => {
       await registerCardType(
         new CreateCardType(
           cardTypeMethodology,
-          Number(siteId),
+          Number(location.state.siteId),
           methodologyName,
           values.name.trim(),
           values.description.trim(),
@@ -148,7 +156,10 @@ const CardTypess = () => {
     <>
       <div className="h-full flex flex-col">
         <div className="flex flex-col gap-2 items-center m-3">
-          <PageTitle mainText={Strings.cardTypesOf} subText={siteName} />
+          <PageTitle
+            mainText={Strings.cardTypesOf}
+            subText={location?.state?.siteName}
+          />
           <div className="flex flex-col md:flex-row flex-wrap items-center md:justify-between w-full">
             <div className="flex flex-col md:flex-row items-center flex-1 mb-1 md:mb-0">
               <Space className="w-full md:w-auto mb-1 md:mb-0">
@@ -172,13 +183,17 @@ const CardTypess = () => {
           </div>
         </div>
         <div className="flex-1 overflow-auto hidden lg:block">
-          <CardTypesTable data={data} isLoading={isLoading} />
+          <CardTypesTable data={data} isLoading={isLoading} preclassifiersRoute={buildPreclassifiersRoute()} />
         </div>
         <div className="flex-1 overflow-auto lg:hidden">
           <PaginatedList
-            data={data}
-            ItemComponent={CardTypesCard}
-            isLoading={isLoading}
+            dataSource={data}
+            renderItem={(item: CardTypes, index: number) => (
+              <List.Item>
+                <CardTypesCard key={index} data={item} preclassifiersRoute={buildPreclassifiersRoute()}/>
+              </List.Item>
+            )}
+            loading={isLoading}
           />
         </div>
       </div>
@@ -191,7 +206,7 @@ const CardTypess = () => {
           open={modalIsOpen}
           onCancel={handleOnCancelButton}
           FormComponent={RegisterCardTypeForm}
-          title={Strings.createCardType.concat(` ${siteName}`)}
+          title={Strings.createCardType.concat(` ${location?.state?.siteName}`)}
           isLoading={modalIsLoading}
         />
       </Form.Provider>
