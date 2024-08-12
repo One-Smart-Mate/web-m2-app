@@ -10,24 +10,54 @@ import { useSessionStorage } from "../../core/useSessionStorage";
 import User from "../../data/user/user";
 import { handleErrorNotification } from "../../utils/Notifications";
 import Meta from "antd/es/card/Meta";
-import { getInitRoute, validateEmail } from "../../utils/Extensions";
+import {
+  getInitRoute,
+  getUserRol,
+  UserRoles,
+  validateEmail,
+} from "../../utils/Extensions";
 import Strings from "../../utils/localizations/Strings";
 import { ResetPasswordRoute } from "../../utils/Routes";
 
 const LoginPage = () => {
   const [isPasswordVisible, setPasswordVisible] = React.useState(false);
   const [login, { isLoading }] = useLoginMutation();
-  const distpatch = useAppDispatch();
-  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
   const [getSessionUser, setSessionUser] = useSessionStorage<User>(
     Strings.empty
   );
+  const navigate = useNavigate();
+
+  const handleUserSession = () => {
+    const user = getSessionUser();
+    if (user !== undefined) {
+      const data = user as User;
+      dispatch(setCredentials({ ...data }));
+      return data;
+    }
+    return null;
+  };
+
+  const handleNavigation = (user: User) => {
+    const rol = getUserRol(user);
+    if (rol === UserRoles.ADMIN) {
+      navigate(getInitRoute(user));
+    } else {
+      navigate(getInitRoute(user), {
+        state: {
+          companyId: user.companyId,
+          companyName: user.companyName,
+          siteName: user.siteName,
+          siteId: user.siteId,
+        },
+      });
+    }
+  };
 
   useEffect(() => {
-    if (getSessionUser() !== undefined) {
-      const data = getSessionUser() as User;
-      distpatch(setCredentials({ ...data }));
-      navigate(getInitRoute(data));
+    const user = handleUserSession();
+    if (user) {
+      handleNavigation(user);
     }
   }, []);
 
@@ -38,8 +68,8 @@ const LoginPage = () => {
       ).unwrap();
 
       setSessionUser(data);
-      distpatch(setCredentials({ ...data }));
-      navigate(getInitRoute(data));
+      dispatch(setCredentials({ ...data }));
+      handleNavigation(data);
     } catch (error) {
       handleErrorNotification(error);
     }

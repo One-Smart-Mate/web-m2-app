@@ -12,9 +12,10 @@ import UpdateCardType from "./UpdateCardType";
 interface TableProps {
   data: CardTypes[];
   isLoading: boolean;
+  preclassifiersRoute: string
 }
 
-const CardTypesTable = ({ data, isLoading }: TableProps) => {
+const CardTypesTable = ({ data, isLoading, preclassifiersRoute }: TableProps) => {
   const contentRef = useRef<HTMLDivElement>(null);
   const tableHeight = useTableHeight(contentRef);
   const [expandedRowKeys, setExpandedRowKeys] = useState<React.Key[]>([]);
@@ -101,6 +102,7 @@ const CardTypesTable = ({ data, isLoading }: TableProps) => {
         <ViewPreclassifiersButton
           cardTypeId={data.id}
           cardTypeName={data.name}
+          preclassifiersRoute={preclassifiersRoute}
         />
         <UpdateCardType id={data.id} />
       </Space>

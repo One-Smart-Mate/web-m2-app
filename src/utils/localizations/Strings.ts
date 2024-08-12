@@ -119,6 +119,7 @@ export default class Strings {
   //sites
   static site = "Site";
   static sitesOf = "Sites of:";
+  static siteOf = "Site of:"
   static sites = "sites";
   static latitud = "Latitud";
   static longitud = "Longitud";

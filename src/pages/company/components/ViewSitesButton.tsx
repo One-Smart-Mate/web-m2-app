@@ -12,7 +12,9 @@ const ViewSitesButton = ({ companyId, companyName }: props) => {
   const navigate = useNavigate();
 
   const handleOnViewPriorities = (companyId: string, companyName: string) => {
-    navigate(Routes.SitesAllByCompany, { state: { companyId, companyName } });
+    navigate(Routes.AdminPrefix + Routes.SitesAllByCompany, {
+      state: { companyId, companyName },
+    });
   };
 
   return (
@@ -25,4 +27,4 @@ const ViewSitesButton = ({ companyId, companyName }: props) => {
   );
 };
 
-export default ViewSitesButton
+export default ViewSitesButton;

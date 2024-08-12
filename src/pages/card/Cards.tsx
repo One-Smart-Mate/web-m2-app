@@ -1,27 +1,28 @@
 import { useEffect, useState } from "react";
-import { Input, Space } from "antd";
+import { Input, List, Space } from "antd";
 import { IoIosSearch } from "react-icons/io";
 import Strings from "../../utils/localizations/Strings";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import PageTitle from "../../components/PageTitle";
 import { useGetCardsMutation } from "../../services/cardService";
 import PaginatedList from "../../components/PaginatedList";
 import InformationPanel from "./components/Card";
 import { CardInterface } from "../../data/card/card";
+import { UserRoles } from "../../utils/Extensions";
+import Routes, { UnauthorizedRoute } from "../../utils/Routes";
 
-interface stateType {
-  siteId: string;
-  siteName: string;
+interface CardsProps {
+  rol: UserRoles;
 }
 
-const Cards = () => {
+const Cards = ({ rol }: CardsProps) => {
   const [getCards] = useGetCardsMutation();
   const [isLoading, setLoading] = useState(false);
-  const { state } = useLocation();
-  const { siteId, siteName } = state as stateType;
+  const location = useLocation();
   const [data, setData] = useState<CardInterface[]>([]);
   const [querySearch, setQuerySearch] = useState(Strings.empty);
   const [dataBackup, setDataBackup] = useState<CardInterface[]>([]);
+  const navigate = useNavigate();
 
   const handleOnSearch = (event: any) => {
     const getSearch = event.target.value;
@@ -46,26 +47,39 @@ const Cards = () => {
   };
 
   const handleGetCards = async () => {
-    setLoading(true);
-    if (siteId) {
-      try {
-        const response = await getCards(siteId).unwrap();
-        setData(response);
-        setDataBackup(response);
-      } catch (error) {}
+    if (!location.state) {
+      navigate(UnauthorizedRoute);
+      return;
     }
+    setLoading(true);
+    const response = await getCards(location.state.siteId).unwrap();
+    setData(response);
+    setDataBackup(response);
+
     setLoading(false);
   };
 
   useEffect(() => {
     handleGetCards();
-  }, [state, getCards]);
+  }, []);
+
+  const buildCardDetailsRoute = () => {
+    if (rol === UserRoles.ADMIN) {
+      return Routes.AdminPrefix + Routes.CardDetails;
+    } else if (rol === UserRoles.SYSADMIN) {
+      return Routes.SysadminPrefix + Routes.CardDetails;
+    }
+    return Routes.MechanicPrefix + Routes.CardDetails;
+  };
 
   return (
     <>
       <div className="h-full flex flex-col">
         <div className="flex flex-col items-center m-3">
-          <PageTitle mainText={Strings.cardsOf} subText={siteName} />
+          <PageTitle
+            mainText={Strings.cardsOf}
+            subText={location?.state?.siteName}
+          />
           <div className="flex flex-col md:flex-row flex-wrap items-center md:justify-between w-full">
             <div className="flex flex-col md:flex-row items-center flex-1 mb-1 md:mb-0">
               <Space className="w-full md:w-auto mb-1 md:mb-0">
@@ -82,9 +96,17 @@ const Cards = () => {
         </div>
         <div className="flex-1 overflow-y-auto overflow-x-clip">
           <PaginatedList
-            data={data}
-            ItemComponent={InformationPanel}
-            isLoading={isLoading}
+            dataSource={data}
+            renderItem={(item: CardInterface, index: number) => (
+              <List.Item>
+                <InformationPanel
+                  key={index}
+                  data={item}
+                  cardDetailsRoute={buildCardDetailsRoute()}
+                />
+              </List.Item>
+            )}
+            loading={isLoading}
           />
         </div>
       </div>
