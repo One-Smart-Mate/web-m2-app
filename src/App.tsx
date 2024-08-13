@@ -1,11 +1,17 @@
 import { ConfigProvider } from "antd";
 import BaseLayout from "./pages/layouts/BaseLayout";
 import { Route, Routes } from "react-router-dom";
-import { adminRoutes } from "./pages/routes/Routes";
+import {
+  adminRoutes,
+  mechanicRoutes,
+  sysAdminRoutes,
+} from "./pages/routes/Routes";
 import LoginPage from "./pages/auth/Login";
 import PrivateRoutes from "./components/PrivateRoutes";
 import ResetPassword from "./pages/auth/ResetPassword";
-import { ResetPasswordRoute } from "./utils/Routes";
+import { ResetPasswordRoute, UnauthorizedRoute } from "./utils/Routes";
+import Unauthorized from "./pages/errors/Unauthorized";
+import NotFound from "./pages/errors/NotFound";
 
 function App() {
   return (
@@ -49,8 +55,24 @@ function App() {
                 element={value.element}
               />
             ))}
+            {sysAdminRoutes.map((value, index) => (
+              <Route
+                key={index}
+                path={value.fullPath}
+                element={value.element}
+              />
+            ))}
+            {mechanicRoutes.map((value, index) => (
+              <Route
+                key={index}
+                path={value.fullPath}
+                element={value.element}
+              />
+            ))}
           </Route>
         </Route>
+        <Route path={UnauthorizedRoute} element={<Unauthorized />} />
+        <Route path={"*"} element={<NotFound />} />
       </Routes>
     </ConfigProvider>
   );

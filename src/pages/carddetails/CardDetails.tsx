@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import Strings from "../../utils/localizations/Strings";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import PageTitle from "../../components/PageTitle";
 import { useGetCardDetailsMutation } from "../../services/cardService";
 import { CardDetailsInterface } from "../../data/card/card";
@@ -9,31 +9,28 @@ import EvidenceCard from "./components/EvidenceCard";
 import DefinitiveSolutionCard from "./components/DefinitiveSolutionCard";
 import ProvisionalSolutionCard from "./components/ProvisionalSolutionCard";
 import AudiosCard from "./components/AudiosCard";
-
-interface stateType {
-  cardId: string;
-  cardName: string;
-}
+import { UnauthorizedRoute } from "../../utils/Routes";
 
 const CardDetails = () => {
   const [getCardDetails] = useGetCardDetailsMutation();
-
-  const { state } = useLocation();
-  const { cardId, cardName } = state as stateType;
+  const navigate = useNavigate();
+  const location = useLocation();
   const [data, setData] = useState<CardDetailsInterface | null>(null);
 
   const handleGetCards = async () => {
-    if (cardId) {
-      try {
-        const response = await getCardDetails(cardId).unwrap();
-        setData(response);
-      } catch (error) {}
+    if (!location.state) {
+      navigate(UnauthorizedRoute);
+      return;
     }
+    const response = await getCardDetails(location.state.cardId).unwrap();
+    setData(response);
   };
 
   useEffect(() => {
     handleGetCards();
-  }, [state, getCardDetails]);
+  }, []);
+
+  const cardName = location?.state?.cardName || Strings.empty;
 
   return (
     <>

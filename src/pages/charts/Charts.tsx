@@ -1,4 +1,4 @@
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import PageTitle from "../../components/PageTitle";
 import Strings from "../../utils/localizations/Strings";
 import AreasChart from "./components/AreasChart";
@@ -13,24 +13,26 @@ import { Card, Empty } from "antd";
 import { getColorForMethodology } from "../../utils/Extensions";
 import { useGetMethodologiesChartDataMutation } from "../../services/chartService";
 import { Methodology } from "../../data/charts/charts";
-interface stateType {
-  siteId: string;
-  siteName: string;
-}
+import { UnauthorizedRoute } from "../../utils/Routes";
 
 const Charts = () => {
-  const { state } = useLocation();
-  const { siteId, siteName } = state as stateType;
+  const location = useLocation();
   const [getMethodologiesCatalog] = useGetCardTypesCatalogsMutation();
   const [getMethodologies] = useGetMethodologiesChartDataMutation();
   const [methodologiesCatalog, setMethodologiesCatalog] = useState<
     CardTypesCatalog[]
   >([]);
   const [methodologies, setMethodologies] = useState<Methodology[]>([]);
+  const navigate = useNavigate();
+
   const handleGetMethodologiesCatalog = async () => {
+    if (!location.state) {
+      navigate(UnauthorizedRoute);
+      return;
+    }
     const [response, response2] = await Promise.all([
       getMethodologiesCatalog().unwrap(),
-      getMethodologies(siteId).unwrap(),
+      getMethodologies(location.state.siteId).unwrap(),
     ]);
 
     setMethodologiesCatalog(response);
@@ -40,11 +42,18 @@ const Charts = () => {
   useEffect(() => {
     handleGetMethodologiesCatalog();
   }, []);
+
+  const siteName = location?.state?.siteName || Strings.empty;
+  const siteId = location?.state?.siteId || Strings.empty;
+
   return (
     <>
       <div className="h-full flex flex-col">
         <div className="flex flex-col gap-2 items-center m-3">
-          <PageTitle mainText={Strings.chartsOf} subText={siteName} />
+          <PageTitle
+            mainText={Strings.chartsOf}
+            subText={siteName}
+          />
         </div>
         <div className="flex-1 overflow-auto">
           {methodologies.length > 0 ? (

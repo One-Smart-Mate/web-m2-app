@@ -12,7 +12,7 @@ const ViewCardTypesButton = ({ siteId, siteName }: props) => {
   const navigate = useNavigate();
 
   const handleOnViewPriorities = (siteId: string, siteName: string) => {
-    navigate(Routes.CardTypesAllBySite, { state: { siteId, siteName } });
+    navigate(Routes.AdminPrefix + Routes.CardTypesAllBySite, { state: { siteId, siteName } });
   };
 
   return (

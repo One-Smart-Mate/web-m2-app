@@ -1,7 +1,6 @@
 import { Card, Dropdown, MenuProps, Tag, theme } from "antd";
-import { Company } from "../../../data/company/company";
 import CustomButton from "../../../components/CustomButtons";
-import { getStatusAndText } from "../../../utils/Extensions";
+import { getStatusAndText, UserRoles } from "../../../utils/Extensions";
 import { SlOptionsVertical } from "react-icons/sl";
 import Strings from "../../../utils/localizations/Strings";
 import ViewPrioritiesButton from "./ViewPrioritiesButton";
@@ -11,51 +10,61 @@ import ViewLevelsButton from "./ViewLevelsButton";
 import ViewCardsButton from "./ViewCardsButton";
 import ViewChartsButton from "./ViewChartsButton";
 import ViewUsersButton from "./ViewUsersButton";
+import { Site } from "../../../data/site/site";
 
 interface CompanyCardProps {
-  data: Company;
+  data: Site;
+  rol: UserRoles;
 }
 
-const SiteCard = ({ data }: CompanyCardProps) => {
+const SiteCard = ({ data, rol }: CompanyCardProps) => {
   const { status, text } = getStatusAndText(data.status);
   const {
     token: { colorBgContainer, colorPrimary },
   } = theme.useToken();
 
-  const items: MenuProps["items"] = [
-    {
-      key: "1",
-      label: <ViewPrioritiesButton siteId={data.id} siteName={data.name} />,
-    },
-    {
-      key: "2",
-      label: <ViewLevelsButton siteId={data.id} siteName={data.name} />,
-    },
-    {
-      key: "3",
-      label: <ViewCardTypesButton siteId={data.id} siteName={data.name} />,
-    },
-    {
-      key: "4",
-      label: <ViewCardsButton siteId={data.id} siteName={data.name} />,
-    },
-    {
-      key: "5",
-      label: <UpdateSite siteId={data.id} />,
-    },
-    {
-      key: "6",
-      label: <CustomButton type="action">{Strings.importExcel}</CustomButton>,
-    },
-    {
-      key: "7",
-      label: <ViewChartsButton siteId={data.id} siteName={data.name} />,
-    },
-    {
-      key: "8",
-      label: <ViewUsersButton siteId={data.id} siteName={data.name} />,
-    },
-  ];
+  const buildSiteActions = () => {
+    const actions = [
+      {
+        key: `update-site-${data.id}`,
+        label: <UpdateSite siteId={data.id} />,
+      },
+    ];
+
+    if (rol === UserRoles.ADMIN) {
+      actions.push({
+        key: `view-priorities-${data.id}`,
+        label: <ViewPrioritiesButton siteId={data.id} siteName={data.name} />,
+      });
+      actions.push({
+        key: `view-levels-${data.id}`,
+        label: <ViewLevelsButton siteId={data.id} siteName={data.name} />,
+      });
+      actions.push({
+        key: `view-card-types-${data.id}`,
+        label: <ViewCardTypesButton siteId={data.id} siteName={data.name} />,
+      });
+      actions.push({
+        key: `view-cards-${data.id}`,
+        label: <ViewCardsButton siteId={data.id} siteName={data.name} />,
+      });
+      actions.push({
+        key: `import-excel-${data.id}`,
+        label: <CustomButton type="action">{Strings.importExcel}</CustomButton>,
+      });
+      actions.push({
+        key: `view-charts-${data.id}`,
+        label: <ViewChartsButton siteId={data.id} siteName={data.name} />,
+      });
+      actions.push({
+        key: `view-users-${data.id}`,
+        label: <ViewUsersButton siteId={data.id} siteName={data.name} />,
+      });
+    }
+    return actions;
+  };
+
+  const items: MenuProps["items"] = buildSiteActions();
 
   const titleCard = (
     <div className="flex flex-row justify-center items-center">

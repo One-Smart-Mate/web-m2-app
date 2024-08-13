@@ -1,18 +1,24 @@
 import { useNavigate } from "react-router-dom";
 import CustomButton from "../../../components/CustomButtons";
 import Strings from "../../../utils/localizations/Strings";
-import Routes from "../../../utils/Routes";
 
 interface props {
   cardTypeId: string;
-  cardTypeName: string
+  cardTypeName: string;
+  preclassifiersRoute: string;
 }
 
-const ViewPreclassifiersButton = ({ cardTypeId, cardTypeName }: props) => {
+const ViewPreclassifiersButton = ({
+  cardTypeId,
+  cardTypeName,
+  preclassifiersRoute,
+}: props) => {
   const navigate = useNavigate();
 
   const handleOnViewPriorities = (cardTypeId: string) => {
-    navigate(Routes.PreclassifiersAllByCardType, { state: { cardTypeId, cardTypeName } });
+    navigate(preclassifiersRoute, {
+      state: { cardTypeId, cardTypeName },
+    });
   };
 
   return (

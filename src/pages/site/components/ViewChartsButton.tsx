@@ -12,7 +12,7 @@ const ViewChartsButton = ({ siteId, siteName }: props) => {
   const navigate = useNavigate();
 
   const handleOnViewCharts = (siteId: string, siteName: string) => {
-    navigate(Routes.Charts, { state: { siteId, siteName } });
+    navigate(Routes.AdminPrefix + Routes.Charts, { state: { siteId, siteName } });
   };
 
   return (

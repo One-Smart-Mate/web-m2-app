@@ -3,7 +3,7 @@ import {
   useCreateCompanyMutation,
   useGetCompaniesMutation,
 } from "../../services/companyService";
-import { Form, Input, Space } from "antd";
+import { Form, Input, List, Space } from "antd";
 import { Company } from "../../data/company/company";
 import { IoIosSearch } from "react-icons/io";
 import CustomButton from "../../components/CustomButtons";
@@ -154,9 +154,13 @@ const Companies = () => {
         </div>
         <div className="flex-1 overflow-auto lg:hidden">
           <PaginatedList
-            data={data}
-            ItemComponent={CompanyCard}
-            isLoading={isLoading}
+           dataSource={data}
+           renderItem={(item: Company, index: number) => (
+             <List.Item>
+               <CompanyCard key={index} data={item}/>
+             </List.Item>
+           )}
+           loading={isLoading}
           />
         </div>
       </div>

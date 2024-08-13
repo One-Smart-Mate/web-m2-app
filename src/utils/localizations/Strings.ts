@@ -114,11 +114,12 @@ export default class Strings {
   static users = "Users";
   static usersOf = "Users of:";
   static requiredUserLicense = "Please select the user license";
-  static enable = "Enable"
+  static enable = "Enable";
 
   //sites
   static site = "Site";
   static sitesOf = "Sites of:";
+  static siteOf = "Site of:";
   static sites = "sites";
   static latitud = "Latitud";
   static longitud = "Longitud";
@@ -198,8 +199,8 @@ export default class Strings {
   static createCompany = "Create company";
   static updateCompany = "Update company";
   static createPriority = "Create priority for";
-  static createUserFor = "Create user for"
-  static createUser = "Create user"
+  static createUserFor = "Create user for";
+  static createUser = "Create user";
   static createSite = "Create site for";
   static updateSite = "Update site";
   static createPreclassifier = "Create Preclassifier";
@@ -255,4 +256,12 @@ export default class Strings {
   static preclassifiersof = "Preclassifiers of:";
   static updatePreclassifier = "Update preclassifier";
   static levelsof = "Levels of:";
+
+  //erros pages
+  static notFoundPageTitle = "404";
+  static notFoundPageSubTitle = "Sorry, the page you visited does not exist.";
+  static unauthorizedPageTitle = "403";
+  static unauthorizedPageSubTitle =
+    "Sorry, you are not authorized to access this page.";
+  static goBack = "Go back";
 }

@@ -8,9 +8,10 @@ import UpdateCardType from "./UpdateCardType";
 
 interface CardProps {
   data: CardTypes;
+  preclassifiersRoute: string;
 }
 
-const CardTypesCard = ({ data }: CardProps) => {
+const CardTypesCard = ({ data, preclassifiersRoute }: CardProps) => {
   const { status, text } = getStatusAndText(data.status);
   const {
     token: { colorBgContainer, colorPrimary },
@@ -27,6 +28,7 @@ const CardTypesCard = ({ data }: CardProps) => {
         <ViewPreclassifiersButton
           cardTypeId={data.id}
           cardTypeName={data.name}
+          preclassifiersRoute={preclassifiersRoute}
         />
       ),
     },

@@ -3,7 +3,7 @@ import { useTableHeight } from "../../../utils/tableHeight";
 import { ColumnsType } from "antd/es/table";
 import Strings from "../../../utils/localizations/Strings";
 import { Badge, Space, Table } from "antd";
-import { getStatusAndText } from "../../../utils/Extensions";
+import { getStatusAndText, UserRoles } from "../../../utils/Extensions";
 import Constants from "../../../utils/Constants";
 import CustomButton from "../../../components/CustomButtons";
 import { Site } from "../../../data/site/site";
@@ -18,9 +18,10 @@ import ViewUsersButton from "./ViewUsersButton";
 interface TableProps {
   data: Site[];
   isLoading: boolean;
+  rol: UserRoles;
 }
 
-const SiteTable = ({ data, isLoading }: TableProps) => {
+const SiteTable = ({ data, isLoading, rol }: TableProps) => {
   const contentRef = useRef<HTMLDivElement>(null);
   const tableHeight = useTableHeight(contentRef);
   const [expandedRowKeys, setExpandedRowKeys] = useState<React.Key[]>([]);
@@ -134,21 +135,70 @@ const SiteTable = ({ data, isLoading }: TableProps) => {
     [Strings, extensionFilters, getStatusAndText]
   );
 
+  const buildSiteActions = (data: Site) => {
+    const actions = [
+      <UpdateSite key={`update-site-${data.id}`} siteId={data.id} />,
+    ];
+
+    if (rol === UserRoles.ADMIN) {
+      actions.push(
+        <ViewChartsButton
+          key={`view-charts-${data.id}`}
+          siteId={data.id}
+          siteName={data.name}
+        />
+      );
+      actions.push(
+        <ViewUsersButton
+          key={`view-users-${data.id}`}
+          siteId={data.id}
+          siteName={data.name}
+        />
+      );
+      actions.push(
+        <ViewPrioritiesButton
+          key={`view-priorities-${data.id}`}
+          siteId={data.id}
+          siteName={data.name}
+        />
+      );
+      actions.push(
+        <ViewLevelsButton
+          key={`view-levels-${data.id}`}
+          siteId={data.id}
+          siteName={data.name}
+        />
+      );
+      actions.push(
+        <ViewCardTypesButton
+          key={`view-card-types-${data.id}`}
+          siteId={data.id}
+          siteName={data.name}
+        />
+      );
+      actions.push(
+        <ViewCardsButton
+          key={`view-cards-${data.id}`}
+          siteId={data.id}
+          siteName={data.name}
+        />
+      );
+      actions.push(
+        <CustomButton key={`import-excel-${data.id}`} type="action">
+          {Strings.importExcel}
+        </CustomButton>
+      );
+    }
+
+    return actions;
+  };
+
   const actionsRow = {
     expandedRowKeys,
     onExpand: handleExpand,
     showExpandColumn: false,
     expandedRowRender: (data: Site) => (
-      <Space className="flex justify-end">
-        <ViewChartsButton siteId={data.id} siteName={data.name} />
-        <ViewUsersButton siteId={data.id} siteName={data.name} />
-        <ViewPrioritiesButton siteId={data.id} siteName={data.name} />
-        <ViewLevelsButton siteId={data.id} siteName={data.name} />
-        <ViewCardTypesButton siteId={data.id} siteName={data.name} />
-        <ViewCardsButton siteId={data.id} siteName={data.name} />
-        <UpdateSite siteId={data.id} />
-        <CustomButton type="action">{Strings.importExcel}</CustomButton>
-      </Space>
+      <Space className="flex justify-end">{buildSiteActions(data)}</Space>
     ),
   };
 

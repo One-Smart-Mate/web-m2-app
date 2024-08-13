@@ -12,7 +12,7 @@ const ViewPrioritiesButton = ({ siteId, siteName }: props) => {
   const navigate = useNavigate();
 
   const handleOnViewPriorities = (siteId: string, siteName: string) => {
-    navigate(Routes.PriorityAll, { state: { siteId, siteName } });
+    navigate(Routes.AdminPrefix + Routes.PriorityAll, { state: { siteId, siteName } });
   };
 
   return (

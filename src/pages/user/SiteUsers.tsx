@@ -22,20 +22,15 @@ import {
   resetUserUpdatedIndicator,
   selectUserUpdatedIndicator,
 } from "../../core/genericReducer";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import RegisterSiteUserForm from "./components/RegisterSiteUserForm";
-
-interface stateType {
-  siteId: string;
-  siteName: string;
-}
+import { UnauthorizedRoute } from "../../utils/Routes";
 
 const SiteUsers = () => {
   const [getUsers] = useGetSiteUsersMutation();
   const [data, setData] = useState<UserTable[]>([]);
   const [isLoading, setLoading] = useState(false);
-  const { state } = useLocation();
-  const { siteId, siteName } = state as stateType;
+  const location = useLocation();
   const [querySearch, setQuerySearch] = useState(Strings.empty);
   const [dataBackup, setDataBackup] = useState<UserTable[]>([]);
   const [modalIsOpen, setModalOpen] = useState(false);
@@ -43,6 +38,7 @@ const SiteUsers = () => {
   const [modalIsLoading, setModalLoading] = useState(false);
   const dispatch = useAppDispatch();
   const isSiteUpdated = useAppSelector(selectUserUpdatedIndicator);
+  const navigate = useNavigate();
 
   const handleOnClickCreateButton = () => {
     setModalOpen(true);
@@ -61,8 +57,12 @@ const SiteUsers = () => {
   }, [isSiteUpdated, dispatch]);
 
   const handleGetUsers = async () => {
+    if (!location.state) {
+      navigate(UnauthorizedRoute);
+      return;
+    }
     setLoading(true);
-    const response = await getUsers(siteId).unwrap();
+    const response = await getUsers(location.state.siteId).unwrap();
     setData(response);
     setDataBackup(response);
     setLoading(false);
@@ -101,7 +101,7 @@ const SiteUsers = () => {
         new CreateUser(
           values.name.trim(),
           values.email.trim(),
-          Number(siteId),
+          Number(location.state.siteId),
           values.password,
           values.uploadCardDataWithDataNet ? 1 : 0,
           values.uploadCardEvidenceWithDataNet ? 1 : 0,
@@ -117,6 +117,8 @@ const SiteUsers = () => {
       setModalLoading(false);
     }
   };
+
+  const siteName = location?.state?.siteName || Strings.empty;
 
   return (
     <>

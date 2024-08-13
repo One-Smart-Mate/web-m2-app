@@ -2,10 +2,11 @@ import { useEffect, useState } from "react";
 import {
   useCreateSiteMutation,
   useGetCompanySitesMutation,
+  useGetSiteMutation,
 } from "../../services/siteService";
 import Strings from "../../utils/localizations/Strings";
-import { useLocation } from "react-router-dom";
-import { Form, Input, Space } from "antd";
+import { useLocation, useNavigate } from "react-router-dom";
+import { Form, Input, List, Space } from "antd";
 import CustomButton from "../../components/CustomButtons";
 import SiteTable from "./components/SiteTable";
 import { IoIosSearch } from "react-icons/io";
@@ -30,17 +31,17 @@ import {
   setGeneratedSiteCode,
 } from "../../core/genericReducer";
 import PageTitle from "../../components/PageTitle";
-import { generateShortUUID } from "../../utils/Extensions";
+import { generateShortUUID, UserRoles } from "../../utils/Extensions";
+import { UnauthorizedRoute } from "../../utils/Routes";
 
-interface stateType {
-  companyId: string;
-  companyName: string;
+interface SitesProps {
+  rol: UserRoles;
 }
 
-const Sites = () => {
+const Sites = ({ rol }: SitesProps) => {
   const [getSites] = useGetCompanySitesMutation();
-  const { state } = useLocation();
-  const { companyId, companyName } = state as stateType;
+  const [getSite] = useGetSiteMutation();
+  const location = useLocation();
   const [data, setData] = useState<Site[]>([]);
   const [isLoading, setLoading] = useState(false);
   const [querySearch, setQuerySearch] = useState(Strings.empty);
@@ -50,16 +51,25 @@ const Sites = () => {
   const [modalIsLoading, setModalLoading] = useState(false);
   const dispatch = useAppDispatch();
   const isSiteUpdated = useAppSelector(selectSiteUpdatedIndicator);
+  const navigate = useNavigate();
 
   const handleGetSites = async () => {
-    setLoading(true);
-    if (companyId) {
-      try {
-        const response = await getSites(companyId).unwrap();
-        setData(response);
-        setDataBackup(response);
-      } catch (error) {}
+    if (!location.state) {
+      navigate(UnauthorizedRoute);
     }
+    setLoading(true);
+    if (rol === UserRoles.ADMIN) {
+      const response = await getSites(location.state.companyId).unwrap();
+      setData(response);
+      setDataBackup(response);
+    } else {
+      const response = (await getSite(
+        location.state.companyId
+      ).unwrap()) as unknown as Site;
+      setData([response]);
+      setDataBackup([response]);
+    }
+
     setLoading(false);
   };
 
@@ -114,6 +124,35 @@ const Sites = () => {
     }
   };
 
+  const buildSitePageActions = () => {
+    if (rol === UserRoles.ADMIN) {
+      return (
+        <div className="flex flex-col md:flex-row flex-wrap items-center md:justify-between w-full">
+          <div className="flex flex-col md:flex-row items-center flex-1 mb-1 md:mb-0">
+            <Space className="w-full md:w-auto mb-1 md:mb-0">
+              <Input
+                className="w-full"
+                onChange={handleOnSearch}
+                value={querySearch}
+                addonAfter={<IoIosSearch />}
+              />
+            </Space>
+          </div>
+          <div className="flex mb-1 md:mb-0 md:justify-end w-full md:w-auto">
+            <CustomButton
+              type="success"
+              onClick={handleOnClickCreateButton}
+              className="w-full md:w-auto"
+            >
+              {Strings.create}
+            </CustomButton>
+          </div>
+        </div>
+      );
+    }
+    return null;
+  };
+
   const handleOnFormCreateFinish = async (values: any) => {
     try {
       setModalLoading(true);
@@ -123,7 +162,7 @@ const Sites = () => {
       );
       await registerSite(
         new CreateSite(
-          Number(companyId),
+          Number(location.state.companyId),
           values.siteCode,
           values.siteBusinessName,
           values.name,
@@ -158,41 +197,33 @@ const Sites = () => {
       setModalLoading(false);
     }
   };
+
+  const companyName = location?.state?.companyName || Strings.empty
+
   return (
     <>
       <div className="h-full flex flex-col">
-        <div className="flex flex-col items-center m-3">
-          <PageTitle mainText={Strings.sitesOf} subText={companyName} />
-          <div className="flex flex-col md:flex-row flex-wrap items-center md:justify-between w-full">
-            <div className="flex flex-col md:flex-row items-center flex-1 mb-1 md:mb-0">
-              <Space className="w-full md:w-auto mb-1 md:mb-0">
-                <Input
-                  className="w-full"
-                  onChange={handleOnSearch}
-                  value={querySearch}
-                  addonAfter={<IoIosSearch />}
-                />
-              </Space>
-            </div>
-            <div className="flex mb-1 md:mb-0 md:justify-end w-full md:w-auto">
-              <CustomButton
-                type="success"
-                onClick={handleOnClickCreateButton}
-                className="w-full md:w-auto"
-              >
-                {Strings.create}
-              </CustomButton>
-            </div>
-          </div>
+        <div className="flex flex-col gap-2 items-center m-3">
+          <PageTitle
+            mainText={`${
+              rol === UserRoles.ADMIN ? Strings.sitesOf : Strings.siteOf
+            }`}
+            subText={companyName}
+          />
+          {buildSitePageActions()}
         </div>
         <div className="flex-1 overflow-auto hidden lg:block">
-          <SiteTable data={data} isLoading={isLoading} />
+          <SiteTable data={data} isLoading={isLoading} rol={rol} />
         </div>
         <div className="flex-1 overflow-auto lg:hidden">
           <PaginatedList
-            data={data}
-            ItemComponent={SiteCard}
-            isLoading={isLoading}
+            dataSource={data}
+            renderItem={(item: Site, index: number) => (
+              <List.Item>
+                <SiteCard key={index} data={item} rol={rol} />
+              </List.Item>
+            )}
+            loading={isLoading}
           />
         </div>
       </div>

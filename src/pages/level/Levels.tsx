@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { IoIosSearch } from "react-icons/io";
 import Strings from "../../utils/localizations/Strings";
 import CustomButton from "../../components/CustomButtons";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import PageTitle from "../../components/PageTitle";
 import {
   useCreateLevelMutation,
@@ -27,17 +27,12 @@ import {
   handleSucccessNotification,
 } from "../../utils/Notifications";
 import { CreateLevel } from "../../data/level/level.request";
-
-interface stateType {
-  siteId: string;
-  siteName: string;
-}
+import { UnauthorizedRoute } from "../../utils/Routes";
 
 const Levels = () => {
   const [getLevels] = useGetlevelsMutation();
   const [isLoading, setLoading] = useState(false);
-  const { state } = useLocation();
-  const { siteId, siteName } = state as stateType;
+  const location = useLocation();
   const [data, setData] = useState<Level[]>([]);
   const [querySearch, setQuerySearch] = useState(Strings.empty);
   const [dataBackup, setDataBackup] = useState<Level[]>([]);
@@ -47,6 +42,7 @@ const Levels = () => {
   const dispatch = useAppDispatch();
   const isLevelCreated = useAppSelector(selectLevelCreatedIndicator);
   const isLevelUpdated = useAppSelector(selectLevelUpdatedIndicator);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (isLevelCreated || isLevelUpdated) {
@@ -87,21 +83,21 @@ const Levels = () => {
   };
 
   const handleGetLevels = async () => {
-    setLoading(true);
-    if (siteId) {
-      try {
-        const response = await getLevels(siteId).unwrap();
-        setData(response);
-        setDataBackup(response);
-      } catch (error) {}
+    if (!location.state) {
+      navigate(UnauthorizedRoute);
+      return;
     }
+    setLoading(true);
+    const response = await getLevels(location.state.siteId).unwrap();
+    setData(response);
+    setDataBackup(response);
+    dispatch(setSiteId(location.state.siteId));
     setLoading(false);
   };
 
   useEffect(() => {
     handleGetLevels();
-    dispatch(setSiteId(siteId));
-  }, [state, getLevels]);
+  }, []);
 
   const handleOnFormCreateFinish = async (values: any) => {
     try {
@@ -111,8 +107,8 @@ const Levels = () => {
           values.name.trim(),
           values.description.trim(),
           Number(values.responsibleId),
-          Number(siteId),
-          values.levelMachineId.trim()
+          Number(location.state.siteId),
+          values.levelMachineId.trim(),
         )
       ).unwrap();
       setModalOpen(false);
@@ -124,6 +120,8 @@ const Levels = () => {
       setModalLoading(false);
     }
   };
+
+  const siteName = location?.state?.siteName || Strings.empty
 
   return (
     <>

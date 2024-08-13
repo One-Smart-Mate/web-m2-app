@@ -4,19 +4,31 @@ export default class User {
   token: string;
   roles: string[];
   logo: string;
+  siteName: string;
+  siteId: string;
+  companyId: string;
+  companyName: string;
 
   constructor(
     name: string,
     email: string,
     token: string,
     roles: string[],
-    logo: string
+    logo: string,
+    siteName: string,
+    siteId: string,
+    companyId: string,
+    companyName: string
   ) {
     this.name = name;
     this.email = email;
     this.token = token;
     this.roles = roles;
     this.logo = logo;
+    this.siteName = siteName;
+    this.siteId = siteId;
+    this.companyId = companyId;
+    this.companyName = companyName;
   }
 }
 
