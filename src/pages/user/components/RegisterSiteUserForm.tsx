@@ -3,92 +3,28 @@ import { LockOutlined, MailOutlined } from "@ant-design/icons";
 import { FaRegUser } from "react-icons/fa";
 import Strings from "../../../utils/localizations/Strings";
 import { validateEmail } from "../../../utils/Extensions";
-import { useEffect, useMemo, useState } from "react";
-import { Role, UserTable, UserUpdateForm } from "../../../data/user/user";
+import { useEffect, useState } from "react";
+import { Role } from "../../../data/user/user";
 import { useGetRolesMutation } from "../../../services/roleService";
-import { Site } from "../../../data/site/site";
-import { useGetSitesMutation } from "../../../services/siteService";
-import { useGetUsersMutation } from "../../../services/userService";
-import { useAppSelector } from "../../../core/store";
-import { selectCurrentRowData } from "../../../core/genericReducer";
 
 interface FormProps {
   form: FormInstance;
 }
 
-const UpdateUserForm = ({ form }: FormProps) => {
+const RegisterSiteUserForm = ({ form }: FormProps) => {
   const [getRoles] = useGetRolesMutation();
-  const [getSites] = useGetSitesMutation();
-  const [getUsers] = useGetUsersMutation();
   const [roles, setRoles] = useState<Role[]>([]);
-  const [sites, setSites] = useState<Site[]>([]);
-  const [users, setUsers] = useState<UserTable[]>([]);
   const [selectedRoles, setSelectedRoles] = useState<Role[]>([]);
-  const [selectedSite, setSelectedSite] = useState(null);
   const [isPasswordVisible, setPasswordVisible] = useState(false);
-  const rowData = useAppSelector(
-    selectCurrentRowData
-  ) as unknown as UserUpdateForm;
 
   const handleGetData = async () => {
-    const [rolesResponse, sitesResponse, usersResponse] = await Promise.all([
-      getRoles().unwrap(),
-      getSites().unwrap(),
-      getUsers().unwrap(),
-    ]);
+    const rolesResponse = await getRoles().unwrap();
     setRoles(rolesResponse);
-    setSites(sitesResponse);
-    setUsers(usersResponse);
   };
 
   useEffect(() => {
     handleGetData();
   }, []);
-
-  useEffect(() => {
-    if (sites.length > 0 && users.length > 0 && roles.length > 0) {
-      form.setFieldsValue({ ...rowData });
-    }
-  }, [sites, roles]);
-
-  const siteOptions = useMemo(() => {
-    return sites.map((site) => {
-      let filteredUsers = users.filter((user) => user.site.id === site.id);
-      let userCount = filteredUsers.length;
-      let userCountDisplay = userCount < 10 ? `0${userCount}` : userCount;
-      let userQuantityDisplay =
-        Number(site.userQuantity) < 10
-          ? `0${site.userQuantity}`
-          : site.userQuantity;
-      return {
-        value: site.id,
-        labelText: site.rfc,
-        label: (
-          <p className="flex justify-between items-center">
-            {site.name} ({site.rfc})
-            <span className="mr-7">
-              {site.userLicense} -{" "}
-              <span
-                className={`${
-                  site.userLicense !== Strings.concurrente && "mr-8"
-                } rounded-xl w-4 text-sm p-0.5 text-white bg-gray-600`}
-              >
-                {userCountDisplay}
-              </span>{" "}
-              {site.userLicense === Strings.concurrente && (
-                <span>
-                  /{" "}
-                  <span className="rounded-xl w-10 p-0.5 text-white text-sm bg-gray-800">
-                    {userQuantityDisplay}
-                  </span>
-                </span>
-              )}
-            </span>
-          </p>
-        ),
-      };
-    });
-  }, [sites, users]);
 
   const filteredOptions = roles.filter((o) => !selectedRoles.includes(o));
 
@@ -96,9 +32,6 @@ const UpdateUserForm = ({ form }: FormProps) => {
     <Form form={form} layout="vertical">
       <div className="flex flex-col">
         <div className="flex flex-row flex-wrap">
-          <Form.Item className="hidden" name="id">
-            <Input />
-          </Form.Item>
           <Form.Item
             name="name"
             validateFirst
@@ -137,7 +70,10 @@ const UpdateUserForm = ({ form }: FormProps) => {
           <Form.Item
             name="password"
             validateFirst
-            rules={[{ min: 8, message: Strings.passwordLenght }]}
+            rules={[
+              { min: 8, message: Strings.passwordLenght },
+              { required: true, message: Strings.requiredPassword },
+            ]}
             className="flex-1 mr-1"
           >
             <Input.Password
@@ -145,7 +81,7 @@ const UpdateUserForm = ({ form }: FormProps) => {
               minLength={8}
               addonBefore={<LockOutlined />}
               type="password"
-              placeholder={Strings.updatePassword}
+              placeholder={Strings.password}
               visibilityToggle={{
                 visible: isPasswordVisible,
                 onVisibleChange: setPasswordVisible,
@@ -158,17 +94,13 @@ const UpdateUserForm = ({ form }: FormProps) => {
             dependencies={["password"]}
             className="flex-1"
             rules={[
+              { required: true, message: Strings.requiredConfirmPassword },
               ({ getFieldValue }) => ({
                 validator(_, value) {
-                  if (!value && getFieldValue("password")) {
-                    return Promise.reject(new Error(Strings.requiredPassword));
+                  if (!value || getFieldValue("password") === value) {
+                    return Promise.resolve();
                   }
-                  if (value && getFieldValue("password") !== value) {
-                    return Promise.reject(
-                      new Error(Strings.passwordsDoNotMatch)
-                    );
-                  }
-                  return Promise.resolve();
+                  return Promise.reject(new Error(Strings.passwordsDoNotMatch));
                 },
               }),
             ]}
@@ -181,39 +113,12 @@ const UpdateUserForm = ({ form }: FormProps) => {
           </Form.Item>
         </div>
         <Form.Item
-          label={
-            <p>
-              {Strings.site} ({Strings.rfc}) - {Strings.userLicense} -{" "}
-              <span className="rounded-xl p-0.5 text-white bg-gray-600">
-                Current users
-              </span>{" "}
-              /{" "}
-              <span className="rounded-xl p-0.5 text-white bg-gray-800">
-                User quantity
-              </span>
-            </p>
-          }
           name="siteId"
           validateFirst
           rules={[{ required: true, message: Strings.requiredSite }]}
-          className="mr-1"
+          className="hidden"
         >
-          <Select
-            size="large"
-            placeholder={Strings.site}
-            value={selectedSite}
-            onChange={setSelectedSite}
-            options={siteOptions}
-            showSearch
-            filterOption={(input, option) => {
-              if (!option) {
-                return false;
-              }
-              return option.labelText
-                .toLowerCase()
-                .includes(input.toLowerCase());
-            }}
-          />
+          <Input />
         </Form.Item>
         <div className="flex flex-row flex-wrap">
           <Form.Item
@@ -251,12 +156,9 @@ const UpdateUserForm = ({ form }: FormProps) => {
             }))}
           />
         </Form.Item>
-        <Form.Item className="hidden" name="status">
-          <Input />
-        </Form.Item>
       </div>
     </Form>
   );
 };
 
-export default UpdateUserForm;
+export default RegisterSiteUserForm;

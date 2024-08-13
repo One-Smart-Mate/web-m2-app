@@ -10,9 +10,14 @@ import UpdateUserButton from "./UpdateUserButton";
 interface PrioritiesTableProps {
   data: UserTable[];
   isLoading: boolean;
+  isSiteUserstable: boolean;
 }
 
-const UserTableComponent = ({ data, isLoading }: PrioritiesTableProps) => {
+const UserTableComponent = ({
+  data,
+  isLoading,
+  isSiteUserstable,
+}: PrioritiesTableProps) => {
   const contentRef = useRef<HTMLDivElement>(null);
   const tableHeight = useTableHeight(contentRef);
   const [expandedRowKeys, setExpandedRowKeys] = useState<React.Key[]>([]);
@@ -61,24 +66,31 @@ const UserTableComponent = ({ data, isLoading }: PrioritiesTableProps) => {
           );
         },
       },
-      {
-        title: Strings.site,
-        key: "site",
-        render: (record) => {
-          return <Space>{record.site.name}</Space>;
-        },
-        sorter: (a, b) => a.site.name.localeCompare(b.site.name),
-      },
+      ...(!isSiteUserstable
+        ? [
+            {
+              title: Strings.site,
+              key: "site",
+              render: (record: UserTable) => {
+                return <Space>{record.site.name}</Space>;
+              },
+              sorter: (a: UserTable, b: UserTable) =>
+                a.site.name.localeCompare(b.site.name),
+            },
+          ]
+        : []),
       {
         title: Strings.actions,
         render: (record) => {
           return (
             <Space>
-              <UpdateUserButton userId={record.id} />
+              <UpdateUserButton
+                userId={record.id}
+                isSiteUserstable={isSiteUserstable}
+              />
             </Space>
           );
         },
-        sorter: (a, b) => a.site.name.localeCompare(b.site.name),
       },
     ],
     [Strings]

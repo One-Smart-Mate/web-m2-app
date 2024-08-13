@@ -97,6 +97,7 @@ export default class Strings {
   static viewCards = "View cards";
   static viewCharts = "View charts";
   static importExcel = "Import excel";
+  static viewUsers = "View users";
 
   //erros sites form
   static requiredLatitud = "Please enter the latitud";
@@ -111,7 +112,9 @@ export default class Strings {
   static companies = "companies";
   static companiesUpperCase = "Companies";
   static users = "Users";
+  static usersOf = "Users of:";
   static requiredUserLicense = "Please select the user license";
+  static enable = "Enable"
 
   //sites
   static site = "Site";
@@ -195,6 +198,8 @@ export default class Strings {
   static createCompany = "Create company";
   static updateCompany = "Update company";
   static createPriority = "Create priority for";
+  static createUserFor = "Create user for"
+  static createUser = "Create user"
   static createSite = "Create site for";
   static updateSite = "Update site";
   static createPreclassifier = "Create Preclassifier";
@@ -220,14 +225,14 @@ export default class Strings {
   static cardCreators = "Card creators";
   static tagMonitoring = "tagMonitoring";
   static totalCards = "Total cards:";
-  static areaChart = "Area:"
-  static creatorChart = "Creator:"
-  static methodologyChart = "Methodology:"
-  static preclassifierChart = "Preclassifier:"
-  static year = "Year:"
-  static week = "Week:"
-  static cumulativeIssued = "Cumulative issued:"
-  static cumulativeEradicated = "Cumulative eradicated:"
+  static areaChart = "Area:";
+  static creatorChart = "Creator:";
+  static methodologyChart = "Methodology:";
+  static preclassifierChart = "Preclassifier:";
+  static year = "Year:";
+  static week = "Week:";
+  static cumulativeIssued = "Cumulative issued:";
+  static cumulativeEradicated = "Cumulative eradicated:";
 
   //general actions
   static edit = "Edit";

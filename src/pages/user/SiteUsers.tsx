@@ -6,12 +6,11 @@ import Strings from "../../utils/localizations/Strings";
 import PageTitle from "../../components/PageTitle";
 import {
   useCreateUserMutation,
-  useGetUsersMutation,
+  useGetSiteUsersMutation,
 } from "../../services/userService";
 import { UserTable } from "../../data/user/user";
 import UserTableComponent from "./components/UserTable";
 import ModalForm from "../../components/ModalForm";
-import RegisterUserForm from "./components/RegisterUserForm";
 import {
   NotificationSuccess,
   handleErrorNotification,
@@ -23,11 +22,20 @@ import {
   resetUserUpdatedIndicator,
   selectUserUpdatedIndicator,
 } from "../../core/genericReducer";
+import { useLocation } from "react-router-dom";
+import RegisterSiteUserForm from "./components/RegisterSiteUserForm";
 
-const Users = () => {
-  const [getUsers] = useGetUsersMutation();
+interface stateType {
+  siteId: string;
+  siteName: string;
+}
+
+const SiteUsers = () => {
+  const [getUsers] = useGetSiteUsersMutation();
   const [data, setData] = useState<UserTable[]>([]);
   const [isLoading, setLoading] = useState(false);
+  const { state } = useLocation();
+  const { siteId, siteName } = state as stateType;
   const [querySearch, setQuerySearch] = useState(Strings.empty);
   const [dataBackup, setDataBackup] = useState<UserTable[]>([]);
   const [modalIsOpen, setModalOpen] = useState(false);
@@ -54,7 +62,7 @@ const Users = () => {
 
   const handleGetUsers = async () => {
     setLoading(true);
-    const response = await getUsers().unwrap();
+    const response = await getUsers(siteId).unwrap();
     setData(response);
     setDataBackup(response);
     setLoading(false);
@@ -93,7 +101,7 @@ const Users = () => {
         new CreateUser(
           values.name.trim(),
           values.email.trim(),
-          Number(values.siteId),
+          Number(siteId),
           values.password,
           values.uploadCardDataWithDataNet ? 1 : 0,
           values.uploadCardEvidenceWithDataNet ? 1 : 0,
@@ -113,8 +121,8 @@ const Users = () => {
   return (
     <>
       <div className="h-full flex flex-col">
-        <div className="flex flex-col gap-2 items-center m-3">
-          <PageTitle mainText={Strings.users} />
+        <div className="flex flex-col items-center m-3">
+          <PageTitle mainText={Strings.usersOf} subText={siteName} />
           <div className="flex flex-col md:flex-row flex-wrap items-center md:justify-between w-full">
             <div className="flex flex-col md:flex-row items-center flex-1 mb-1 md:mb-0">
               <Space className="w-full md:w-auto mb-1 md:mb-0">
@@ -141,7 +149,7 @@ const Users = () => {
           <UserTableComponent
             data={data}
             isLoading={isLoading}
-            isSiteUserstable={false}
+            isSiteUserstable={true}
           />
         </div>
       </div>
@@ -153,8 +161,8 @@ const Users = () => {
         <ModalForm
           open={modalIsOpen}
           onCancel={handleOnCancelButton}
-          FormComponent={RegisterUserForm}
-          title={Strings.createUser}
+          FormComponent={RegisterSiteUserForm}
+          title={`${Strings.createUserFor} ${siteName}`}
           isLoading={modalIsLoading}
         />
       </Form.Provider>
@@ -162,4 +170,4 @@ const Users = () => {
   );
 };
 
-export default Users;
+export default SiteUsers;

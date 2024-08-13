@@ -5,6 +5,7 @@ const SitesAllByCompany = "/sites/all";
 const CardTypesAllBySite = "/cardTypes/all";
 const PreclassifiersAllByCardType = "/preclassifier/all";
 const Users = "/users";
+const SiteUsers = "/site/users";
 const LevelsAllByCardType = "/level/all";
 const AllCardsBySite = "/card/all";
 export const ResetPasswordRoute = "/reset-password";
@@ -23,4 +24,5 @@ export default {
   Login,
   CardDetails,
   Charts,
+  SiteUsers,
 };
