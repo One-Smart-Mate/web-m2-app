@@ -197,6 +197,9 @@ const Sites = ({ rol }: SitesProps) => {
       setModalLoading(false);
     }
   };
+
+  const companyName = location?.state?.companyName || Strings.empty
+
   return (
     <>
       <div className="h-full flex flex-col">
@@ -205,7 +208,7 @@ const Sites = ({ rol }: SitesProps) => {
             mainText={`${
               rol === UserRoles.ADMIN ? Strings.sitesOf : Strings.siteOf
             }`}
-            subText={location?.state?.companyName}
+            subText={companyName}
           />
           {buildSitePageActions()}
         </div>
@@ -233,7 +236,7 @@ const Sites = ({ rol }: SitesProps) => {
           open={modalIsOpen}
           onCancel={handleOnCancelButton}
           FormComponent={RegisterSiteForm}
-          title={Strings.createSite.concat(` ${location?.state?.companyName}`)}
+          title={Strings.createSite.concat(` ${companyName}`)}
           isLoading={modalIsLoading}
         />
       </Form.Provider>

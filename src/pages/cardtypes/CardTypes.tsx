@@ -89,7 +89,7 @@ const CardTypess = ({ rol }: CardTypeProps) => {
   const handleGetPriorities = async () => {
     if (!location.state) {
       navigate(UnauthorizedRoute);
-      return
+      return;
     }
     setLoading(true);
     const response = await getCardTypes(location.state.siteId).unwrap();
@@ -152,14 +152,13 @@ const CardTypess = ({ rol }: CardTypeProps) => {
     }
   };
 
+  const siteName = location?.state?.siteName || Strings.empty;
+
   return (
     <>
       <div className="h-full flex flex-col">
         <div className="flex flex-col gap-2 items-center m-3">
-          <PageTitle
-            mainText={Strings.cardTypesOf}
-            subText={location?.state?.siteName}
-          />
+          <PageTitle mainText={Strings.cardTypesOf} subText={siteName} />
           <div className="flex flex-col md:flex-row flex-wrap items-center md:justify-between w-full">
             <div className="flex flex-col md:flex-row items-center flex-1 mb-1 md:mb-0">
               <Space className="w-full md:w-auto mb-1 md:mb-0">
@@ -183,14 +182,22 @@ const CardTypess = ({ rol }: CardTypeProps) => {
           </div>
         </div>
         <div className="flex-1 overflow-auto hidden lg:block">
-          <CardTypesTable data={data} isLoading={isLoading} preclassifiersRoute={buildPreclassifiersRoute()} />
+          <CardTypesTable
+            data={data}
+            isLoading={isLoading}
+            preclassifiersRoute={buildPreclassifiersRoute()}
+          />
         </div>
         <div className="flex-1 overflow-auto lg:hidden">
           <PaginatedList
             dataSource={data}
             renderItem={(item: CardTypes, index: number) => (
               <List.Item>
-                <CardTypesCard key={index} data={item} preclassifiersRoute={buildPreclassifiersRoute()}/>
+                <CardTypesCard
+                  key={index}
+                  data={item}
+                  preclassifiersRoute={buildPreclassifiersRoute()}
+                />
               </List.Item>
             )}
             loading={isLoading}
@@ -206,7 +213,7 @@ const CardTypess = ({ rol }: CardTypeProps) => {
           open={modalIsOpen}
           onCancel={handleOnCancelButton}
           FormComponent={RegisterCardTypeForm}
-          title={Strings.createCardType.concat(` ${location?.state?.siteName}`)}
+          title={Strings.createCardType.concat(` ${siteName}`)}
           isLoading={modalIsLoading}
         />
       </Form.Provider>

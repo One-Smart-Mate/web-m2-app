@@ -41,7 +41,7 @@ const Preclassifiers = () => {
   const isPreclassifierUpdated = useAppSelector(
     selectPreclassifierUpdatedIndicator
   );
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (isPreclassifierUpdated) {
@@ -87,7 +87,9 @@ const Preclassifiers = () => {
       return;
     }
     setLoading(true);
-    const response = await getPreclassifiers(location.state.cardTypeId).unwrap();
+    const response = await getPreclassifiers(
+      location.state.cardTypeId
+    ).unwrap();
     setData(response);
     setDataBackup(response);
 
@@ -118,13 +120,15 @@ const Preclassifiers = () => {
     }
   };
 
+  const cardTypeName = location?.state?.cardTypeName || Strings.empty;
+
   return (
     <>
       <div className="h-full flex flex-col">
         <div className="flex flex-col gap-2 items-center m-3">
           <PageTitle
             mainText={Strings.preclassifiersof}
-            subText={location?.state?.cardTypeName}
+            subText={cardTypeName}
           />
           <div className="flex flex-col md:flex-row flex-wrap items-center md:justify-between w-full">
             <div className="flex flex-col md:flex-row items-center flex-1 mb-1 md:mb-0">

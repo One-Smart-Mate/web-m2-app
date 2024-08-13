@@ -163,7 +163,7 @@ const Levels = () => {
           open={modalIsOpen}
           onCancel={handleOnCancelButton}
           FormComponent={RegisterLevelForm}
-          title={Strings.createLevel.concat(` ${location?.state?.siteName}`)}
+          title={Strings.createLevel.concat(` ${siteName}`)}
           isLoading={modalIsLoading}
         />
       </Form.Provider>

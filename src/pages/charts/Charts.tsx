@@ -28,7 +28,7 @@ const Charts = () => {
   const handleGetMethodologiesCatalog = async () => {
     if (!location.state) {
       navigate(UnauthorizedRoute);
-      return
+      return;
     }
     const [response, response2] = await Promise.all([
       getMethodologiesCatalog().unwrap(),
@@ -42,14 +42,15 @@ const Charts = () => {
   useEffect(() => {
     handleGetMethodologiesCatalog();
   }, []);
+
+  const siteName = location?.state?.siteName || Strings.empty;
+  const siteId = location?.state?.siteId || Strings.empty;
+
   return (
     <>
       <div className="h-full flex flex-col">
         <div className="flex flex-col gap-2 items-center m-3">
-          <PageTitle
-            mainText={Strings.chartsOf}
-            subText={location?.state?.siteName}
-          />
+          <PageTitle mainText={Strings.chartsOf} subText={siteName} />
         </div>
         <div className="flex-1 overflow-auto">
           {methodologies.length > 0 ? (
@@ -87,7 +88,7 @@ const Charts = () => {
                     <div className="flex flex-wrap gap-1">
                       <div className="md:flex-1 w-full h-60">
                         <PreclassifiersChart
-                          siteId={location?.state?.siteId}
+                          siteId={siteId}
                           methodologiesCatalog={methodologiesCatalog}
                         />
                       </div>
@@ -113,7 +114,7 @@ const Charts = () => {
                   className="md:flex-1 w-full mx-auto bg-gray-100 rounded-xl shadow-md"
                 >
                   <div className="w-full h-60">
-                    <AreasChart siteId={location?.state?.siteId} />
+                    <AreasChart siteId={siteId} />
                   </div>
                 </Card>
                 <Card
@@ -127,7 +128,7 @@ const Charts = () => {
                   className="md:flex-1 w-full mx-auto bg-gray-100 rounded-xl shadow-md"
                 >
                   <div className="w-full h-60">
-                    <CreatorsChart siteId={location?.state?.siteId} />
+                    <CreatorsChart siteId={siteId} />
                   </div>
                 </Card>
               </div>
@@ -143,7 +144,7 @@ const Charts = () => {
                   className="md:flex-1 w-full mx-auto bg-gray-100 rounded-xl shadow-md"
                 >
                   <div className="w-full h-60">
-                    <WeeksChart siteId={location?.state?.siteId} />
+                    <WeeksChart siteId={siteId} />
                   </div>
                 </Card>
               </div>

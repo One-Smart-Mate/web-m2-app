@@ -20,7 +20,7 @@ const CardDetails = () => {
   const handleGetCards = async () => {
     if (!location.state) {
       navigate(UnauthorizedRoute);
-      return
+      return;
     }
     const response = await getCardDetails(location.state.cardId).unwrap();
     setData(response);
@@ -30,11 +30,13 @@ const CardDetails = () => {
     handleGetCards();
   }, []);
 
+  const cardName = location?.state?.cardName || Strings.empty;
+
   return (
     <>
       <div className="h-full flex flex-col">
         <div className="flex flex-col items-center m-3">
-          <PageTitle mainText={Strings.cardDetailsOf} subText={location?.state?.cardName} />
+          <PageTitle mainText={Strings.cardDetailsOf} subText={cardName} />
         </div>
         <div className="flex-1 overflow-auto">
           <div className="flex flex-wrap justify-center gap-2">

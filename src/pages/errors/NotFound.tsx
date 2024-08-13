@@ -1,15 +1,16 @@
 import React from "react";
 import { Button, Result } from "antd";
 import { Link } from "react-router-dom";
+import Strings from "../../utils/localizations/Strings";
 
 const NotFound: React.FC = () => (
   <Result
     status="404"
-    title="404"
-    subTitle="Sorry, the page you visited does not exist."
+    title={Strings.notFoundPageTitle}
+    subTitle={Strings.notFoundPageSubTitle}
     extra={
       <Link to={"/"}>
-        <Button type="primary">Go back</Button>
+        <Button type="primary">{Strings.goBack}</Button>
       </Link>
     }
   />

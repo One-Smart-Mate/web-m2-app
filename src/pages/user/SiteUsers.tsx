@@ -118,14 +118,13 @@ const SiteUsers = () => {
     }
   };
 
+  const siteName = location?.state?.siteName || Strings.empty;
+
   return (
     <>
       <div className="h-full flex flex-col">
         <div className="flex flex-col items-center m-3">
-          <PageTitle
-            mainText={Strings.usersOf}
-            subText={location?.state?.siteName}
-          />
+          <PageTitle mainText={Strings.usersOf} subText={siteName} />
           <div className="flex flex-col md:flex-row flex-wrap items-center md:justify-between w-full">
             <div className="flex flex-col md:flex-row items-center flex-1 mb-1 md:mb-0">
               <Space className="w-full md:w-auto mb-1 md:mb-0">
@@ -165,7 +164,7 @@ const SiteUsers = () => {
           open={modalIsOpen}
           onCancel={handleOnCancelButton}
           FormComponent={RegisterSiteUserForm}
-          title={`${Strings.createUserFor} ${location?.state?.siteName}`}
+          title={`${Strings.createUserFor} ${siteName}`}
           isLoading={modalIsLoading}
         />
       </Form.Provider>
