@@ -187,6 +187,7 @@ export default class Strings {
   static code = "Code";
   static enterCode = "Enter the code!";
   static description = "Description";
+  static levelMachineId = "Level machine id"
   static daysNumber = "Days number";
   static updatePriority = "Update priority";
 

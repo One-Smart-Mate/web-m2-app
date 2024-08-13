@@ -56,7 +56,8 @@ const UpdateLevelButton = ({ levelId }: ButtonEditProps) => {
         values.name,
         values.description,
         Number(values.responsibleId),
-        values.status
+        values.status,
+        values.levelMachineId.trim()
       );
       await updateLevel(priorityToUpdate).unwrap();
       setModalOpen(false);

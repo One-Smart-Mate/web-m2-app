@@ -13,6 +13,7 @@ import { Responsible } from "../../../data/user/user";
 import { Level } from "../../../data/level/level";
 import { useGetStatusMutation } from "../../../services/statusService";
 import { Status } from "../../../data/status/status";
+import { CiBarcode } from "react-icons/ci";
 
 interface FormProps {
   form: FormInstance;
@@ -78,7 +79,7 @@ const UpdateLevelForm = ({ form }: FormProps) => {
               { required: true, message: Strings.requiredDescription },
               { max: 100 },
             ]}
-            className="w-2/3"
+            className="md:flex-1 w-2/3"
           >
             <Input
               size="large"
@@ -88,12 +89,12 @@ const UpdateLevelForm = ({ form }: FormProps) => {
             />
           </Form.Item>
         </div>
-        <div className="flex flex-wrap">
+        <div className="flex gap-1 flex-wrap">
           <Form.Item
             name="responsibleId"
             validateFirst
             rules={[{ required: true, message: Strings.requiredResponsableId }]}
-            className="mr-1 w-80"
+            className="flex-1"
           >
             <Select
               size="large"
@@ -101,10 +102,23 @@ const UpdateLevelForm = ({ form }: FormProps) => {
               options={responsibleOptions()}
             />
           </Form.Item>
-          <Form.Item name="status" className="w-60">
-            <Select size="large" options={statusOptions()} />
+          <Form.Item
+            name="levelMachineId"
+            validateFirst
+            rules={[{ required: true, message: Strings.requiredResponsableId }]}
+            className="md:flex-1 w-2/3"
+          >
+            <Input
+              size="large"
+              maxLength={50}
+              addonBefore={<CiBarcode />}
+              placeholder={Strings.levelMachineId}
+            />
           </Form.Item>
         </div>
+        <Form.Item name="status" className="w-60">
+          <Select size="large" options={statusOptions()} />
+        </Form.Item>
       </div>
     </Form>
   );
