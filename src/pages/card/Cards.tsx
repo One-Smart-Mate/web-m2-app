@@ -78,7 +78,10 @@ const Cards = ({ rol }: CardsProps) => {
     <>
       <div className="h-full flex flex-col">
         <div className="flex flex-col items-center m-3">
-          <PageTitle mainText={Strings.cardsOf} subText={siteName} />
+          <PageTitle
+            mainText={Strings.cardsOf}
+            subText={siteName}
+          />
           <div className="flex flex-col md:flex-row flex-wrap items-center md:justify-between w-full">
             <div className="flex flex-col md:flex-row items-center flex-1 mb-1 md:mb-0">
               <Space className="w-full md:w-auto mb-1 md:mb-0">

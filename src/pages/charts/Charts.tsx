@@ -50,7 +50,10 @@ const Charts = () => {
     <>
       <div className="h-full flex flex-col">
         <div className="flex flex-col gap-2 items-center m-3">
-          <PageTitle mainText={Strings.chartsOf} subText={siteName} />
+          <PageTitle
+            mainText={Strings.chartsOf}
+            subText={siteName}
+          />
         </div>
         <div className="flex-1 overflow-auto">
           {methodologies.length > 0 ? (
