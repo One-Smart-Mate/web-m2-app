@@ -124,7 +124,7 @@ const Priorities = () => {
         <div className="flex flex-col gap-2 items-center m-3">
           <PageTitle
             mainText={Strings.prioritiesOf}
-            subText={location?.state?.siteName}
+            subText={siteName}
           />
           <div className="flex flex-col md:flex-row flex-wrap items-center md:justify-between w-full">
             <div className="flex flex-col md:flex-row items-center flex-1 mb-1 md:mb-0">
@@ -172,7 +172,7 @@ const Priorities = () => {
           open={modalIsOpen}
           onCancel={handleOnCancelButton}
           FormComponent={RegisterPriorityForm}
-          title={Strings.createPriority.concat(` ${location?.state?.siteName}`)}
+          title={Strings.createPriority.concat(` ${siteName}`)}
           isLoading={modalIsLoading}
         />
       </Form.Provider>
