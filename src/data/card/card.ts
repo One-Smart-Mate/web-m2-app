@@ -1,5 +1,6 @@
 export interface CardInterface {
   id: string;
+  siteId: string;
   siteCardId: string;
   status: string;
   cardCreationDate: string;
@@ -9,6 +10,8 @@ export interface CardInterface {
   areaName: string;
   creatorName: string;
   cardTypeMethodologyName: string;
+  cardTypeName: string;
+  cardTypeColor: string;
   priorityCode: string;
   priorityDescription: string;
   commentsAtCardCreation: string;
@@ -20,6 +23,10 @@ export interface CardInterface {
   cardDefinitiveSolutionDate: string;
   commentsAtCardDefinitiveSolution: string;
   evidences: Evidences[];
+  createdAt: string;
+  responsableName: string;
+  userAppProvisionalSolutionName: string;
+  userAppDefinitiveSolutionName: string;
 }
 
 export interface Evidences {

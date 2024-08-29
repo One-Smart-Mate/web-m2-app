@@ -1,4 +1,5 @@
 export default class User {
+  userId: string;
   name: string;
   email: string;
   token: string;
@@ -10,6 +11,7 @@ export default class User {
   companyName: string;
 
   constructor(
+    userId: string,
     name: string,
     email: string,
     token: string,
@@ -20,6 +22,7 @@ export default class User {
     companyId: string,
     companyName: string
   ) {
+    this.userId = userId;
     this.name = name;
     this.email = email;
     this.token = token;

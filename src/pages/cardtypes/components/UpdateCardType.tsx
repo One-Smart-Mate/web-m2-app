@@ -17,7 +17,7 @@ import ModalUpdateForm from "../../../components/ModalUpdateForm";
 import { useGetCardTypeMutation, useUpdateCardTypeMutation } from "../../../services/CardTypesService";
 import { UpdateCardTypeReq } from "../../../data/cardtypes/cardTypes.request";
 import UpdateCardTypeForm from "./UpdateCardTypeForm";
-import { ColorFactory } from "antd/es/color-picker/color";
+import { AggregationColor } from "antd/es/color-picker/color";
 
 interface ButtonEditProps {
   id: string;
@@ -49,7 +49,7 @@ const UpdateCardType = ({ id }: ButtonEditProps) => {
   const handleOnUpdateFormFinish = async (values: any) => {
     try {
       setModalLoading(true);
-      if(values.color instanceof ColorFactory){
+      if(values.color instanceof AggregationColor){
         values.color = values.color.toHex()
       }
       const cardTypeToUpdate = new UpdateCardTypeReq(

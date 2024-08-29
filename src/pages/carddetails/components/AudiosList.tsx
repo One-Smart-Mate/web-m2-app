@@ -9,7 +9,7 @@ interface CardProps {
   data: Evidences[] | [];
 }
 
-const AudiosCard = ({ data }: CardProps) => {
+const AudiosList = ({ data }: CardProps) => {
   if (!data) {
     return (
       <Card
@@ -37,29 +37,27 @@ const AudiosCard = ({ data }: CardProps) => {
   }, []);
 
   return (
-    <Card className="bg-gray-100 rounded-xl shadow-md">
-      <div className="md:w-80 rounded-lg text-black font-medium p-1 bg-card-fields">
-        {sectionsTitlesCardDetails(Strings.audios)}
-        <List
-          className="px-2 md:h-60 overflow-auto"
-          dataSource={audios}
-          size="small"
-          renderItem={(audio, index) => (
-            <List.Item>
-              <audio
-                ref={(el) => {
-                  if (el) audioRefs.current[index] = el;
-                }}
-                onPlay={() => handlePlay(index)}
-                controls
-                src={audio.evidenceName}
-              />
-            </List.Item>
-          )}
-        />
-      </div>
-    </Card>
+    <div className="md:w-72 rounded-lg p-1 bg-card-fields">
+      {sectionsTitlesCardDetails(Strings.audios)}
+      <List
+        className="px-2 md:h-60 overflow-auto"
+        dataSource={audios}
+        size="small"
+        renderItem={(audio, index) => (
+          <List.Item>
+            <audio
+              ref={(el) => {
+                if (el) audioRefs.current[index] = el;
+              }}
+              onPlay={() => handlePlay(index)}
+              controls
+              src={audio.evidenceName}
+            />
+          </List.Item>
+        )}
+      />
+    </div>
   );
 };
 
-export default AudiosCard;
+export default AudiosList;

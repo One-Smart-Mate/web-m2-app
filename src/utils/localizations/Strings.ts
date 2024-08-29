@@ -24,15 +24,20 @@ export default class Strings {
   static logutModalContent = "You are about to log out of your account.";
   static white = "white";
   static updateUser = "Update user";
-  static information = "Information";
+  static creation = "Creation";
+  static creationDate = "Creation date";
+  static daysSinceCreation = "Days since creation";
   static definitiveSolution = "Definitive solution";
   static provisionalSolution = "Provisional solution";
+  static appProvisionalUser = "App provisional user";
   static provisionalUser = "Provisional user";
   static provisionalDate = "Provisional date";
+  static days = "Days";
+  static appDefinitiveUser = "App definitive user";
   static definitiveUser = "Definitive user";
   static definitiveDate = "Definitive date";
-  static provisionalComments = "Provisional comments";
-  static definitiveComments = "Definitive comments";
+  static provisionalSoluitonApplied = "Provisional solution applied";
+  static definitiveSolutionApplied = "Definitive solution applied";
   static NA = "N/A";
   static images = "Images";
   static videos = "Videos";
@@ -70,6 +75,7 @@ export default class Strings {
   static requiredDescription = "Please enter the description";
   static requiredDaysNumber = "Please enter the days number";
   static requiredResponsableId = "Please select the responsible";
+  static requiredPriority = "Required priority";
 
   //company
   static logo = "Logo";
@@ -145,29 +151,16 @@ export default class Strings {
   static responsible = "Responsible";
   static cardTypeMethodology = "Card Type Methodology";
   static cardTypesOf = "Card types of:";
-  static picturesCreate = "Pictures create";
-  static audiosCreate = "Audios create";
-  static videosCreate = "Videos create";
+  static quantityPictures = "Quantity pictures";
+  static quantityAudios = "Quantity audios";
+  static quantityVideos = "Quantity videos";
   static picturesCreatePs = "Pictures create provisional solution";
   static audiosCreatePs = "Audios create provisional solution";
   static videosCreatePs = "Videos create provisional solution";
-  static audiosDurationCreate = "Audios duration create";
-  static audiosDurationPs = "Audios duration provisional solution";
-  static videosDurationPs = "Videos duration provisional solution";
-  static videosDurationCreate = "Videos duration create";
-  static quantityPicturesClose = "Pictures close";
-  static quantityAudiosClose = "Audios close";
-  static quantityVideosClose = "Videos close";
-  static audiosDurationClose = "Audios duration close";
-  static videosDurationClose = "Videos duration close";
-  static quantityCreate = "Quantity create";
-  static durationCreate = "Duration create";
-  static quantityClose = "Quantity close";
-  static durationClose = "Duration close";
-  static quantityCreateForProvisionalSolution =
-    "Quantity create for provisional solution";
-  static durationCreateForProvisionalSolution =
-    "Duration create for provisional solution";
+  static durationInSeconds = "Duration in seconds";
+  static atCreation = "At creation";
+  static atProvisionalSolution = "At provisional solution";
+  static atDefinitiveSolution = "At definitive solution";
   //cardtype methodology
   static M = "M";
   static C = "C";
@@ -191,7 +184,7 @@ export default class Strings {
   static code = "Code";
   static enterCode = "Enter the code!";
   static description = "Description";
-  static levelMachineId = "Level machine id"
+  static levelMachineId = "Level machine id";
   static daysNumber = "Days number";
   static updatePriority = "Update priority";
 
@@ -218,6 +211,9 @@ export default class Strings {
   static mechanic = "Mechanic";
   static creator = "Creator";
   static comments = "Comments";
+  static anomalyDetected = "Anomaly detected";
+  static updateResponsible = "Update responsible";
+  static changeLog = "Change log";
 
   //charts
   static chartsOf = "Charts of:";

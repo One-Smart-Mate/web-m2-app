@@ -128,8 +128,16 @@ export const enum UserRoles {
   UNDEFINED,
 }
 
-export const formatDate = (date: string) => {
+export const formatDate = (date: string | null) => {
+  if (!date) {
+    return null;
+  }
+
   const dateObject: Date = new Date(date);
+  if (isNaN(dateObject.getTime())) {
+    return null;
+  }
+
   const options: Intl.DateTimeFormatOptions = {
     weekday: "long",
     year: "numeric",
@@ -144,6 +152,28 @@ export const formatDate = (date: string) => {
     dateObject
   );
   return formattedDate;
+};
+
+export const getDaysSince = (dateString: string) => {
+  const dateObject: Date = new Date(dateString);
+  const currentDate = new Date();
+  const oneDay = 24 * 60 * 60 * 1000;
+  const differenceInTime = Math.abs(
+    currentDate.getTime() - dateObject.getTime()
+  );
+  const differenceInDays = Math.round(differenceInTime / oneDay);
+  return differenceInDays;
+};
+
+export const getDaysBetween = (dateString: string, dateString2: string) => {
+  const dateObject: Date = new Date(dateString);
+  const dateObject2: Date = new Date(dateString2);
+  const oneDay = 24 * 60 * 60 * 1000;
+  const differenceInTime = Math.abs(
+    dateObject.getTime() - dateObject2.getTime()
+  );
+  const differenceInDays = Math.round(differenceInTime / oneDay);
+  return differenceInDays;
 };
 
 export const RESPONSIVE_LIST = {

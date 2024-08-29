@@ -72,7 +72,7 @@ const InformationPanel = ({ data, cardDetailsRoute }: CardProps) => {
         <span>{Strings.cardType}</span>
         <div className="col-span-2">
           <p className="max-w-48 w-fit text-white bg-card-fields rounded-lg p-1">
-            {data.cardTypeMethodologyName}
+            {data.cardTypeName}
           </p>
         </div>
 

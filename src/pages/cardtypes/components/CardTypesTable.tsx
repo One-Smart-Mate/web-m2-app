@@ -62,8 +62,8 @@ const CardTypesTable = ({ data, isLoading, preclassifiersRoute }: TableProps) =>
         dataIndex: "color",
         key: "color",
         render: (color: string) => (
-          <div
-            style={{ backgroundColor: `#${color}`, width: 50, height: 20 }}
+          <div className="h-5 w-10 md:w-16 rounded-lg border border-black"
+            style={{ backgroundColor: `#${color}`}}
           />
         ),
       },
