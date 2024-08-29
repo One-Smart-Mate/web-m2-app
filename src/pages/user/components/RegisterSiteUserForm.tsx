@@ -112,12 +112,7 @@ const RegisterSiteUserForm = ({ form }: FormProps) => {
             />
           </Form.Item>
         </div>
-        <Form.Item
-          name="siteId"
-          validateFirst
-          rules={[{ required: true, message: Strings.requiredSite }]}
-          className="hidden"
-        >
+        <Form.Item name="siteId" className="hidden">
           <Input />
         </Form.Item>
         <div className="flex flex-row flex-wrap">

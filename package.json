@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.2.3",
-    "antd": "^5.19.3",
+    "antd": "^5.20.2",
     "env-cmd": "^10.1.0",
     "firebase": "^10.11.1",
     "moment": "^2.30.1",

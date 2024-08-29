@@ -1,4 +1,9 @@
 import { CardDetailsInterface, CardInterface } from "../data/card/card";
+import {
+  UpdateCardPriority,
+  UpdateCardResponsible,
+} from "../data/card/card.request";
+import { Note } from "../data/note";
 import { apiSlice } from "./apiSlice";
 
 export const cardService = apiSlice.injectEndpoints({
@@ -12,7 +17,31 @@ export const cardService = apiSlice.injectEndpoints({
       transformResponse: (response: { data: CardDetailsInterface }) =>
         response.data,
     }),
+    getCardNotes: builder.mutation<Note[], string>({
+      query: (cardId) => `/card/notes/${cardId}`,
+      transformResponse: (response: { data: Note[] }) => response.data,
+    }),
+    updateCardPriority: builder.mutation<void, UpdateCardPriority>({
+      query: (priority) => ({
+        url: "/card/update/priority",
+        method: "POST",
+        body: { ...priority },
+      }),
+    }),
+    updateCardResponsible: builder.mutation<void, UpdateCardResponsible>({
+      query: (responsible) => ({
+        url: "/card/update/responsible",
+        method: "POST",
+        body: { ...responsible },
+      }),
+    }),
   }),
 });
 
-export const { useGetCardsMutation, useGetCardDetailsMutation } = cardService;
+export const {
+  useGetCardsMutation,
+  useGetCardDetailsMutation,
+  useGetCardNotesMutation,
+  useUpdateCardPriorityMutation,
+  useUpdateCardResponsibleMutation,
+} = cardService;

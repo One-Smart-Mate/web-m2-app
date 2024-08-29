@@ -26,7 +26,7 @@ import { GoDeviceCameraVideo } from "react-icons/go";
 import { IoHeadsetOutline } from "react-icons/io5";
 import { useGetStatusMutation } from "../../../services/statusService";
 import { Status } from "../../../data/status/status";
-type Color = GetProp<ColorPickerProps, "value">;
+type Color = Extract<GetProp<ColorPickerProps, 'value'>, string | { cleared: any }>;
 
 interface FormProps {
   form: FormInstance;
@@ -152,151 +152,165 @@ const UpdateCardTypeForm = ({ form }: FormProps) => {
             />
           </Form.Item>
         </div>
-        <h1 className="font-semibold">{Strings.quantityCreate}</h1>
-        <div className="flex flex-row justify-between flex-wrap">
-          <Form.Item name="quantityPicturesCreate" validateFirst>
-            <InputNumber
-              size="large"
-              max={255}
-              addonBefore={<AiOutlinePicture />}
-              placeholder={Strings.picturesCreate}
-            />
-          </Form.Item>
-          <Form.Item name="quantityAudiosCreate" validateFirst>
-            <InputNumber
-              size="large"
-              max={255}
-              addonBefore={<IoHeadsetOutline />}
-              placeholder={Strings.audiosCreate}
-            />
-          </Form.Item>
-          <Form.Item name="quantityVideosCreate" validateFirst>
-            <InputNumber
-              size="large"
-              max={255}
-              addonBefore={<GoDeviceCameraVideo />}
-              placeholder={Strings.videosCreate}
-            />
-          </Form.Item>
+        <h1 className="font-semibold">{Strings.atCreation}</h1>
+        <div className="flex flex-col">
+          <div>
+            <Form.Item name="quantityPicturesCreate" validateFirst>
+              <InputNumber
+                size="large"
+                max={255}
+                addonBefore={<AiOutlinePicture />}
+                placeholder={Strings.quantityPictures}
+              />
+            </Form.Item>
+          </div>
+          <div className="flex gap-1">
+            <Form.Item name="quantityVideosCreate" validateFirst>
+              <InputNumber
+                size="large"
+                max={255}
+                addonBefore={<GoDeviceCameraVideo />}
+                placeholder={Strings.quantityVideos}
+              />
+            </Form.Item>
+
+            <Form.Item name="videosDurationCreate" validateFirst>
+              <InputNumber
+                size="large"
+                maxLength={10}
+                addonBefore={<GoDeviceCameraVideo />}
+                placeholder={Strings.durationInSeconds}
+              />
+            </Form.Item>
+          </div>
+          <div className="flex gap-1">
+            <Form.Item name="quantityAudiosCreate" validateFirst>
+              <InputNumber
+                size="large"
+                max={255}
+                addonBefore={<IoHeadsetOutline />}
+                placeholder={Strings.quantityAudios}
+              />
+            </Form.Item>
+            <Form.Item
+              name="audiosDurationCreate"
+              validateFirst
+              className="mr-2"
+            >
+              <InputNumber
+                size="large"
+                maxLength={10}
+                addonBefore={<IoHeadsetOutline />}
+                placeholder={Strings.durationInSeconds}
+              />
+            </Form.Item>
+          </div>
         </div>
-        <h1 className="font-semibold">
-          {Strings.quantityCreateForProvisionalSolution}
-        </h1>
-        <div className="flex flex-row justify-between flex-wrap">
-          <Form.Item name="quantityPicturesPs" validateFirst>
-            <InputNumber
-              size="large"
-              max={255}
-              addonBefore={<AiOutlinePicture />}
-              placeholder={Strings.picturesCreatePs}
-            />
-          </Form.Item>
-          <Form.Item name="quantityAudiosPs" validateFirst>
-            <InputNumber
-              size="large"
-              max={255}
-              addonBefore={<IoHeadsetOutline />}
-              placeholder={Strings.audiosCreatePs}
-            />
-          </Form.Item>
-          <Form.Item name="quantityVideosPs" validateFirst>
-            <InputNumber
-              size="large"
-              max={255}
-              addonBefore={<GoDeviceCameraVideo />}
-              placeholder={Strings.videosCreatePs}
-            />
-          </Form.Item>
+        <h1 className="font-semibold">{Strings.atProvisionalSolution}</h1>
+        <div className="flex flex-col">
+          <div>
+            <Form.Item name="quantityPicturesPs" validateFirst>
+              <InputNumber
+                size="large"
+                max={255}
+                addonBefore={<AiOutlinePicture />}
+                placeholder={Strings.quantityPictures}
+              />
+            </Form.Item>
+          </div>
+          <div className="flex gap-1">
+            <Form.Item name="quantityVideosPs" validateFirst>
+              <InputNumber
+                size="large"
+                max={255}
+                addonBefore={<GoDeviceCameraVideo />}
+                placeholder={Strings.videosCreatePs}
+              />
+            </Form.Item>
+            <Form.Item name="videosDurationPs" validateFirst>
+              <InputNumber
+                size="large"
+                maxLength={10}
+                addonBefore={<GoDeviceCameraVideo />}
+                placeholder={Strings.durationInSeconds}
+              />
+            </Form.Item>
+          </div>
+          <div className="flex gap-1">
+            <Form.Item name="quantityAudiosPs" validateFirst>
+              <InputNumber
+                size="large"
+                max={255}
+                addonBefore={<IoHeadsetOutline />}
+                placeholder={Strings.audiosCreatePs}
+              />
+            </Form.Item>
+            <Form.Item name="audiosDurationPs" validateFirst className="mr-2">
+              <InputNumber
+                size="large"
+                maxLength={10}
+                addonBefore={<IoHeadsetOutline />}
+                placeholder={Strings.durationInSeconds}
+              />
+            </Form.Item>
+          </div>
         </div>
-        <h1 className="font-semibold">{Strings.durationCreate}</h1>
-        <div className="flex flex-row  flex-wrap">
-          <Form.Item name="audiosDurationCreate" validateFirst className="mr-2">
-            <InputNumber
-              size="large"
-              maxLength={10}
-              addonBefore={<IoHeadsetOutline />}
-              placeholder={Strings.audiosDurationCreate}
-            />
-          </Form.Item>
-          <Form.Item name="videosDurationCreate" validateFirst>
-            <InputNumber
-              size="large"
-              maxLength={10}
-              addonBefore={<GoDeviceCameraVideo />}
-              placeholder={Strings.videosDurationCreate}
-            />
-          </Form.Item>
+        <h1 className="font-semibold">{Strings.atDefinitiveSolution}</h1>
+        <div className="flex flex-col">
+          <div>
+            <Form.Item name="quantityPicturesClose" validateFirst>
+              <InputNumber
+                size="large"
+                max={255}
+                addonBefore={<AiOutlinePicture />}
+                placeholder={Strings.quantityPictures}
+              />
+            </Form.Item>
+          </div>
+          <div className="flex gap-1">
+            <Form.Item name="quantityVideosClose" validateFirst>
+              <InputNumber
+                size="large"
+                max={255}
+                addonBefore={<GoDeviceCameraVideo />}
+                placeholder={Strings.quantityVideos}
+              />
+            </Form.Item>
+            <Form.Item name="videosDurationClose" validateFirst>
+              <InputNumber
+                size="large"
+                maxLength={10}
+                addonBefore={<GoDeviceCameraVideo />}
+                placeholder={Strings.durationInSeconds}
+              />
+            </Form.Item>
+          </div>
+          <div className="flex gap-1">
+            <Form.Item name="quantityAudiosClose" validateFirst>
+              <InputNumber
+                size="large"
+                max={255}
+                addonBefore={<IoHeadsetOutline />}
+                placeholder={Strings.quantityAudios}
+              />
+            </Form.Item>
+            <Form.Item
+              name="audiosDurationClose"
+              validateFirst
+              className="mr-2"
+            >
+              <InputNumber
+                size="large"
+                maxLength={10}
+                addonBefore={<IoHeadsetOutline />}
+                placeholder={Strings.durationInSeconds}
+              />
+            </Form.Item>
+          </div>
         </div>
-        <h1 className="font-semibold">
-          {Strings.durationCreateForProvisionalSolution}
-        </h1>
-        <div className="flex flex-row flex-wrap">
-          <Form.Item name="audiosDurationPs" validateFirst className="mr-2">
-            <InputNumber
-              size="large"
-              maxLength={10}
-              addonBefore={<IoHeadsetOutline />}
-              placeholder={Strings.audiosDurationPs}
-            />
-          </Form.Item>
-          <Form.Item name="videosDurationPs" validateFirst>
-            <InputNumber
-              size="large"
-              maxLength={10}
-              addonBefore={<GoDeviceCameraVideo />}
-              placeholder={Strings.videosDurationPs}
-            />
-          </Form.Item>
-        </div>
-        <h1 className="font-semibold">{Strings.quantityClose}</h1>
-        <div className="flex flex-row justify-between flex-wrap">
-          <Form.Item name="quantityPicturesClose" validateFirst>
-            <InputNumber
-              size="large"
-              max={255}
-              addonBefore={<AiOutlinePicture />}
-              placeholder={Strings.quantityPicturesClose}
-            />
-          </Form.Item>
-          <Form.Item name="quantityAudiosClose" validateFirst>
-            <InputNumber
-              size="large"
-              max={255}
-              addonBefore={<IoHeadsetOutline />}
-              placeholder={Strings.quantityAudiosClose}
-            />
-          </Form.Item>
-          <Form.Item name="quantityVideosClose" validateFirst>
-            <InputNumber
-              size="large"
-              max={255}
-              addonBefore={<GoDeviceCameraVideo />}
-              placeholder={Strings.quantityVideosClose}
-            />
-          </Form.Item>
-        </div>
-        <h1 className="font-semibold">{Strings.durationClose}</h1>
-        <div className="flex flex-row justify-between flex-wrap">
-          <Form.Item name="audiosDurationClose" validateFirst>
-            <InputNumber
-              size="large"
-              maxLength={10}
-              addonBefore={<IoHeadsetOutline />}
-              placeholder={Strings.audiosDurationClose}
-            />
-          </Form.Item>
-          <Form.Item name="videosDurationClose" validateFirst>
-            <InputNumber
-              size="large"
-              maxLength={10}
-              addonBefore={<GoDeviceCameraVideo />}
-              placeholder={Strings.videosDurationClose}
-            />
-          </Form.Item>
-          <Form.Item className="w-60" name="status">
-            <Select size="large" options={statusOptions()} />
-          </Form.Item>
-        </div>
+        <Form.Item className="w-60" name="status">
+          <Select size="large" options={statusOptions()} />
+        </Form.Item>
       </div>
     </Form>
   );
