@@ -7,7 +7,6 @@ import {
   ResponsiveContainer,
   Tooltip,
 } from "recharts";
-import { getColorForMethodology } from "../../../utils/Extensions";
 import { CardTypesCatalog } from "../../../data/cardtypes/cardTypes";
 import Strings from "../../../utils/localizations/Strings";
 
@@ -16,11 +15,7 @@ export interface ChartProps {
   methodologiesCatalog: CardTypesCatalog[];
 }
 
-const MethodologiesChart = ({
-  methodologies,
-  methodologiesCatalog,
-}: ChartProps) => {
-  const RADIAN = Math.PI / 180;
+const MethodologiesChart = ({ methodologies }: ChartProps) => {
   const renderCustomizedLabel = ({
     cx,
     cy,
@@ -29,20 +24,35 @@ const MethodologiesChart = ({
     outerRadius,
     percent,
   }: PieLabelRenderProps | any) => {
+    const RADIAN = Math.PI / 180;
     const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
     const x = cx + radius * Math.cos(-midAngle * RADIAN);
     const y = cy + radius * Math.sin(-midAngle * RADIAN);
+    const text = `${(percent * 100).toFixed(1)}%`;
+    const textWidth = text.length * 9;
+    const textHeight = 18;
 
     return (
-      <text
-        x={x}
-        y={y}
-        fill="white"
-        textAnchor={x > cx ? "start" : "end"}
-        dominantBaseline="central"
-      >
-        {`${(percent * 100).toFixed(1)}%`}
-      </text>
+      <g>
+        <rect
+          x={x - textWidth / 2}
+          y={y - textHeight / 2}
+          width={textWidth}
+          height={textHeight}
+          fill="rgba(0, 0, 0, 0.75)"
+          rx={5}
+          ry={5}
+        />
+        <text
+          x={x}
+          y={y}
+          fill="white"
+          textAnchor="middle"
+          dominantBaseline="central"
+        >
+          {text}
+        </text>
+      </g>
     );
   };
 
@@ -50,6 +60,7 @@ const MethodologiesChart = ({
     <ResponsiveContainer width={"100%"} height={"100%"}>
       <PieChart>
         <Pie
+          stroke="black"
           dataKey="totalCards"
           data={methodologies}
           cx="50%"
@@ -59,13 +70,7 @@ const MethodologiesChart = ({
           label={renderCustomizedLabel}
         >
           {methodologies.map((entry, index) => (
-            <Cell
-              key={`cell-${index}`}
-              fill={getColorForMethodology(
-                methodologiesCatalog,
-                entry.methodology
-              )}
-            />
+            <Cell key={`cell-${index}`} fill={`#${entry.color}`} />
           ))}
         </Pie>
         <Tooltip
@@ -76,8 +81,12 @@ const MethodologiesChart = ({
                   className="bg-card-fields md:text-sm text-xs w-52 md:w-auto text-white py-2 px-4 rounded-md shadow-lg"
                   key={index}
                 >
-                  <p>{Strings.methodologyChart} {item.payload.methodology}</p>
-                  <p>{Strings.totalCards} {item.payload.totalCards}</p>
+                  <p>
+                    {Strings.cardName} {item.payload.methodology}
+                  </p>
+                  <p>
+                    {Strings.totalCards} {item.payload.totalCards}
+                  </p>
                 </div>
               ))}
             </div>

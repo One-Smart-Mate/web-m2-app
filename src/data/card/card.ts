@@ -27,6 +27,7 @@ export interface CardInterface {
   responsableName: string;
   userAppProvisionalSolutionName: string;
   userAppDefinitiveSolutionName: string;
+  cardLocation: string;
 }
 
 export interface Evidences {

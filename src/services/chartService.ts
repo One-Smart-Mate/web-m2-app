@@ -1,4 +1,10 @@
-import { Areas, Creators, Preclassifier, Weeks } from "../data/charts/charts";
+import {
+  Area,
+  Creators,
+  Machine,
+  Preclassifier,
+  Weeks,
+} from "../data/charts/charts";
 import { apiSlice } from "./apiSlice";
 
 export const chartService = apiSlice.injectEndpoints({
@@ -11,9 +17,13 @@ export const chartService = apiSlice.injectEndpoints({
       query: (siteId) => `/card/site/methodologies/${siteId}`,
       transformResponse: (response: { data: Preclassifier[] }) => response.data,
     }),
-    getAreasChartData: builder.mutation<Areas[], string>({
+    getAreasChartData: builder.mutation<Area[], string>({
       query: (siteId) => `/card/site/areas/${siteId}`,
-      transformResponse: (response: { data: Areas[] }) => response.data,
+      transformResponse: (response: { data: Area[] }) => response.data,
+    }),
+    getMachinesChartData: builder.mutation<Machine[], string>({
+      query: (siteId) => `/card/site/machines/${siteId}`,
+      transformResponse: (response: { data: Machine[] }) => response.data,
     }),
     getCreatorsChartData: builder.mutation<Creators[], string>({
       query: (siteId) => `/card/site/creators/${siteId}`,
@@ -32,4 +42,5 @@ export const {
   useGetPreclassifiersChartDataMutation,
   useGetWeeksChartDataMutation,
   useGetMethodologiesChartDataMutation,
+  useGetMachinesChartDataMutation,
 } = chartService;

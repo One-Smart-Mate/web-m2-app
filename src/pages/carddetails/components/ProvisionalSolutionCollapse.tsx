@@ -1,13 +1,24 @@
 import { Collapse } from "antd";
 import Strings from "../../../utils/localizations/Strings";
-import { CardDetailsInterface } from "../../../data/card/card";
-import { formatDate, getDaysBetween } from "../../../utils/Extensions";
+import { CardDetailsInterface, Evidences } from "../../../data/card/card";
+import {
+  formatDate,
+  getDaysBetween,
+  hasAudios,
+  hasImages,
+  hasVideos,
+} from "../../../utils/Extensions";
+import EvidenceIndicator from "../../../components/EvidenceIndicator";
+import ImagesCarousel from "./ImagesCarousel";
+import VideosCarousel from "./VideosCarousel";
+import AudiosList from "./AudiosList";
 
 interface CardProps {
   data: CardDetailsInterface;
+  evidences: Evidences[];
 }
 
-const ProvisionalSolutionCollapse = ({ data }: CardProps) => {
+const ProvisionalSolutionCollapse = ({ data, evidences }: CardProps) => {
   const { card } = data;
 
   return (
@@ -69,6 +80,28 @@ const ProvisionalSolutionCollapse = ({ data }: CardProps) => {
               {card.commentsAtCardProvisionalSolution || Strings.NA}
             </span>
           </div>
+        </div>
+      </Collapse.Panel>
+      <Collapse.Panel
+        key="2"
+        header={
+          <>
+            <div className="flex gap-3">
+              <h2 className="text-base font-semibold text-black">
+                {Strings.evidences}
+              </h2>
+              {evidences.length === 0 && (
+                <p className="text-base text-gray-700">{Strings.NA}</p>
+              )}
+              {EvidenceIndicator(evidences)}
+            </div>
+          </>
+        }
+      >
+        <div className="flex justify-center gap-2 flex-wrap">
+          {hasImages(evidences) && <ImagesCarousel data={evidences} />}
+          {hasVideos(evidences) && <VideosCarousel data={evidences} />}
+          {hasAudios(evidences) && <AudiosList data={evidences} />}
         </div>
       </Collapse.Panel>
     </Collapse>

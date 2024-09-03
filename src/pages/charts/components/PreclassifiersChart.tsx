@@ -11,17 +11,14 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import { getColorForMethodology } from "../../../utils/Extensions";
 import { useGetPreclassifiersChartDataMutation } from "../../../services/chartService";
-import { CardTypesCatalog } from "../../../data/cardtypes/cardTypes";
 import Strings from "../../../utils/localizations/Strings";
 
 export interface ChartProps {
   siteId: string;
-  methodologiesCatalog: CardTypesCatalog[];
 }
 
-const PreclassifiersChart = ({ siteId, methodologiesCatalog }: ChartProps) => {
+const PreclassifiersChart = ({ siteId }: ChartProps) => {
   const [getAnomalies] = useGetPreclassifiersChartDataMutation();
   const [preclassifiers, setPreclassifiers] = useState<Preclassifier[]>([]);
   const handleGetData = async () => {
@@ -51,7 +48,7 @@ const PreclassifiersChart = ({ siteId, methodologiesCatalog }: ChartProps) => {
                       {Strings.totalCards} {item.payload.totalCards}
                     </p>
                     <p>
-                      {Strings.methodologyChart} {item.payload.methodology}
+                      {Strings.cardName} {item.payload.methodology}
                     </p>
                   </div>
                 );
@@ -67,15 +64,9 @@ const PreclassifiersChart = ({ siteId, methodologiesCatalog }: ChartProps) => {
           textAnchor="end"
           className="md:text-sm text-xs"
         />
-        <Bar dataKey="totalCards">
+        <Bar stroke="black" dataKey="totalCards">
           {preclassifiers.map((entry, index) => (
-            <Cell
-              key={`cell-${index}`}
-              fill={getColorForMethodology(
-                methodologiesCatalog,
-                entry.methodology
-              )}
-            />
+            <Cell key={`cell-${index}`} fill={`#${entry.color}`} />
           ))}
         </Bar>
       </BarChart>

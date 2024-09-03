@@ -220,11 +220,14 @@ export default class Strings {
   static anomalies = "Anomalies";
   static cardAreas = "Card areas";
   static cardCreators = "Card creators";
-  static tagMonitoring = "tagMonitoring";
+  static cardMachines = "Card machines";
+  static tagMonitoring = "Tag monitoring";
   static totalCards = "Total cards:";
   static areaChart = "Area:";
+  static machine = "Machine:";
+  static location = "Location:";
   static creatorChart = "Creator:";
-  static methodologyChart = "Methodology:";
+  static cardName = "Card name:";
   static preclassifierChart = "Preclassifier:";
   static year = "Year:";
   static week = "Week:";
@@ -241,6 +244,17 @@ export default class Strings {
   static confirm = "Confirm";
 
   static tagVersion = "Version 1.0.0";
+
+  //Evidence type
+  static AUCR = "AUCR";
+  static AUCL = "AUCL";
+  static AUPS = "AUPS";
+  static VICR = "VICR";
+  static VICL = "VICL";
+  static VIPS = "VIPS";
+  static IMCR = "IMCR";
+  static IMPS = "IMPS";
+  static IMCL = "IMCL";
 
   //status
   static active = "Active";

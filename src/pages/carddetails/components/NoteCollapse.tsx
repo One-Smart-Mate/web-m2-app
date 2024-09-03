@@ -10,7 +10,6 @@ const NoteCollapse = ({ data }: Props) => {
   return (
     <Collapse
       collapsible={data.length === 0 ? "disabled" : undefined}
-      defaultActiveKey={data.length !== 0 ? ["1"] : undefined}
       className="bg-gray-100 rounded-xl shadow-md"
     >
       <Collapse.Panel
