@@ -120,7 +120,7 @@ const InfoCollapse = ({ data }: CardProps) => {
                   {cardStatus.text}
                 </CustomTag>
                 <div
-                  className="w-10 md:w-16 rounded-lg border border-black"
+                  className="w-10 md:flex-1 rounded-lg border border-black"
                   style={{ backgroundColor: `#${card.cardTypeColor}` }}
                 />
               </div>

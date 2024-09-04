@@ -2,15 +2,23 @@ export interface Preclassifier {
   preclassifier: string;
   totalCards: number;
   methodology: string;
+  color: string;
 }
 
 export interface Methodology {
   methodology: string;
+  color: string;
   totalCards: number;
 }
 
-export interface Areas {
+export interface Area {
   area: string;
+  totalCards: number;
+}
+
+export interface Machine {
+  machine: string;
+  location: string
   totalCards: number;
 }
 

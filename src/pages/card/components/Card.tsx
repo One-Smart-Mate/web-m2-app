@@ -46,9 +46,16 @@ const InformationPanel = ({ data, cardDetailsRoute }: CardProps) => {
     <Card
       title={
         <div className="mt-2 flex flex-col items-center">
-          <h2 className="text-xl font-semibold text-black">
-            {data.cardTypeMethodologyName} {data.siteCardId}
-          </h2>
+          <div className="flex gap-2">
+            <h2 className="text-xl font-semibold text-black">
+              {data.cardTypeMethodologyName} {data.siteCardId}
+            </h2>
+            <div
+              className="w-10 md:flex-1 rounded-lg border border-black"
+              style={{ backgroundColor: `#${data.cardTypeColor}` }}
+            />
+          </div>
+
           {evidenceIndicator(data.evidences)}
         </div>
       }
@@ -83,10 +90,10 @@ const InformationPanel = ({ data, cardDetailsRoute }: CardProps) => {
           </p>
         </div>
 
-        <span>{Strings.area}</span>
+        <span>{Strings.location}</span>
         <div className="col-span-2">
           <p className="max-w-48 w-fit text-white bg-card-fields rounded-lg p-1">
-            {data.areaName}
+            {data.cardLocation}
           </p>
         </div>
 

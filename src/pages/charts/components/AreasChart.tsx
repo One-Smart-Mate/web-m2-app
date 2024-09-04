@@ -8,7 +8,7 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import { Areas } from "../../../data/charts/charts";
+import { Area } from "../../../data/charts/charts";
 import { useGetAreasChartDataMutation } from "../../../services/chartService";
 import Strings from "../../../utils/localizations/Strings";
 
@@ -18,7 +18,7 @@ export interface ChartProps {
 
 const AreasChart = ({ siteId }: ChartProps) => {
   const [getAreas] = useGetAreasChartDataMutation();
-  const [areas, setAreas] = useState<Areas[]>([]);
+  const [areas, setAreas] = useState<Area[]>([]);
   const handleGetData = async () => {
     const response = await getAreas(siteId).unwrap();
     setAreas(response);
@@ -58,7 +58,7 @@ const AreasChart = ({ siteId }: ChartProps) => {
           textAnchor="end"
           className="md:text-sm text-xs"
         />
-        <Bar dataKey="totalCards" fill="#3b4d6b" />
+        <Bar stroke="black" dataKey="totalCards" fill="#3b4d6b" />
       </BarChart>
     </ResponsiveContainer>
   );

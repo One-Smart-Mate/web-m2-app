@@ -6,7 +6,7 @@ import {
   useGetCardDetailsMutation,
   useGetCardNotesMutation,
 } from "../../services/cardService";
-import { CardDetailsInterface } from "../../data/card/card";
+import { CardDetailsInterface, Evidences } from "../../data/card/card";
 import { UnauthorizedRoute } from "../../utils/Routes";
 import InfoCollapse from "./components/InfoCollapse";
 import ProvisionalSolutionCollapse from "./components/ProvisionalSolutionCollapse";
@@ -62,6 +62,37 @@ const CardDetails = () => {
   }, []);
 
   const cardName = location?.state?.cardName || Strings.empty;
+  const filterEvidence = (data: Evidences[]) => {
+    const creation: Evidences[] = [];
+    const provisionalSolution: Evidences[] = [];
+    const definitiveSolution: Evidences[] = [];
+
+    data.map((evidence) => {
+      switch (evidence.evidenceType) {
+        case Strings.AUCR:
+        case Strings.IMCR:
+        case Strings.VICR:
+          creation.push(evidence);
+          break;
+        case Strings.AUPS:
+        case Strings.IMPS:
+        case Strings.VIPS:
+          provisionalSolution.push(evidence);
+          break;
+        case Strings.AUCL:
+        case Strings.IMCL:
+        case Strings.VICL:
+          definitiveSolution.push(evidence);
+          break;
+      }
+    });
+
+    return {
+      creation,
+      provisionalSolution,
+      definitiveSolution,
+    };
+  };
 
   return (
     <>
@@ -75,19 +106,27 @@ const CardDetails = () => {
           <div className="flex flex-col lg:flex-row gap-2 mt-2">
             <div className="flex-1">
               {data ? (
-                <EvidenceCollapse data={data.evidences} />
+                <EvidenceCollapse
+                  data={filterEvidence(data.evidences).creation}
+                />
               ) : (
                 <LoadingCard />
               )}
             </div>
             <div className="flex-1 flex flex-col gap-2">
               {data ? (
-                <ProvisionalSolutionCollapse data={data} />
+                <ProvisionalSolutionCollapse
+                  data={data}
+                  evidences={filterEvidence(data.evidences).provisionalSolution}
+                />
               ) : (
                 <LoadingCard />
               )}
               {data ? (
-                <DefinitiveSolutionCollapse data={data} />
+                <DefinitiveSolutionCollapse
+                  data={data}
+                  evidences={filterEvidence(data.evidences).definitiveSolution}
+                />
               ) : (
                 <LoadingCard />
               )}

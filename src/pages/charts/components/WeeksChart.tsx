@@ -67,8 +67,12 @@ const WeeksChart = ({ siteId }: ChartProps) => {
             if (props.active && props.payload && props.payload.length) {
               return (
                 <div className="bg-card-fields text-white py-2 px-4 rounded-md shadow-lg">
-                  <p>{Strings.year} {props.payload[0].payload.year}</p>
-                  <p>{Strings.week} {props.label}</p>
+                  <p>
+                    {Strings.year} {props.payload[0].payload.year}
+                  </p>
+                  <p>
+                    {Strings.week} {props.label}
+                  </p>
                   <p>
                     {Strings.cumulativeIssued}{" "}
                     {props.payload[0].payload.cumulativeIssued}
@@ -84,8 +88,8 @@ const WeeksChart = ({ siteId }: ChartProps) => {
           }}
         />
         <Legend verticalAlign="top" content={renderLegend} />
-        <Line type="monotone" dataKey="cumulativeIssued" stroke="#6b3a3d" />
-        <Line type="monotone" dataKey="cumulativeEradicated" stroke="#4f6b54" />
+        <Line type="monotone" dataKey="cumulativeIssued" stroke="#6b3a3d" strokeWidth={2} />
+        <Line type="monotone" dataKey="cumulativeEradicated" stroke="#4f6b54" strokeWidth={2} />
       </LineChart>
     </ResponsiveContainer>
   );
