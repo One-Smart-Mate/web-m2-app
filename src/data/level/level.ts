@@ -6,5 +6,6 @@ export interface Level {
   name: string;
   description: string;
   levelMachineId: string;
+  notify: string
   status: string;
 }

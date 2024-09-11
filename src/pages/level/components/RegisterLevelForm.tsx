@@ -1,4 +1,4 @@
-import { Form, FormInstance, Input, Select } from "antd";
+import { Checkbox, Form, FormInstance, Input, Select } from "antd";
 import Strings from "../../../utils/localizations/Strings";
 import { BsCardText } from "react-icons/bs";
 import { LuTextCursor } from "react-icons/lu";
@@ -27,14 +27,13 @@ const RegisterLevelForm = ({ form }: FormProps) => {
   }, []);
 
   const selectOptions = () => {
-    return data.map((responsible) => (
-      <Select.Option key={responsible.id} value={responsible.id}>
-        {responsible.name}
-      </Select.Option>
-    ));
+    return data.map((responsible) => ({
+      value: responsible.id,
+      label: responsible.name,
+    }));
   };
   return (
-    <Form form={form}>
+    <Form form={form} layout="vertical">
       <div className="flex flex-col">
         <div className="flex flex-row flex-wrap">
           <Form.Item
@@ -68,22 +67,21 @@ const RegisterLevelForm = ({ form }: FormProps) => {
           </Form.Item>
         </div>
         <div className="flex flex-wrap gap-1">
-          <Form.Item
-            name="responsibleId"
-            validateFirst
-            rules={[{ required: true, message: Strings.requiredResponsableId }]}
-            className="flex-1"
-          >
-            <Select size="large" placeholder={Strings.responsible}>
-              {selectOptions()}
-            </Select>
+          <Form.Item name="responsibleId" className="flex-1">
+            <Select
+              size="large"
+              placeholder={Strings.responsible}
+              options={selectOptions()}
+              showSearch
+              filterOption={(input, option) => {
+                if (!option) {
+                  return false;
+                }
+                return option.label.toLowerCase().includes(input.toLowerCase());
+              }}
+            />
           </Form.Item>
-          <Form.Item
-            name="levelMachineId"
-            validateFirst
-            rules={[{ required: true, message: Strings.requiredResponsableId }]}
-            className="md:flex-1 w-2/3"
-          >
+          <Form.Item name="levelMachineId" className="md:flex-1">
             <Input
               size="large"
               maxLength={50}
@@ -92,6 +90,11 @@ const RegisterLevelForm = ({ form }: FormProps) => {
             />
           </Form.Item>
         </div>
+        <Form.Item name="notify" valuePropName="checked">
+          <Checkbox>
+            <p className="text-base">{Strings.notify}</p>
+          </Checkbox>
+        </Form.Item>
       </div>
     </Form>
   );

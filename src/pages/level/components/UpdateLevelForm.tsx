@@ -1,4 +1,4 @@
-import { Form, FormInstance, Input, Select } from "antd";
+import { Checkbox, Form, FormInstance, Input, Select } from "antd";
 import Strings from "../../../utils/localizations/Strings";
 import { BsCardText } from "react-icons/bs";
 import { LuTextCursor } from "react-icons/lu";
@@ -41,10 +41,12 @@ const UpdateLevelForm = ({ form }: FormProps) => {
   }, []);
 
   const responsibleOptions = () => {
-    return responsibles.map((responsible) => ({
+    const options = responsibles.map((responsible) => ({
       value: responsible.id,
       label: responsible.name,
     }));
+    options.push({ value: "0", label: Strings.none });
+    return options;
   };
   const statusOptions = () => {
     return statuses.map((status) => ({
@@ -90,24 +92,14 @@ const UpdateLevelForm = ({ form }: FormProps) => {
           </Form.Item>
         </div>
         <div className="flex gap-1 flex-wrap">
-          <Form.Item
-            name="responsibleId"
-            validateFirst
-            rules={[{ required: true, message: Strings.requiredResponsableId }]}
-            className="flex-1"
-          >
+          <Form.Item name="responsibleId" className="flex-1">
             <Select
               size="large"
               placeholder={Strings.responsible}
               options={responsibleOptions()}
             />
           </Form.Item>
-          <Form.Item
-            name="levelMachineId"
-            validateFirst
-            rules={[{ required: true, message: Strings.requiredResponsableId }]}
-            className="md:flex-1 w-2/3"
-          >
+          <Form.Item name="levelMachineId" className="md:flex-1 w-2/3">
             <Input
               size="large"
               maxLength={50}
@@ -116,9 +108,16 @@ const UpdateLevelForm = ({ form }: FormProps) => {
             />
           </Form.Item>
         </div>
-        <Form.Item name="status" className="w-60">
-          <Select size="large" options={statusOptions()} />
-        </Form.Item>
+        <div className="flex gap-3">
+          <Form.Item name="status" className="w-60">
+            <Select size="large" options={statusOptions()} />
+          </Form.Item>
+          <Form.Item name="notify" valuePropName="checked" className="text-4xl">
+            <Checkbox>
+              <p className="text-base">{Strings.notify}</p>
+            </Checkbox>
+          </Form.Item>
+        </div>
       </div>
     </Form>
   );
