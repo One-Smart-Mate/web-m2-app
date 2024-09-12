@@ -51,13 +51,20 @@ const UpdateLevelButton = ({ levelId }: ButtonEditProps) => {
   const handleOnUpdateFormFinish = async (values: any) => {
     try {
       setModalLoading(true);
+      if (values.responsibleId && values.responsibleId !== "0") {
+        values.responsibleId = Number(values.responsibleId);
+      } else {
+        values.responsibleId = null;
+      }
+      console.log(values);
       const priorityToUpdate = new UpdateLevel(
         Number(values.id),
         values.name,
         values.description,
-        Number(values.responsibleId),
+        values.responsibleId,
         values.status,
-        values.levelMachineId.trim()
+        values.levelMachineId && values.levelMachineId.trim(),
+        values.notify ? 1 : 0
       );
       await updateLevel(priorityToUpdate).unwrap();
       setModalOpen(false);

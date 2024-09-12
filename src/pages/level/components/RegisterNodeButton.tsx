@@ -39,14 +39,20 @@ const RegisterNodeButton = ({ superiorId, nodesName }: Props) => {
   const handleOnFormCreateFinish = async (values: any) => {
     try {
       setModalLoading(true);
+      if (values.responsibleId && values.responsibleId !== "0") {
+        values.responsibleId = Number(values.responsibleId);
+      } else {
+        values.responsibleId = null;
+      }
       await registerLevel(
         new CreateNode(
           values.name.trim(),
           values.description.trim(),
-          Number(values.responsibleId),
+          values.responsibleId,
           Number(siteId),
           Number(superiorId),
-          values.levelMachineId.trim()
+          values.levelMachineId && values.levelMachineId.trim(),
+          values.notify ? 1 : 0
         )
       ).unwrap();
       setModalOpen(false);

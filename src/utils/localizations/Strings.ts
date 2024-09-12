@@ -39,10 +39,12 @@ export default class Strings {
   static provisionalSoluitonApplied = "Provisional solution applied";
   static definitiveSolutionApplied = "Definitive solution applied";
   static NA = "N/A";
+  static noResponsible = "No responsible";
   static images = "Images";
   static videos = "Videos";
   static audios = "Audios";
   static evidences = "Evidences";
+  static none = "None";
 
   //errors login form
   static requiredEmail = "Please input your e-mail address!";
@@ -95,6 +97,9 @@ export default class Strings {
 
   //company actions
   static viewSites = "View sites";
+
+  //levels
+  static notify = " Notify";
 
   //site actions
   static viewPriorities = "View priorities";

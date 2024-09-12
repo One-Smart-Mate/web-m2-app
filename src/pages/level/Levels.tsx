@@ -102,13 +102,19 @@ const Levels = () => {
   const handleOnFormCreateFinish = async (values: any) => {
     try {
       setModalLoading(true);
+      if (values.responsibleId && values.responsibleId !== "0") {
+        values.responsibleId = Number(values.responsibleId);
+      } else {
+        values.responsibleId = null;
+      }
       await registerLevel(
         new CreateLevel(
           values.name.trim(),
           values.description.trim(),
-          Number(values.responsibleId),
+          values.responsibleId,
           Number(location.state.siteId),
-          values.levelMachineId.trim(),
+          values.levelMachineId && values.levelMachineId.trim(),
+          values.notify ? 1 : 0
         )
       ).unwrap();
       setModalOpen(false);
@@ -121,7 +127,7 @@ const Levels = () => {
     }
   };
 
-  const siteName = location?.state?.siteName || Strings.empty
+  const siteName = location?.state?.siteName || Strings.empty;
 
   return (
     <>

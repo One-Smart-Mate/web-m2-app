@@ -1,9 +1,10 @@
-import { Badge, Collapse, Empty, Space, Spin } from "antd";
+import { Collapse, Empty, Space, Spin } from "antd";
 import { Level } from "../../../data/level/level";
 import RegisterNodeButton from "./RegisterNodeButton";
 import UpdateLevelButton from "./UpdateLevelButton";
 import { getStatusAndText } from "../../../utils/Extensions";
 import Strings from "../../../utils/localizations/Strings";
+import CustomTag from "../../../components/CustomTag";
 
 interface Props {
   data: Level[];
@@ -38,13 +39,18 @@ const generateItems = (
       return {
         key: item.id.toString(),
         label: (
-          <div className="flex flex-col gap-1">
-            <h1 className="flex-1 text-base md:text-lg">{item.name}</h1>
-            <Badge status={status} text={text} />
+          <div className="flex gap-4">
+            <h1 className="text-sm font-semibold text-black md:text-base">
+              {item.name}
+            </h1>
+            <p className="text-base text-gray-600">
+              {item.responsibleName || Strings.noResponsible}
+            </p>
+            <CustomTag color={status}>{text}</CustomTag>
           </div>
         ),
         extra: (
-          <Space>
+          <Space className="hidden md:flex">
             {validateStatusBeforeCreateNodes(
               item.status,
               item.id,
@@ -55,7 +61,7 @@ const generateItems = (
         ),
         children: (
           <>
-            <h2 className="mb-2 font-light text-base md:text-lg">
+            <h2 className="mb-2 font-normal text-sm md:text-base">
               {item.description}
             </h2>
             {childrenItems.length > 0 && <Collapse items={childrenItems} />}
