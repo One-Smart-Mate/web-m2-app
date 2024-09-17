@@ -3,30 +3,30 @@ import Strings from "../../../utils/localizations/Strings";
 import { useAppSelector } from "../../../core/store";
 import { useEffect, useState } from "react";
 import { selectSiteId } from "../../../core/genericReducer";
-import { useGetSiteResponsiblesMutation } from "../../../services/userService";
+import { useGetSiteMechanicsMutation } from "../../../services/userService";
 import { Responsible } from "../../../data/user/user";
 
 interface FormProps {
   form: FormInstance;
 }
 
-const UpdateResponsibleForm = ({ form }: FormProps) => {
-  const [getResponsibles] = useGetSiteResponsiblesMutation();
+const UpdateMechanicForm = ({ form }: FormProps) => {
+  const [getMechanics] = useGetSiteMechanicsMutation();
   const siteId = useAppSelector(selectSiteId);
   const [data, setData] = useState<Responsible[]>([]);
 
-  const handleGetResponsibles = async () => {
-    const responsibles = await getResponsibles(siteId).unwrap();
-    setData(responsibles);
+  const handleGetMechanics = async () => {
+    const mechanics = await getMechanics(siteId).unwrap();
+    setData(mechanics);
   };
   useEffect(() => {
-    handleGetResponsibles();
+    handleGetMechanics();
   }, []);
 
   const selectOptions = () => {
-    return data.map((responsible) => (
-      <Select.Option key={responsible.id} value={responsible.id}>
-        {responsible.name}
+    return data.map((mechanic) => (
+      <Select.Option key={mechanic.id} value={mechanic.id}>
+        {mechanic.name}
       </Select.Option>
     ));
   };
@@ -34,12 +34,12 @@ const UpdateResponsibleForm = ({ form }: FormProps) => {
     <Form form={form}>
       <div className="flex flex-row">
         <Form.Item
-          name="responsibleId"
+          name="mechanicId"
           validateFirst
-          rules={[{ required: true, message: Strings.requiredResponsableId }]}
+          rules={[{ required: true, message: Strings.requiredMechanic }]}
           className="flex-1"
         >
-          <Select size="large" placeholder={Strings.responsible}>
+          <Select size="large" placeholder={Strings.mechanic}>
             {selectOptions()}
           </Select>
         </Form.Item>
@@ -48,4 +48,4 @@ const UpdateResponsibleForm = ({ form }: FormProps) => {
   );
 };
 
-export default UpdateResponsibleForm;
+export default UpdateMechanicForm;

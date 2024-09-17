@@ -10,14 +10,14 @@ export class UpdateCardPriority {
   }
 }
 
-export class UpdateCardResponsible {
+export class UpdateCardMechanic {
   cardId: number;
-  responsibleId: number;
+  mechanicId: number;
   idOfUpdatedBy: number;
 
-  constructor(cardId: number, responsibleId: number, idOfUpdatedBy: number) {
+  constructor(cardId: number, mechanicId: number, idOfUpdatedBy: number) {
     this.cardId = cardId;
-    this.responsibleId = responsibleId;
+    this.mechanicId = mechanicId;
     this.idOfUpdatedBy = idOfUpdatedBy;
   }
 }

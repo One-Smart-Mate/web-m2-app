@@ -9,15 +9,14 @@ import CustomTag from "../../../components/CustomTag";
 import { CardDetailsInterface } from "../../../data/card/card";
 import ModalForm from "../../../components/ModalForm";
 import { useState } from "react";
-import UpdateResponsibleForm from "./UpdateResponsibleForm";
 import UpdatePriorityForm from "./UpdatePriorityForm";
 import {
+  useUpdateCardMechanicMutation,
   useUpdateCardPriorityMutation,
-  useUpdateCardResponsibleMutation,
 } from "../../../services/cardService";
 import {
+  UpdateCardMechanic,
   UpdateCardPriority,
-  UpdateCardResponsible,
 } from "../../../data/card/card.request";
 import { useAppDispatch, useAppSelector } from "../../../core/store";
 import { selectCurrentUser } from "../../../core/authReducer";
@@ -27,6 +26,7 @@ import {
   NotificationSuccess,
 } from "../../../utils/Notifications";
 import { setCardUpdatedIndicator } from "../../../core/genericReducer";
+import UpdateMechanicForm from "./UpdateMechanicForm";
 
 interface CardProps {
   data: CardDetailsInterface;
@@ -38,7 +38,7 @@ const InfoCollapse = ({ data }: CardProps) => {
   const [modalType, setModalType] = useState(Strings.empty);
   const currentUser = useAppSelector(selectCurrentUser);
   const [updateCardPriority] = useUpdateCardPriorityMutation();
-  const [updateCardResponsible] = useUpdateCardResponsibleMutation();
+  const [updateCardMechanic] = useUpdateCardMechanicMutation();
   const dispatch = useAppDispatch();
 
   const { card } = data;
@@ -58,7 +58,7 @@ const InfoCollapse = ({ data }: CardProps) => {
     if (modalType === Strings.priority) {
       return UpdatePriorityForm;
     } else {
-      return UpdateResponsibleForm;
+      return UpdateMechanicForm;
     }
   };
 
@@ -66,7 +66,7 @@ const InfoCollapse = ({ data }: CardProps) => {
     if (modalType === Strings.priority) {
       return Strings.updatePriority;
     } else {
-      return Strings.updateResponsible;
+      return Strings.updateMechanic;
     }
   };
 
@@ -82,10 +82,10 @@ const InfoCollapse = ({ data }: CardProps) => {
           )
         ).unwrap();
       } else {
-        await updateCardResponsible(
-          new UpdateCardResponsible(
+        await updateCardMechanic(
+          new UpdateCardMechanic(
             Number(card.id),
-            Number(values.responsibleId),
+            Number(values.mechanicId),
             Number(currentUser.userId)
           )
         ).unwrap();
@@ -169,12 +169,12 @@ const InfoCollapse = ({ data }: CardProps) => {
               </span>
             </div>
             <div className="flex gap-1">
-              <span className="font-semibold"> {Strings.responsible}: </span>
+              <span className="font-semibold"> {Strings.mechanic}: </span>
               <span
-                onClick={() => handleOnOpenModal(Strings.responsible)}
+                onClick={() => handleOnOpenModal(Strings.mechanic)}
                 className="bg-gray-500 rounded-lg py-1 px-1 text-white cursor-pointer hover:bg-gray-600"
               >
-                {card.responsableName || "N/A"}
+                {card.mechanicName || "N/A"}
               </span>
             </div>
             <div className="flex gap-1">

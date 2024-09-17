@@ -77,6 +77,7 @@ export default class Strings {
   static requiredDescription = "Please enter the description";
   static requiredDaysNumber = "Please enter the days number";
   static requiredResponsableId = "Please select the responsible";
+  static requiredMechanic = "Please select the mechanic";
   static requiredPriority = "Required priority";
 
   //company
@@ -217,7 +218,7 @@ export default class Strings {
   static creator = "Creator";
   static comments = "Comments";
   static anomalyDetected = "Anomaly detected";
-  static updateResponsible = "Update responsible";
+  static updateMechanic = "Update mechanic";
   static changeLog = "Change log";
 
   //charts
