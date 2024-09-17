@@ -19,7 +19,7 @@ const CustomTag: React.FC<CustomTag> = ({ color, ...rest }) => {
       break;
   }
 
-  return <Tag className="rounded-lg" color={tagColor} {...rest} />;
+  return <Tag className="rounded-lg text-sm" color={tagColor} {...rest} />;
 };
 
 export default CustomTag;
