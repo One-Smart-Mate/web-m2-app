@@ -1,7 +1,7 @@
 import { CardDetailsInterface, CardInterface } from "../data/card/card";
 import {
+  UpdateCardMechanic,
   UpdateCardPriority,
-  UpdateCardResponsible,
 } from "../data/card/card.request";
 import { Note } from "../data/note";
 import { apiSlice } from "./apiSlice";
@@ -28,9 +28,9 @@ export const cardService = apiSlice.injectEndpoints({
         body: { ...priority },
       }),
     }),
-    updateCardResponsible: builder.mutation<void, UpdateCardResponsible>({
+    updateCardMechanic: builder.mutation<void, UpdateCardMechanic>({
       query: (responsible) => ({
-        url: "/card/update/responsible",
+        url: "/card/update/mechanic",
         method: "POST",
         body: { ...responsible },
       }),
@@ -43,5 +43,5 @@ export const {
   useGetCardDetailsMutation,
   useGetCardNotesMutation,
   useUpdateCardPriorityMutation,
-  useUpdateCardResponsibleMutation,
+  useUpdateCardMechanicMutation,
 } = cardService;

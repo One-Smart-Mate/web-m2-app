@@ -17,6 +17,10 @@ export const userService = apiSlice.injectEndpoints({
       query: (siteId) => `/users/all/${siteId}`,
       transformResponse: (response: { data: Responsible[] }) => response.data,
     }),
+    getSiteMechanics: builder.mutation<Responsible[], void>({
+      query: (siteId) => `/users/site/mechanics/${siteId}`,
+      transformResponse: (response: { data: Responsible[] }) => response.data,
+    }),
     getSiteUsers: builder.mutation<UserTable[], string>({
       query: (siteId) => `/users/site/${siteId}`,
       transformResponse: (response: { data: UserTable[] }) => response.data,
@@ -67,6 +71,7 @@ export const userService = apiSlice.injectEndpoints({
 export const {
   useGetUsersMutation,
   useGetSiteResponsiblesMutation,
+  useGetSiteMechanicsMutation,
   useCreateUserMutation,
   useGetUserMutation,
   useUpdateUserMutation,
