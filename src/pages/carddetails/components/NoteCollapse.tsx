@@ -10,7 +10,7 @@ const NoteCollapse = ({ data }: Props) => {
   return (
     <Collapse
       collapsible={data.length === 0 ? "disabled" : undefined}
-      className="bg-gray-100 rounded-xl shadow-md"
+      className="bg-gray-100 rounded-xl shadow-md md:w-4/5"
     >
       <Collapse.Panel
         header={

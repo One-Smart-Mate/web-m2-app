@@ -211,6 +211,7 @@ export default class Strings {
   static cardDetailsOf = "Card details of:";
   static cardType = "Card type";
   static problemType = "Problem type";
+  static cardNumber = "Card Number";
   static area = "Area";
   static createdBy = "Created by";
   static date = "Date";
@@ -231,7 +232,7 @@ export default class Strings {
   static totalCards = "Total cards:";
   static areaChart = "Area:";
   static machine = "Machine:";
-  static location = "Location:";
+  static location = "Location";
   static creatorChart = "Creator:";
   static cardName = "Card name:";
   static preclassifierChart = "Preclassifier:";

@@ -11,7 +11,6 @@ import { UnauthorizedRoute } from "../../utils/Routes";
 import InfoCollapse from "./components/InfoCollapse";
 import ProvisionalSolutionCollapse from "./components/ProvisionalSolutionCollapse";
 import DefinitiveSolutionCollapse from "./components/DefinitiveSolutionCollapse";
-import EvidenceCollapse from "./components/EvidenceCollapse";
 import { useAppDispatch, useAppSelector } from "../../core/store";
 import {
   resetCardUpdatedIndicator,
@@ -101,38 +100,32 @@ const CardDetails = () => {
           <PageTitle mainText={Strings.cardDetailsOf} subText={cardName} />
         </div>
 
-        <div className="flex-1 overflow-y-auto overflow-x-clip">
-          <div>{data ? <InfoCollapse data={data} /> : <LoadingCard />}</div>
-          <div className="flex flex-col lg:flex-row gap-2 mt-2">
-            <div className="flex-1">
-              {data ? (
-                <EvidenceCollapse
-                  data={filterEvidence(data.evidences).creation}
-                />
-              ) : (
-                <LoadingCard />
-              )}
-            </div>
-            <div className="flex-1 flex flex-col gap-2">
-              {data ? (
-                <ProvisionalSolutionCollapse
-                  data={data}
-                  evidences={filterEvidence(data.evidences).provisionalSolution}
-                />
-              ) : (
-                <LoadingCard />
-              )}
-              {data ? (
-                <DefinitiveSolutionCollapse
-                  data={data}
-                  evidences={filterEvidence(data.evidences).definitiveSolution}
-                />
-              ) : (
-                <LoadingCard />
-              )}
-              {!isLoading ? <NoteCollapse data={notes} /> : <LoadingCard />}
-            </div>
-          </div>
+        <div className="flex flex-col items-center overflow-y-auto overflow-x-clipb gap-2">
+          {data ? (
+            <InfoCollapse
+              data={data}
+              evidences={filterEvidence(data.evidences).creation}
+            />
+          ) : (
+            <LoadingCard />
+          )}
+          {data ? (
+            <ProvisionalSolutionCollapse
+              data={data}
+              evidences={filterEvidence(data.evidences).provisionalSolution}
+            />
+          ) : (
+            <LoadingCard />
+          )}
+          {data ? (
+            <DefinitiveSolutionCollapse
+              data={data}
+              evidences={filterEvidence(data.evidences).definitiveSolution}
+            />
+          ) : (
+            <LoadingCard />
+          )}
+          {!isLoading ? <NoteCollapse data={notes} /> : <LoadingCard />}
         </div>
       </div>
     </>
@@ -141,7 +134,10 @@ const CardDetails = () => {
 
 const LoadingCard = () => {
   return (
-    <Card className="h-full bg-gray-100 rounded-xl shadow-md" loading={true} />
+    <Card
+      className="h-full bg-gray-100 rounded-xl shadow-md md:w-4/5"
+      loading={true}
+    />
   );
 };
 
