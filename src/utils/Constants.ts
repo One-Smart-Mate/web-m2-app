@@ -4,6 +4,10 @@ const DATE_FORMAT = "YYYY-MM-DD";
 const AUDIO_FORMATS = ["mp3", "wav"];
 const VIDEO_FORMATS = ["mp4", "webm"];
 const IMAGE_FORMATS = ["jpg", "jpeg", "png"];
+const ihSisAdmin = "IH_sis_admin";
+const mechanic = "mechanic";
+const localAdmin = "local_admin";
+const localSisAdmin = "local_sis_admin";
 
 export default {
   PAGE_SIZE,
@@ -12,4 +16,8 @@ export default {
   AUDIO_FORMATS,
   IMAGE_FORMATS,
   VIDEO_FORMATS,
+  ihSisAdmin,
+  mechanic,
+  localAdmin,
+  localSisAdmin,
 };

@@ -5,8 +5,7 @@ export default class User {
   token: string;
   roles: string[];
   logo: string;
-  siteName: string;
-  siteId: string;
+  sites: Site[];
   companyId: string;
   companyName: string;
 
@@ -17,8 +16,7 @@ export default class User {
     token: string,
     roles: string[],
     logo: string,
-    siteName: string,
-    siteId: string,
+    sites: Site[],
     companyId: string,
     companyName: string
   ) {
@@ -28,8 +26,7 @@ export default class User {
     this.token = token;
     this.roles = roles;
     this.logo = logo;
-    this.siteName = siteName;
-    this.siteId = siteId;
+    this.sites = sites;
     this.companyId = companyId;
     this.companyName = companyName;
   }
@@ -40,7 +37,7 @@ export interface Role {
   name: string;
 }
 
-interface Site {
+export interface Site {
   id: string;
   name: string;
   logo: string;
@@ -51,7 +48,7 @@ export interface UserTable {
   name: string;
   email: string;
   roles: Role[];
-  site: Site;
+  sites: Site[];
 }
 
 export interface Responsible {

@@ -2,7 +2,7 @@ const Login = "/";
 const AdminDirectionHome = "/companies";
 const PriorityAll = "/priority/all";
 const SitesAllByCompany = "/sites/all";
-const Site = "/site";
+const Sites = "/sites";
 const CardTypesAllBySite = "/cardTypes/all";
 const PreclassifiersAllByCardType = "/preclassifier/all";
 const Users = "/users";
@@ -15,8 +15,8 @@ const Charts = "/charts";
 export const UnauthorizedRoute = "/unauthorized";
 
 const AdminPrefix = "/admin";
-const SysadminPrefix = "/sysadmin";
-const MechanicPrefix = "/mechanic";
+const SysadminPrefix = "/sys-admin";
+const LocalAdminPrefix = "/local-admin";
 
 export default {
   AdminDirectionHome,
@@ -33,6 +33,6 @@ export default {
   SiteUsers,
   AdminPrefix,
   SysadminPrefix,
-  MechanicPrefix,
-  Site
+  LocalAdminPrefix,
+  Sites,
 };

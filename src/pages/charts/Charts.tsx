@@ -45,7 +45,7 @@ const Charts = () => {
 
   useEffect(() => {
     handleGetMethodologiesCatalog();
-  }, []);
+  }, [location.state]);
 
   const siteName = location?.state?.siteName || Strings.empty;
   const siteId = location?.state?.siteId || Strings.empty;

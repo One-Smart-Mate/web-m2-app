@@ -19,6 +19,10 @@ export const siteService = apiSlice.injectEndpoints({
       query: (siteId) => `/sites/site/${siteId}`,
       transformResponse: (response: { data: SiteUpdateForm }) => response.data,
     }),
+    getUserSites: builder.mutation<Site[], string>({
+      query: (userId) => `/sites/user-sites/${userId}`,
+      transformResponse: (response: { data: Site[] }) => response.data,
+    }),
     updateSite: builder.mutation<void, UpdateSiteReq>({
       query: (site) => ({
         url: "/sites/update",
@@ -37,6 +41,7 @@ export const {
   useGetCompanySitesMutation,
   useCreateSiteMutation,
   useGetSiteMutation,
+  useGetUserSitesMutation,
   useUpdateSiteMutation,
   useGetSitesMutation,
 } = siteService;

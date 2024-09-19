@@ -61,15 +61,15 @@ const Cards = ({ rol }: CardsProps) => {
 
   useEffect(() => {
     handleGetCards();
-  }, []);
+  }, [location.state]);
 
   const buildCardDetailsRoute = () => {
-    if (rol === UserRoles.ADMIN) {
+    if (rol === UserRoles.IHSISADMIN) {
       return Routes.AdminPrefix + Routes.CardDetails;
-    } else if (rol === UserRoles.SYSADMIN) {
+    } else if (rol === UserRoles.LOCALSYSADMIN) {
       return Routes.SysadminPrefix + Routes.CardDetails;
     }
-    return Routes.MechanicPrefix + Routes.CardDetails;
+    return Routes.LocalAdminPrefix + Routes.CardDetails;
   };
 
   const siteName = location?.state?.siteName || Strings.empty;
