@@ -124,14 +124,14 @@ export default class Strings {
   static companies = "companies";
   static companiesUpperCase = "Companies";
   static users = "Users";
-  static usersOf = "Users of:";
+  static usersOf = "Users of";
   static requiredUserLicense = "Please select the user license";
   static enable = "Enable";
 
   //sites
   static site = "Site";
-  static sitesOf = "Sites of:";
-  static siteOf = "Site of:";
+  static sitesOf = "Sites of";
+  static yourSitesOfCompany = "Your sites of Company";
   static sites = "sites";
   static latitud = "Latitud";
   static longitud = "Longitud";
@@ -156,7 +156,7 @@ export default class Strings {
   static color = "Color";
   static responsible = "Responsible";
   static cardTypeMethodology = "Card Type Methodology";
-  static cardTypesOf = "Card types of:";
+  static cardTypesOf = "Card types of";
   static quantityPictures = "Quantity pictures";
   static quantityAudios = "Quantity audios";
   static quantityVideos = "Quantity videos";
@@ -185,7 +185,7 @@ export default class Strings {
   static viewPreclassifiers = "View preclassifiers";
 
   //Priority
-  static prioritiesOf = "Priorities of:";
+  static prioritiesOf = "Priorities of";
   static priority = "Priority";
   static code = "Code";
   static enterCode = "Enter the code!";
@@ -222,7 +222,7 @@ export default class Strings {
   static changeLog = "Change log";
 
   //charts
-  static chartsOf = "Charts of:";
+  static chartsOf = "Charts of";
   static anomalies = "Anomalies";
   static cardAreas = "Card areas";
   static cardCreators = "Card creators";
@@ -269,9 +269,9 @@ export default class Strings {
   static open = "Open";
   static closed = "Closed";
 
-  static preclassifiersof = "Preclassifiers of:";
+  static preclassifiersof = "Preclassifiers of";
   static updatePreclassifier = "Update preclassifier";
-  static levelsof = "Levels of:";
+  static levelsof = "Levels of";
 
   //erros pages
   static notFoundPageTitle = "404";

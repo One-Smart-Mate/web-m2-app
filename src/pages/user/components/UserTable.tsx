@@ -4,7 +4,7 @@ import { ColumnsType } from "antd/es/table";
 import Strings from "../../../utils/localizations/Strings";
 import { Space, Table, Tag } from "antd";
 import Constants from "../../../utils/Constants";
-import { Role, UserTable } from "../../../data/user/user";
+import { Role, Site, UserTable } from "../../../data/user/user";
 import UpdateUserButton from "./UpdateUserButton";
 
 interface PrioritiesTableProps {
@@ -69,13 +69,17 @@ const UserTableComponent = ({
       ...(!isSiteUserstable
         ? [
             {
-              title: Strings.site,
-              key: "site",
+              title: Strings.sites,
+              key: "sites",
               render: (record: UserTable) => {
-                return <Space>{record.site.name}</Space>;
+                return (
+                  <Space>
+                    <p>
+                      {record.sites.map((site: Site) => site.name).join(", ")}
+                    </p>
+                  </Space>
+                );
               },
-              sorter: (a: UserTable, b: UserTable) =>
-                a.site.name.localeCompare(b.site.name),
             },
           ]
         : []),

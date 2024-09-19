@@ -100,7 +100,7 @@ const CardTypess = ({ rol }: CardTypeProps) => {
   };
 
   const buildPreclassifiersRoute = () => {
-    if (rol === UserRoles.ADMIN)
+    if (rol === UserRoles.IHSISADMIN)
       return Routes.AdminPrefix + Routes.PreclassifiersAllByCardType;
 
     return Routes.SysadminPrefix + Routes.PreclassifiersAllByCardType;
@@ -108,7 +108,7 @@ const CardTypess = ({ rol }: CardTypeProps) => {
 
   useEffect(() => {
     handleGetPriorities();
-  }, []);
+  }, [location.state]);
 
   const handleOnFormCreateFinish = async (values: any) => {
     try {

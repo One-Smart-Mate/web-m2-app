@@ -136,14 +136,23 @@ const SiteTable = ({ data, isLoading, rol }: TableProps) => {
   );
 
   const buildSiteActions = (data: Site) => {
-    const actions = [
-      <UpdateSite key={`update-site-${data.id}`} siteId={data.id} />,
-    ];
-
-    if (rol === UserRoles.ADMIN) {
+    const actions = [];
+    if (rol === UserRoles.IHSISADMIN || rol === UserRoles.LOCALSYSADMIN) {
+      actions.push(
+        <UpdateSite key={`update-site-${data.id}`} siteId={data.id} />
+      );
+    }
+    if (rol === UserRoles.IHSISADMIN) {
       actions.push(
         <ViewChartsButton
           key={`view-charts-${data.id}`}
+          siteId={data.id}
+          siteName={data.name}
+        />
+      );
+      actions.push(
+        <ViewCardsButton
+          key={`view-cards-${data.id}`}
           siteId={data.id}
           siteName={data.name}
         />
@@ -172,13 +181,6 @@ const SiteTable = ({ data, isLoading, rol }: TableProps) => {
       actions.push(
         <ViewCardTypesButton
           key={`view-card-types-${data.id}`}
-          siteId={data.id}
-          siteName={data.name}
-        />
-      );
-      actions.push(
-        <ViewCardsButton
-          key={`view-cards-${data.id}`}
           siteId={data.id}
           siteName={data.name}
         />

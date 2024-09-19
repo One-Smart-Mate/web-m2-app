@@ -70,7 +70,7 @@ const SiteUsers = () => {
 
   useEffect(() => {
     handleGetUsers();
-  }, []);
+  }, [location.state]);
 
   const handleOnSearch = (event: any) => {
     const getSearch = event.target.value;

@@ -6,8 +6,6 @@ import {
   Image,
   Input,
   InputNumber,
-  Radio,
-  RadioChangeEvent,
   Select,
   Upload,
   UploadFile,
@@ -37,7 +35,6 @@ import { useGetCurrenciesMutation } from "../../../services/currencyService";
 import { Currency } from "../../../data/currency/currency";
 import { useAppSelector } from "../../../core/store";
 import { selectGeneratedSiteCode } from "../../../core/genericReducer";
-import { AiOutlineNumber } from "react-icons/ai";
 
 interface FormProps {
   form: FormInstance;
@@ -60,11 +57,6 @@ const RegisterSiteForm = ({ form }: FormProps) => {
   const [getCurrencies] = useGetCurrenciesMutation();
   const [currencies, setCurrencies] = useState<Currency[]>([]);
   const generatedSiteCode = useAppSelector(selectGeneratedSiteCode);
-  const [value, setValue] = useState(Strings.nombrado);
-
-  const onChange = (e: RadioChangeEvent) => {
-    setValue(e.target.value);
-  };
 
   const handleGetData = async () => {
     const response = await getCurrencies().unwrap();
@@ -349,38 +341,6 @@ const RegisterSiteForm = ({ form }: FormProps) => {
               addonBefore={<LuHistory />}
             />
           </Form.Item>
-          <div>
-            <h1>{Strings.userLicense}</h1>
-            <Form.Item
-              name="userLicense"
-              className="mr-10"
-              rules={[{ required: true, message: Strings.requiredUserLicense }]}
-            >
-              <Radio.Group onChange={onChange} value={value}>
-                <Radio value={Strings.concurrente}>{Strings.concurrent}</Radio>
-                <Radio value={Strings.nombrado}>{Strings.named}</Radio>
-              </Radio.Group>
-            </Form.Item>
-          </div>
-          {value === Strings.concurrente && (
-            <Form.Item
-              name="userQuantity"
-              rules={[
-                {
-                  required: true,
-                  message: Strings.requiredAdditionalField,
-                },
-              ]}
-              className="flex-1"
-            >
-              <InputNumber
-                addonBefore={<AiOutlineNumber />}
-                size="large"
-                max={100}
-                placeholder={Strings.quantity}
-              />
-            </Form.Item>
-          )}
         </div>
         <Form.Item
           name="logo"

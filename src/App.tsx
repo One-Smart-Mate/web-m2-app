@@ -3,7 +3,7 @@ import BaseLayout from "./pages/layouts/BaseLayout";
 import { Route, Routes } from "react-router-dom";
 import {
   adminRoutes,
-  mechanicRoutes,
+  localAdminRoutes,
   sysAdminRoutes,
 } from "./pages/routes/Routes";
 import LoginPage from "./pages/auth/Login";
@@ -62,7 +62,7 @@ function App() {
                 element={value.element}
               />
             ))}
-            {mechanicRoutes.map((value, index) => (
+            {localAdminRoutes.map((value, index) => (
               <Route
                 key={index}
                 path={value.fullPath}

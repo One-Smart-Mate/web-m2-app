@@ -122,10 +122,7 @@ const Priorities = () => {
     <>
       <div className="h-full flex flex-col">
         <div className="flex flex-col gap-2 items-center m-3">
-          <PageTitle
-            mainText={Strings.prioritiesOf}
-            subText={siteName}
-          />
+          <PageTitle mainText={Strings.prioritiesOf} subText={siteName} />
           <div className="flex flex-col md:flex-row flex-wrap items-center md:justify-between w-full">
             <div className="flex flex-col md:flex-row items-center flex-1 mb-1 md:mb-0">
               <Space className="w-full md:w-auto mb-1 md:mb-0">

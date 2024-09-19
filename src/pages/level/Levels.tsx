@@ -97,7 +97,7 @@ const Levels = () => {
 
   useEffect(() => {
     handleGetLevels();
-  }, []);
+  }, [location.state]);
 
   const handleOnFormCreateFinish = async (values: any) => {
     try {
