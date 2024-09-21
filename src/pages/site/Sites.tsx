@@ -5,7 +5,7 @@ import {
   useGetUserSitesMutation,
 } from "../../services/siteService";
 import Strings from "../../utils/localizations/Strings";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Form, Input, List, Space } from "antd";
 import CustomButton from "../../components/CustomButtons";
 import SiteTable from "./components/SiteTable";
@@ -34,6 +34,7 @@ import PageTitle from "../../components/PageTitle";
 import { generateShortUUID, UserRoles } from "../../utils/Extensions";
 import { useSessionStorage } from "../../core/useSessionStorage";
 import User from "../../data/user/user";
+import { UnauthorizedRoute } from "../../utils/Routes";
 
 interface SitesProps {
   rol: UserRoles;
@@ -53,8 +54,13 @@ const Sites = ({ rol }: SitesProps) => {
   const dispatch = useAppDispatch();
   const isSiteUpdated = useAppSelector(selectSiteUpdatedIndicator);
   const [getSessionUser] = useSessionStorage<User>(Strings.empty);
+  const navigate = useNavigate();
 
   const handleGetSites = async () => {
+    if (!location.state) {
+      navigate(UnauthorizedRoute);
+      return;
+    }
     const user = getSessionUser() as User;
     setLoading(true);
     var response;

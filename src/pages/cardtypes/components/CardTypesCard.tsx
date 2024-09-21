@@ -1,21 +1,36 @@
 import { Card, Dropdown, MenuProps, Tag, theme } from "antd";
-import { getStatusAndText } from "../../../utils/Extensions";
+import { getStatusAndText, UserRoles } from "../../../utils/Extensions";
 import { SlOptionsVertical } from "react-icons/sl";
 import Strings from "../../../utils/localizations/Strings";
 import { CardTypes } from "../../../data/cardtypes/cardTypes";
 import ViewPreclassifiersButton from "./ViewPreclassifiersButton";
 import UpdateCardType from "./UpdateCardType";
+import {
+  adminPreclassifiers,
+  sysAdminPreclassifiers,
+} from "../../routes/Routes";
 
 interface CardProps {
   data: CardTypes;
-  preclassifiersRoute: string;
+  rol: UserRoles;
 }
 
-const CardTypesCard = ({ data, preclassifiersRoute }: CardProps) => {
+const CardTypesCard = ({ data, rol }: CardProps) => {
   const { status, text } = getStatusAndText(data.status);
   const {
     token: { colorBgContainer, colorPrimary },
   } = theme.useToken();
+
+  const buildPreclassifiersRoute = () => {
+    if (rol === UserRoles.IHSISADMIN)
+      return adminPreclassifiers.fullPath
+        .replace(Strings.siteParam, data.siteId)
+        .replace(Strings.cardTypeParam, data.id);
+
+    return sysAdminPreclassifiers.fullPath
+      .replace(Strings.siteParam, data.siteId)
+      .replace(Strings.cardTypeParam, data.id);
+  };
 
   const items: MenuProps["items"] = [
     {
@@ -28,7 +43,7 @@ const CardTypesCard = ({ data, preclassifiersRoute }: CardProps) => {
         <ViewPreclassifiersButton
           cardTypeId={data.id}
           cardTypeName={data.name}
-          preclassifiersRoute={preclassifiersRoute}
+          preclassifiersRoute={buildPreclassifiersRoute()}
         />
       ),
     },

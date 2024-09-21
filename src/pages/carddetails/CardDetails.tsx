@@ -30,7 +30,7 @@ const CardDetails = () => {
   const [data, setData] = useState<CardDetailsInterface | null>(null);
   const [notes, setNotes] = useState<Note[]>([]);
   const dispatch = useAppDispatch();
-  const cardId = location.state.cardId || Strings.empty;
+  const cardId = location?.state?.cardId || Strings.empty;
   const isCardUpdated = useAppSelector(selectCardUpdatedIndicator);
   const [isLoading, setLoading] = useState(false);
 

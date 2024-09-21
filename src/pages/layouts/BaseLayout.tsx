@@ -81,16 +81,19 @@ const BaseLayout: React.FC = () => {
   const handleOnClick = (data: any) => {
     const user = getSessionUser() as User;
     const rol = getUserRol(user);
-    console.log(data.key)
+
     if (rol === UserRoles.IHSISADMIN) {
       navigate(data.key);
     } else {
+      const siteInfo = data.keyPath[1].split(" ");
+      const siteId = siteInfo[0];
+      const siteName = siteInfo[1];
       navigate(data.key, {
         state: {
           companyId: user.companyId,
           companyName: user.companyName,
-          siteName: "siteName",
-          siteId: "27",
+          siteName: siteName,
+          siteId: siteId,
         },
       });
     }
@@ -134,7 +137,6 @@ const BaseLayout: React.FC = () => {
   return (
     <Layout className="flex w-full h-screen relative">
       <Sider
-        width="13%"
         className={`${isCollapsed ? "hidden" : ""} sm:block`}
         trigger={null}
         collapsible
@@ -154,7 +156,6 @@ const BaseLayout: React.FC = () => {
           selectedKeys={[selectedPath]}
           openKeys={stateOpenKeys}
           onOpenChange={onOpenChange}
-          
           items={getUserSiderOptions(getSessionUser() as User)}
         />
         <div className="bottom-10 left-3 absolute">

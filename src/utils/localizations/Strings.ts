@@ -207,8 +207,8 @@ export default class Strings {
   static createLevel = "Create level for";
   static updateLevel = "Update level";
   static createNodefor = "Create node for";
-  static cardsOf = "Cards of:";
-  static cardDetailsOf = "Card details of:";
+  static cardsOf = "Cards of";
+  static cardDetailsOf = "Card details of";
   static cardType = "Card type";
   static problemType = "Problem type";
   static area = "Area";
@@ -280,4 +280,9 @@ export default class Strings {
   static unauthorizedPageSubTitle =
     "Sorry, you are not authorized to access this page.";
   static goBack = "Go back";
+
+  static companyParam = ":company";
+  static siteParam = ":site";
+  static cardParam = ":card";
+  static cardTypeParam = ":cardType";
 }
