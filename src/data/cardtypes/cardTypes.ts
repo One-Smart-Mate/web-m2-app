@@ -1,5 +1,6 @@
 export interface CardTypes {
   id: string;
+  siteId: string;
   methodology: string;
   name: string;
   description: string;

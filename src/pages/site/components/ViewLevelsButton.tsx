@@ -12,7 +12,7 @@ const ViewLevelsButton = ({ siteId, siteName }: props) => {
   const navigate = useNavigate();
 
   const handleOnViewPriorities = (siteId: string, siteName: string) => {
-    navigate(Routes.AdminPrefix + Routes.LevelsAllByCardType, { state: { siteId, siteName } });
+    navigate(Routes.AdminPrefix + Routes.Levels, { state: { siteId, siteName } });
   };
 
   return (

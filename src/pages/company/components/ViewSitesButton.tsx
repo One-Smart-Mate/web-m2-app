@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import CustomButton from "../../../components/CustomButtons";
 import Strings from "../../../utils/localizations/Strings";
-import Routes from "../../../utils/Routes";
+import { adminSites } from "../../routes/Routes";
 
 interface props {
   companyId: string;
@@ -12,7 +12,7 @@ const ViewSitesButton = ({ companyId, companyName }: props) => {
   const navigate = useNavigate();
 
   const handleOnViewPriorities = (companyId: string, companyName: string) => {
-    navigate(Routes.AdminPrefix + Routes.SitesAllByCompany, {
+    navigate(adminSites.fullPath.replace(Strings.companyParam, companyId), {
       state: { companyId, companyName },
     });
   };

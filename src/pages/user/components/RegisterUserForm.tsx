@@ -136,14 +136,7 @@ const RegisterUserForm = ({ form }: FormProps) => {
         <Form.Item
           label={
             <p>
-              {Strings.site} ({Strings.rfc}) - {Strings.userLicense} -{" "}
-              <span className="rounded-xl p-0.5 text-white bg-gray-600">
-                Current users
-              </span>{" "}
-              /{" "}
-              <span className="rounded-xl p-0.5 text-white bg-gray-800">
-                User quantity
-              </span>
+              {Strings.site} ({Strings.rfc})
             </p>
           }
           name="siteId"
