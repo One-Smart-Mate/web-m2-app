@@ -53,37 +53,12 @@ const UpdateUserForm = ({ form }: FormProps) => {
 
   const siteOptions = useMemo(() => {
     return sites.map((site) => {
-      let filteredUsers = users.filter((user) => user.site.id === site.id);
-      let userCount = filteredUsers.length;
-      let userCountDisplay = userCount < 10 ? `0${userCount}` : userCount;
-      let userQuantityDisplay =
-        Number(site.userQuantity) < 10
-          ? `0${site.userQuantity}`
-          : site.userQuantity;
       return {
         value: site.id,
         labelText: site.rfc,
         label: (
           <p className="flex justify-between items-center">
             {site.name} ({site.rfc})
-            <span className="mr-7">
-              {site.userLicense} -{" "}
-              <span
-                className={`${
-                  site.userLicense !== Strings.concurrente && "mr-8"
-                } rounded-xl w-4 text-sm p-0.5 text-white bg-gray-600`}
-              >
-                {userCountDisplay}
-              </span>{" "}
-              {site.userLicense === Strings.concurrente && (
-                <span>
-                  /{" "}
-                  <span className="rounded-xl w-10 p-0.5 text-white text-sm bg-gray-800">
-                    {userQuantityDisplay}
-                  </span>
-                </span>
-              )}
-            </span>
           </p>
         ),
       };

@@ -12,7 +12,9 @@ const ViewCardTypesButton = ({ siteId, siteName }: props) => {
   const navigate = useNavigate();
 
   const handleOnViewPriorities = (siteId: string, siteName: string) => {
-    navigate(Routes.AdminPrefix + Routes.CardTypesAllBySite, { state: { siteId, siteName } });
+    navigate(Routes.AdminPrefix + Routes.CardTypes, {
+      state: { siteId, siteName },
+    });
   };
 
   return (
@@ -25,4 +27,4 @@ const ViewCardTypesButton = ({ siteId, siteName }: props) => {
   );
 };
 
-export default ViewCardTypesButton
+export default ViewCardTypesButton;

@@ -4,11 +4,10 @@ import { FaRegUser } from "react-icons/fa";
 import Strings from "../../../utils/localizations/Strings";
 import { validateEmail } from "../../../utils/Extensions";
 import { useEffect, useState } from "react";
-import { Role, UserTable } from "../../../data/user/user";
+import { Role } from "../../../data/user/user";
 import { useGetRolesMutation } from "../../../services/roleService";
 import { Site } from "../../../data/site/site";
 import { useGetSitesMutation } from "../../../services/siteService";
-import { useGetUsersMutation } from "../../../services/userService";
 
 interface FormProps {
   form: FormInstance;
@@ -17,10 +16,8 @@ interface FormProps {
 const RegisterUserForm = ({ form }: FormProps) => {
   const [getRoles] = useGetRolesMutation();
   const [getSites] = useGetSitesMutation();
-  const [getUsers] = useGetUsersMutation();
   const [roles, setRoles] = useState<Role[]>([]);
   const [sites, setSites] = useState<Site[]>([]);
-  const [users, setUsers] = useState<UserTable[]>([]);
   const [selectedRoles, setSelectedRoles] = useState<Role[]>([]);
   const [selectedSite, setSelectedSite] = useState(null);
   const [isPasswordVisible, setPasswordVisible] = useState(false);
@@ -28,10 +25,8 @@ const RegisterUserForm = ({ form }: FormProps) => {
   const handleGetData = async () => {
     const rolesResponse = await getRoles().unwrap();
     const sitesResponse = await getSites().unwrap();
-    const usersResponse = await getUsers().unwrap();
     setRoles(rolesResponse);
     setSites(sitesResponse);
-    setUsers(usersResponse);
   };
 
   useEffect(() => {
@@ -40,37 +35,12 @@ const RegisterUserForm = ({ form }: FormProps) => {
 
   const siteOptions = () => {
     return sites.map((site) => {
-      const filteredUsers = users.filter((user) => user.site.id === site.id);
-      const userCount = filteredUsers.length;
-      const userCountDisplay = userCount < 10 ? `0${userCount}` : userCount;
-      const userQuantityDisplay =
-        Number(site.userQuantity) < 10
-          ? `0${site.userQuantity}`
-          : site.userQuantity;
       return {
         value: site.id,
         labelText: site.rfc,
         label: (
           <p className="flex justify-between items-center">
             {site.name} ({site.rfc})
-            <span className="mr-7">
-              {site.userLicense} -{" "}
-              <span
-                className={`${
-                  site.userLicense !== Strings.concurrente && "mr-8"
-                } rounded-xl w-4 text-sm p-0.5 text-white bg-gray-600`}
-              >
-                {userCountDisplay}
-              </span>{" "}
-              {site.userLicense === Strings.concurrente && (
-                <span>
-                  /{" "}
-                  <span className="rounded-xl w-10 p-0.5 text-white text-sm bg-gray-800">
-                    {userQuantityDisplay}
-                  </span>
-                </span>
-              )}
-            </span>
           </p>
         ),
       };
@@ -166,14 +136,7 @@ const RegisterUserForm = ({ form }: FormProps) => {
         <Form.Item
           label={
             <p>
-              {Strings.site} ({Strings.rfc}) - {Strings.userLicense} -{" "}
-              <span className="rounded-xl p-0.5 text-white bg-gray-600">
-                Current users
-              </span>{" "}
-              /{" "}
-              <span className="rounded-xl p-0.5 text-white bg-gray-800">
-                User quantity
-              </span>
+              {Strings.site} ({Strings.rfc})
             </p>
           }
           name="siteId"

@@ -48,59 +48,51 @@ export const validateEmail = (
 };
 
 export const getInitRoute = (user: User): string => {
-  const adminRole = "admin";
-  const sysAdminRole = "sysadmin";
-  const mechanic = "mechanic";
-
-  const isAdmin = user.roles?.some(
-    (role) => role.trim().toLowerCase() === adminRole
+  const isihSisAdmin = user.roles?.some(
+    (role) => role === Constants.ihSisAdmin
   );
-  if (isAdmin) {
+  if (isihSisAdmin) {
     return Routes.AdminPrefix + Routes.AdminDirectionHome;
   }
-  const isSysAdmin = user.roles?.some(
-    (role) => role.trim().toLowerCase() === sysAdminRole
+  const isLocalSisAdmin = user.roles?.some(
+    (role) => role === Constants.localSisAdmin
   );
-  const isMechanic = user.roles?.some(
-    (role) => role.trim().toLowerCase() === mechanic
+  const isLocalAdmin = user.roles?.some(
+    (role) => role === Constants.localAdmin
   );
 
-  return isSysAdmin
-    ? Routes.SysadminPrefix + Routes.Site
-    : isMechanic
-    ? Routes.MechanicPrefix + Routes.AllCardsBySite
+  return isLocalSisAdmin
+    ? Routes.SysadminPrefix + Routes.Sites
+    : isLocalAdmin
+    ? Routes.LocalAdminPrefix + Routes.Sites
     : "/";
 };
 
 export const getUserRol = (user: User): UserRoles | null => {
-  const adminRole = "admin";
-  const sysAdminRole = "sysadmin";
-  const mechanic = "mechanic";
-
-  const isAdmin = user.roles?.some(
-    (role) => role.trim().toLowerCase() === adminRole
+  const isihSisAdmin = user.roles?.some(
+    (role) => role === Constants.ihSisAdmin
   );
-  if (isAdmin) {
-    return UserRoles.ADMIN;
+  if (isihSisAdmin) {
+    return UserRoles.IHSISADMIN;
   }
-  const isSysAdmin = user.roles?.some(
-    (role) => role.trim().toLowerCase() === sysAdminRole
+  const isLocalSisAdmin = user.roles?.some(
+    (role) => role === Constants.localSisAdmin
   );
-  const isMechanic = user.roles?.some(
-    (role) => role.trim().toLowerCase() === mechanic
+  const isLocalAdmin = user.roles?.some(
+    (role) => role === Constants.localAdmin
   );
 
-  return isSysAdmin
-    ? UserRoles.SYSADMIN
-    : isMechanic
-    ? UserRoles.MECHANIC
+  return isLocalSisAdmin
+    ? UserRoles.LOCALSYSADMIN
+    : isLocalAdmin
+    ? UserRoles.LOCALADMIN
     : UserRoles.UNDEFINED;
 };
 
 export const enum UserRoles {
-  ADMIN,
-  SYSADMIN,
-  MECHANIC,
+  IHSISADMIN,
+  LOCALSYSADMIN,
+  LOCALADMIN,
   UNDEFINED,
 }
 

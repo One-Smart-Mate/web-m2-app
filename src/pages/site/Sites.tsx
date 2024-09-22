@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import {
   useCreateSiteMutation,
   useGetCompanySitesMutation,
-  useGetSiteMutation,
+  useGetUserSitesMutation,
 } from "../../services/siteService";
 import Strings from "../../utils/localizations/Strings";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -32,6 +32,8 @@ import {
 } from "../../core/genericReducer";
 import PageTitle from "../../components/PageTitle";
 import { generateShortUUID, UserRoles } from "../../utils/Extensions";
+import { useSessionStorage } from "../../core/useSessionStorage";
+import User from "../../data/user/user";
 import { UnauthorizedRoute } from "../../utils/Routes";
 
 interface SitesProps {
@@ -40,7 +42,7 @@ interface SitesProps {
 
 const Sites = ({ rol }: SitesProps) => {
   const [getSites] = useGetCompanySitesMutation();
-  const [getSite] = useGetSiteMutation();
+  const [getUserSites] = useGetUserSitesMutation();
   const location = useLocation();
   const [data, setData] = useState<Site[]>([]);
   const [isLoading, setLoading] = useState(false);
@@ -51,25 +53,24 @@ const Sites = ({ rol }: SitesProps) => {
   const [modalIsLoading, setModalLoading] = useState(false);
   const dispatch = useAppDispatch();
   const isSiteUpdated = useAppSelector(selectSiteUpdatedIndicator);
+  const [getSessionUser] = useSessionStorage<User>(Strings.empty);
   const navigate = useNavigate();
 
   const handleGetSites = async () => {
     if (!location.state) {
       navigate(UnauthorizedRoute);
+      return;
     }
+    const user = getSessionUser() as User;
     setLoading(true);
-    if (rol === UserRoles.ADMIN) {
-      const response = await getSites(location.state.companyId).unwrap();
-      setData(response);
-      setDataBackup(response);
+    var response;
+    if (rol === UserRoles.IHSISADMIN) {
+      response = await getSites(location.state.companyId).unwrap();
     } else {
-      const response = (await getSite(
-        location.state.companyId
-      ).unwrap()) as unknown as Site;
-      setData([response]);
-      setDataBackup([response]);
+      response = await getUserSites(user.userId).unwrap();
     }
-
+    setData(response);
+    setDataBackup(response);
     setLoading(false);
   };
 
@@ -125,7 +126,7 @@ const Sites = ({ rol }: SitesProps) => {
   };
 
   const buildSitePageActions = () => {
-    if (rol === UserRoles.ADMIN) {
+    if (rol === UserRoles.IHSISADMIN) {
       return (
         <div className="flex flex-col md:flex-row flex-wrap items-center md:justify-between w-full">
           <div className="flex flex-col md:flex-row items-center flex-1 mb-1 md:mb-0">
@@ -198,7 +199,7 @@ const Sites = ({ rol }: SitesProps) => {
     }
   };
 
-  const companyName = location?.state?.companyName || Strings.empty
+  const companyName = location?.state?.companyName || Strings.empty;
 
   return (
     <>
@@ -206,7 +207,9 @@ const Sites = ({ rol }: SitesProps) => {
         <div className="flex flex-col gap-2 items-center m-3">
           <PageTitle
             mainText={`${
-              rol === UserRoles.ADMIN ? Strings.sitesOf : Strings.siteOf
+              rol === UserRoles.IHSISADMIN
+                ? Strings.sitesOf
+                : Strings.yourSitesOfCompany
             }`}
             subText={companyName}
           />

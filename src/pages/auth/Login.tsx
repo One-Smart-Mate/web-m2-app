@@ -40,15 +40,13 @@ const LoginPage = () => {
 
   const handleNavigation = (user: User) => {
     const rol = getUserRol(user);
-    if (rol === UserRoles.ADMIN) {
+    if (rol === UserRoles.IHSISADMIN) {
       navigate(getInitRoute(user));
     } else {
       navigate(getInitRoute(user), {
         state: {
           companyId: user.companyId,
           companyName: user.companyName,
-          siteName: user.siteName,
-          siteId: user.siteId,
         },
       });
     }
@@ -66,7 +64,6 @@ const LoginPage = () => {
       const data = await login(
         new LoginRequest(values.email, values.password)
       ).unwrap();
-
       setSessionUser(data);
       dispatch(setCredentials({ ...data }));
       handleNavigation(data);

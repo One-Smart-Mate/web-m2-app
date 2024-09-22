@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Layout, Menu, Button, theme, Avatar } from "antd";
+import { Layout, Menu, Button, theme, Avatar, MenuProps } from "antd";
 import { MenuUnfoldOutlined, MenuFoldOutlined } from "@ant-design/icons";
 import {
   buttonSiderStyle,
@@ -23,6 +23,27 @@ import Routes, { UnauthorizedRoute } from "../../utils/Routes";
 
 const { Header, Sider, Content } = Layout;
 
+interface LevelKeysProps {
+  key?: string;
+  children?: LevelKeysProps[];
+}
+
+const getLevelKeys = (items1: LevelKeysProps[]) => {
+  const key: Record<string, number> = {};
+  const func = (items2: LevelKeysProps[], level = 1) => {
+    items2.forEach((item) => {
+      if (item.key) {
+        key[item.key] = level;
+      }
+      if (item.children) {
+        func(item.children, level + 1);
+      }
+    });
+  };
+  func(items1);
+  return key;
+};
+
 const BaseLayout: React.FC = () => {
   const user = useAppSelector(selectCurrentUser);
 
@@ -43,32 +64,36 @@ const BaseLayout: React.FC = () => {
     const rol = getUserRol(user);
     if (
       isAdminRoute &&
-      (rol == UserRoles.SYSADMIN || rol == UserRoles.MECHANIC)
+      (rol == UserRoles.LOCALSYSADMIN || rol == UserRoles.LOCALADMIN)
     ) {
       navigate(UnauthorizedRoute, { replace: true });
     }
-    if (isReceptionistRoute && rol == UserRoles.MECHANIC) {
+    if (isReceptionistRoute && rol == UserRoles.LOCALADMIN) {
       navigate(UnauthorizedRoute, { replace: true });
     }
   };
 
   useEffect(() => {
-    setSelectedPath(location.pathname);
+    setSelectedPath(location.pathname + location.search);
     validateRoute();
   }, [location]);
 
   const handleOnClick = (data: any) => {
     const user = getSessionUser() as User;
     const rol = getUserRol(user);
-    if (rol === UserRoles.ADMIN) {
+
+    if (rol === UserRoles.IHSISADMIN) {
       navigate(data.key);
     } else {
+      const siteInfo = data.keyPath[1].split(" ");
+      const siteId = siteInfo[0];
+      const siteName = siteInfo[1];
       navigate(data.key, {
         state: {
           companyId: user.companyId,
           companyName: user.companyName,
-          siteName: user.siteName,
-          siteId: user.siteId,
+          siteName: siteName,
+          siteId: siteId,
         },
       });
     }
@@ -80,10 +105,38 @@ const BaseLayout: React.FC = () => {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
 
+  const levelKeys = getLevelKeys(
+    getUserSiderOptions(getSessionUser() as User) as LevelKeysProps[]
+  );
+
+  const [stateOpenKeys, setStateOpenKeys] = useState<string[]>([]);
+
+  const onOpenChange: MenuProps["onOpenChange"] = (openKeys) => {
+    const currentOpenKey = openKeys.find(
+      (key) => stateOpenKeys.indexOf(key) === -1
+    );
+    // open
+    if (currentOpenKey !== undefined) {
+      const repeatIndex = openKeys
+        .filter((key) => key !== currentOpenKey)
+        .findIndex((key) => levelKeys[key] === levelKeys[currentOpenKey]);
+
+      setStateOpenKeys(
+        openKeys
+          // remove repeat key
+          .filter((_, index) => index !== repeatIndex)
+          // remove current level all child
+          .filter((key) => levelKeys[key] <= levelKeys[currentOpenKey])
+      );
+    } else {
+      // close
+      setStateOpenKeys(openKeys);
+    }
+  };
+
   return (
     <Layout className="flex w-full h-screen relative">
       <Sider
-        width="13%"
         className={`${isCollapsed ? "hidden" : ""} sm:block`}
         trigger={null}
         collapsible
@@ -101,6 +154,8 @@ const BaseLayout: React.FC = () => {
           mode="inline"
           onClick={handleOnClick}
           selectedKeys={[selectedPath]}
+          openKeys={stateOpenKeys}
+          onOpenChange={onOpenChange}
           items={getUserSiderOptions(getSessionUser() as User)}
         />
         <div className="bottom-10 left-3 absolute">

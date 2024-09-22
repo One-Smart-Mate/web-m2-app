@@ -125,7 +125,7 @@ const Companies = () => {
   return (
     <>
      <div className="h-full flex flex-col">
-        <div className="flex flex-col items-center m-3">
+        <div className="flex flex-col gap-2 items-center m-3">
           <PageTitle mainText={Strings.companiesUpperCase}/>
           <div className="flex flex-col md:flex-row flex-wrap items-center md:justify-between w-full">
             <div className="flex flex-col md:flex-row items-center flex-1 mb-1 md:mb-0">

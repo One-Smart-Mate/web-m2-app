@@ -9,7 +9,7 @@ import PaginatedList from "../../components/PaginatedList";
 import InformationPanel from "./components/Card";
 import { CardInterface } from "../../data/card/card";
 import { UserRoles } from "../../utils/Extensions";
-import Routes, { UnauthorizedRoute } from "../../utils/Routes";
+import { UnauthorizedRoute } from "../../utils/Routes";
 
 interface CardsProps {
   rol: UserRoles;
@@ -61,16 +61,7 @@ const Cards = ({ rol }: CardsProps) => {
 
   useEffect(() => {
     handleGetCards();
-  }, []);
-
-  const buildCardDetailsRoute = () => {
-    if (rol === UserRoles.ADMIN) {
-      return Routes.AdminPrefix + Routes.CardDetails;
-    } else if (rol === UserRoles.SYSADMIN) {
-      return Routes.SysadminPrefix + Routes.CardDetails;
-    }
-    return Routes.MechanicPrefix + Routes.CardDetails;
-  };
+  }, [location.state]);
 
   const siteName = location?.state?.siteName || Strings.empty;
 
@@ -98,11 +89,7 @@ const Cards = ({ rol }: CardsProps) => {
             dataSource={data}
             renderItem={(item: CardInterface, index: number) => (
               <List.Item>
-                <InformationPanel
-                  key={index}
-                  data={item}
-                  cardDetailsRoute={buildCardDetailsRoute()}
-                />
+                <InformationPanel key={index} data={item} rol={rol} />
               </List.Item>
             )}
             loading={isLoading}

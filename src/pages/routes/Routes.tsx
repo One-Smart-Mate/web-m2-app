@@ -20,6 +20,7 @@ import SiteUsers from "../user/SiteUsers";
 import { PiMapPinAreaLight } from "react-icons/pi";
 import { TbCards } from "react-icons/tb";
 import { BiCategory } from "react-icons/bi";
+import Strings from "../../utils/localizations/Strings";
 
 const adminCompanies = new Route(
   "Companies",
@@ -31,13 +32,13 @@ const adminCompanies = new Route(
 const adminPriorities = new Route(
   "Priorities",
   "priorities",
-  Routes.AdminPrefix + Routes.PriorityAll,
+  Routes.AdminPrefix + Routes.Priorities,
   <Priorities />,
   <></>
 );
 
 const adminUsers = new Route(
-  "Manage users",
+  "Users",
   "users",
   Routes.AdminPrefix + Routes.Users,
   <Users />,
@@ -45,33 +46,33 @@ const adminUsers = new Route(
 );
 
 const adminSiteUsers = new Route(
-  "Manage site users",
+  "Users",
   "site users",
-  Routes.AdminPrefix + Routes.SiteUsers,
+  Routes.AdminPrefix + Routes.Users,
   <SiteUsers />,
   <MdOutlineManageAccounts />
 );
 
-const adminSites = new Route(
+export const adminSites = new Route(
   "Sites",
   "sites",
-  Routes.AdminPrefix + Routes.SitesAllByCompany,
-  <Sites rol={UserRoles.ADMIN} />,
+  Routes.AdminPrefix + Routes.Company + Routes.Sites,
+  <Sites rol={UserRoles.IHSISADMIN} />,
   <></>
 );
 
 const adminCardTypes = new Route(
   "Card types",
   "cardtypes",
-  Routes.AdminPrefix + Routes.CardTypesAllBySite,
-  <CardTypess rol={UserRoles.ADMIN} />,
+  Routes.AdminPrefix + Routes.CardTypes,
+  <CardTypess rol={UserRoles.IHSISADMIN} />,
   <></>
 );
 
-const adminPreclassifiers = new Route(
+export const adminPreclassifiers = new Route(
   "Preclassifiers",
   "preclassifiers",
-  Routes.AdminPrefix + Routes.PreclassifiersAllByCardType,
+  Routes.AdminPrefix + Routes.Site + Routes.CardType + Routes.Preclassifiers,
   <Preclassifiers />,
   <></>
 );
@@ -79,7 +80,7 @@ const adminPreclassifiers = new Route(
 const adminLevels = new Route(
   "Levels",
   "levels",
-  Routes.AdminPrefix + Routes.LevelsAllByCardType,
+  Routes.AdminPrefix + Routes.Levels,
   <Levels />,
   <></>
 );
@@ -87,15 +88,15 @@ const adminLevels = new Route(
 const adminCards = new Route(
   "Cards",
   "cards",
-  Routes.AdminPrefix + Routes.AllCardsBySite,
-  <Cards rol={UserRoles.ADMIN} />,
+  Routes.AdminPrefix + Routes.Cards,
+  <Cards rol={UserRoles.IHSISADMIN} />,
   <></>
 );
 
-const adminCardDetails = new Route(
+export const adminCardDetails = new Route(
   "Card details",
   "carddetails",
-  Routes.AdminPrefix + Routes.CardDetails,
+  Routes.AdminPrefix + Routes.Site + Routes.CardDetails,
   <CardDetails />,
   <></>
 );
@@ -133,23 +134,23 @@ const adminRoutes: Route[] = [
 const sysAdminCharts = new Route(
   "Charts",
   "charts",
-  Routes.SysadminPrefix + Routes.Charts,
+  Routes.SysadminPrefix + Routes.Site + Routes.Charts,
   <Charts />,
   <BsBarChartLine />
 );
 
-const sysAdminSite = new Route(
-  "Site",
+const sysAdminSites = new Route(
+  "Sites",
   "sites",
-  Routes.SysadminPrefix + Routes.Site,
-  <Sites rol={UserRoles.SYSADMIN} />,
+  Routes.SysadminPrefix + Routes.Sites,
+  <Sites rol={UserRoles.LOCALSYSADMIN} />,
   <BsBuildings />
 );
 
 const sysAdminSiteUsers = new Route(
-  "Manage site users",
+  "Users",
   "site users",
-  Routes.SysadminPrefix + Routes.SiteUsers,
+  Routes.SysadminPrefix + Routes.Site + Routes.Users,
   <SiteUsers />,
   <MdOutlineManageAccounts />
 );
@@ -157,7 +158,7 @@ const sysAdminSiteUsers = new Route(
 const sysAdminPriorities = new Route(
   "Priorities",
   "priorities",
-  Routes.SysadminPrefix + Routes.PriorityAll,
+  Routes.SysadminPrefix + Routes.Site + Routes.Priorities,
   <Priorities />,
   <MdLowPriority />
 );
@@ -165,7 +166,7 @@ const sysAdminPriorities = new Route(
 const sysAdminLevels = new Route(
   "Levels",
   "levels",
-  Routes.SysadminPrefix + Routes.LevelsAllByCardType,
+  Routes.SysadminPrefix + Routes.Site + Routes.Levels,
   <Levels />,
   <PiMapPinAreaLight />
 );
@@ -173,38 +174,38 @@ const sysAdminLevels = new Route(
 const sysAdminCardTypes = new Route(
   "Card types",
   "cardtypes",
-  Routes.SysadminPrefix + Routes.CardTypesAllBySite,
-  <CardTypess rol={UserRoles.SYSADMIN} />,
+  Routes.SysadminPrefix + Routes.Site + Routes.CardTypes,
+  <CardTypess rol={UserRoles.LOCALSYSADMIN} />,
   <BiCategory />
 );
 
 const sysAdminCards = new Route(
   "Cards",
   "cards",
-  Routes.SysadminPrefix + Routes.AllCardsBySite,
-  <Cards rol={UserRoles.SYSADMIN} />,
+  Routes.SysadminPrefix + Routes.Site + Routes.Cards,
+  <Cards rol={UserRoles.LOCALSYSADMIN} />,
   <TbCards />
 );
 
-const sysAdminCardDetails = new Route(
+export const sysAdminCardDetails = new Route(
   "Card details",
   "carddetails",
-  Routes.SysadminPrefix + Routes.CardDetails,
+  Routes.SysadminPrefix + Routes.Site + Routes.CardDetails,
   <CardDetails />,
   <></>
 );
 
-const sysAdminPreclassifiers = new Route(
+export const sysAdminPreclassifiers = new Route(
   "Preclassifiers",
   "preclassifiers",
-  Routes.SysadminPrefix + Routes.PreclassifiersAllByCardType,
+  Routes.SysadminPrefix + Routes.Site + Routes.CardType + Routes.Preclassifiers,
   <Preclassifiers />,
   <></>
 );
 
 const sysAdminRoutes: Route[] = [
   sysAdminCharts,
-  sysAdminSite,
+  sysAdminSites,
   sysAdminSiteUsers,
   sysAdminPriorities,
   sysAdminLevels,
@@ -214,52 +215,107 @@ const sysAdminRoutes: Route[] = [
   sysAdminCardDetails,
 ];
 
-const sysAdminRoutesSiderOptions = (): ItemType[] => {
+const sysAdminRoutesSiderOptions = (user: User): ItemType[] => {
   const items: MenuProps["items"] = [
-    getItem(sysAdminSite.label, sysAdminSite.fullPath, sysAdminSite.icon),
-    getItem(
-      sysAdminSiteUsers.label,
-      sysAdminSiteUsers.fullPath,
-      sysAdminSiteUsers.icon
-    ),
-    getItem(sysAdminCharts.label, sysAdminCharts.fullPath, sysAdminCharts.icon),
-    getItem(
-      sysAdminPriorities.label,
-      sysAdminPriorities.fullPath,
-      sysAdminPriorities.icon
-    ),
-    getItem(sysAdminLevels.label, sysAdminLevels.fullPath, sysAdminLevels.icon),
-    getItem(
-      sysAdminCardTypes.label,
-      sysAdminCardTypes.fullPath,
-      sysAdminCardTypes.icon
-    ),
-    getItem(sysAdminCards.label, sysAdminCards.fullPath, sysAdminCards.icon),
+    getItem(sysAdminSites.label, Strings.sites, sysAdminSites.icon, [
+      getItem(Strings.viewSites, sysAdminSites.fullPath),
+      ...user.sites.map((site) =>
+        getItem(site.name, `${site.id} ${site.name}`, null, [
+          getItem(
+            sysAdminSiteUsers.label,
+            sysAdminSiteUsers.fullPath.replace(Strings.siteParam, site.id),
+            sysAdminSiteUsers.icon
+          ),
+          getItem(
+            sysAdminCharts.label,
+            sysAdminCharts.fullPath.replace(Strings.siteParam, site.id),
+            sysAdminCharts.icon
+          ),
+          getItem(
+            sysAdminCards.label,
+            sysAdminCards.fullPath.replace(Strings.siteParam, site.id),
+            sysAdminCards.icon
+          ),
+          getItem(
+            sysAdminLevels.label,
+            sysAdminLevels.fullPath.replace(Strings.siteParam, site.id),
+            sysAdminLevels.icon
+          ),
+          getItem(
+            sysAdminCardTypes.label,
+            sysAdminCardTypes.fullPath.replace(Strings.siteParam, site.id),
+            sysAdminCardTypes.icon
+          ),
+          getItem(
+            sysAdminPriorities.label,
+            sysAdminPriorities.fullPath.replace(Strings.siteParam, site.id),
+            sysAdminPriorities.icon
+          ),
+        ])
+      ),
+    ]),
   ];
   return items;
 };
 
-const mechanicCards = new Route(
+const localAdminSites = new Route(
+  "Users",
+  "site users",
+  Routes.LocalAdminPrefix + Routes.Sites,
+  <Sites rol={UserRoles.LOCALADMIN} />,
+  <MdOutlineManageAccounts />
+);
+
+const localAdminCards = new Route(
   "Cards",
   "cards",
-  Routes.MechanicPrefix + Routes.AllCardsBySite,
-  <Cards rol={UserRoles.MECHANIC} />,
+  Routes.LocalAdminPrefix + Routes.Site + Routes.Cards,
+  <Cards rol={UserRoles.LOCALADMIN} />,
   <TbCards />
 );
 
-const mechanicCardDetails = new Route(
+export const localAdminCardDetails = new Route(
   "Card details",
   "carddetails",
-  Routes.MechanicPrefix + Routes.CardDetails,
+  Routes.LocalAdminPrefix + Routes.Site + Routes.CardDetails,
   <CardDetails />,
   <></>
 );
 
-const mechanicRoutes: Route[] = [mechanicCards, mechanicCardDetails];
+const localAdminCharts = new Route(
+  "Charts",
+  "charts",
+  Routes.LocalAdminPrefix + Routes.Site + Routes.Charts,
+  <Charts />,
+  <BsBarChartLine />
+);
 
-const mechanicRoutesSiderOptions = (): ItemType[] => {
+const localAdminRoutes: Route[] = [
+  localAdminCharts,
+  localAdminCards,
+  localAdminCardDetails,
+  localAdminSites,
+];
+
+const localAdminRoutesSiderOptions = (user: User): ItemType[] => {
   const items: MenuProps["items"] = [
-    getItem(mechanicCards.label, mechanicCards.fullPath, mechanicCards.icon),
+    getItem(Strings.viewSites, Strings.sites, <BsBuildings />, [
+      getItem(Strings.viewSites, localAdminSites.fullPath),
+      ...user.sites.map((site) =>
+        getItem(site.name, `${site.id} ${site.name}`, null, [
+          getItem(
+            localAdminCharts.label,
+            localAdminCharts.fullPath.replace(Strings.siteParam, site.id),
+            localAdminCharts.icon
+          ),
+          getItem(
+            localAdminCards.label,
+            localAdminCards.fullPath.replace(Strings.siteParam, site.id),
+            localAdminCards.icon
+          ),
+        ])
+      ),
+    ]),
   ];
   return items;
 };
@@ -267,12 +323,12 @@ const mechanicRoutesSiderOptions = (): ItemType[] => {
 const getUserSiderOptions = (user: User): ItemType[] => {
   const rol = getUserRol(user);
   switch (rol) {
-    case UserRoles.ADMIN:
+    case UserRoles.IHSISADMIN:
       return adminRoutesSiderOptions();
-    case UserRoles.SYSADMIN:
-      return sysAdminRoutesSiderOptions();
-    case UserRoles.MECHANIC:
-      return mechanicRoutesSiderOptions();
+    case UserRoles.LOCALSYSADMIN:
+      return sysAdminRoutesSiderOptions(user);
+    case UserRoles.LOCALADMIN:
+      return localAdminRoutesSiderOptions(user);
   }
   return [];
 };
@@ -282,8 +338,8 @@ export {
   adminRoutes,
   getUserSiderOptions,
   sysAdminRoutes,
-  mechanicRoutes,
-  mechanicRoutesSiderOptions,
+  localAdminRoutes,
+  localAdminRoutesSiderOptions,
 };
 
 function getItem(

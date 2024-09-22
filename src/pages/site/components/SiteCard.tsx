@@ -24,14 +24,24 @@ const SiteCard = ({ data, rol }: CompanyCardProps) => {
   } = theme.useToken();
 
   const buildSiteActions = () => {
-    const actions = [
-      {
+    const actions = [];
+
+    if (rol === UserRoles.IHSISADMIN || rol === UserRoles.LOCALSYSADMIN) {
+      actions.push({
         key: `update-site-${data.id}`,
         label: <UpdateSite siteId={data.id} />,
-      },
-    ];
+      });
+    }
 
-    if (rol === UserRoles.ADMIN) {
+    if (rol === UserRoles.IHSISADMIN) {
+      actions.push({
+        key: `view-charts-${data.id}`,
+        label: <ViewChartsButton siteId={data.id} siteName={data.name} />,
+      });
+      actions.push({
+        key: `view-cards-${data.id}`,
+        label: <ViewCardsButton siteId={data.id} siteName={data.name} />,
+      });
       actions.push({
         key: `view-priorities-${data.id}`,
         label: <ViewPrioritiesButton siteId={data.id} siteName={data.name} />,
@@ -45,16 +55,8 @@ const SiteCard = ({ data, rol }: CompanyCardProps) => {
         label: <ViewCardTypesButton siteId={data.id} siteName={data.name} />,
       });
       actions.push({
-        key: `view-cards-${data.id}`,
-        label: <ViewCardsButton siteId={data.id} siteName={data.name} />,
-      });
-      actions.push({
         key: `import-excel-${data.id}`,
         label: <CustomButton type="action">{Strings.importExcel}</CustomButton>,
-      });
-      actions.push({
-        key: `view-charts-${data.id}`,
-        label: <ViewChartsButton siteId={data.id} siteName={data.name} />,
       });
       actions.push({
         key: `view-users-${data.id}`,

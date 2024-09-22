@@ -28,7 +28,7 @@ import {
 import { useAppDispatch, useAppSelector } from "../../core/store";
 import PageTitle from "../../components/PageTitle";
 import { UserRoles } from "../../utils/Extensions";
-import Routes, { UnauthorizedRoute } from "../../utils/Routes";
+import { UnauthorizedRoute } from "../../utils/Routes";
 
 interface CardTypeProps {
   rol: UserRoles;
@@ -99,16 +99,9 @@ const CardTypess = ({ rol }: CardTypeProps) => {
     setLoading(false);
   };
 
-  const buildPreclassifiersRoute = () => {
-    if (rol === UserRoles.ADMIN)
-      return Routes.AdminPrefix + Routes.PreclassifiersAllByCardType;
-
-    return Routes.SysadminPrefix + Routes.PreclassifiersAllByCardType;
-  };
-
   useEffect(() => {
     handleGetPriorities();
-  }, []);
+  }, [location.state]);
 
   const handleOnFormCreateFinish = async (values: any) => {
     try {
@@ -158,10 +151,7 @@ const CardTypess = ({ rol }: CardTypeProps) => {
     <>
       <div className="h-full flex flex-col">
         <div className="flex flex-col gap-2 items-center m-3">
-          <PageTitle
-            mainText={Strings.cardTypesOf}
-            subText={siteName}
-          />
+          <PageTitle mainText={Strings.cardTypesOf} subText={siteName} />
           <div className="flex flex-col md:flex-row flex-wrap items-center md:justify-between w-full">
             <div className="flex flex-col md:flex-row items-center flex-1 mb-1 md:mb-0">
               <Space className="w-full md:w-auto mb-1 md:mb-0">
@@ -185,22 +175,14 @@ const CardTypess = ({ rol }: CardTypeProps) => {
           </div>
         </div>
         <div className="flex-1 overflow-auto hidden lg:block">
-          <CardTypesTable
-            data={data}
-            isLoading={isLoading}
-            preclassifiersRoute={buildPreclassifiersRoute()}
-          />
+          <CardTypesTable data={data} isLoading={isLoading} rol={rol} />
         </div>
         <div className="flex-1 overflow-auto lg:hidden">
           <PaginatedList
             dataSource={data}
             renderItem={(item: CardTypes, index: number) => (
               <List.Item>
-                <CardTypesCard
-                  key={index}
-                  data={item}
-                  preclassifiersRoute={buildPreclassifiersRoute()}
-                />
+                <CardTypesCard key={index} data={item} rol={rol} />
               </List.Item>
             )}
             loading={isLoading}

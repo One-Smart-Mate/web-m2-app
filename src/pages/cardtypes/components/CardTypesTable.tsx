@@ -2,20 +2,24 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { useTableHeight } from "../../../utils/tableHeight";
 import { ColumnsType } from "antd/es/table";
 import Strings from "../../../utils/localizations/Strings";
-import { getStatusAndText } from "../../../utils/Extensions";
+import { getStatusAndText, UserRoles } from "../../../utils/Extensions";
 import { Badge, Space, Table } from "antd";
 import Constants from "../../../utils/Constants";
 import { CardTypes } from "../../../data/cardtypes/cardTypes";
 import ViewPreclassifiersButton from "./ViewPreclassifiersButton";
 import UpdateCardType from "./UpdateCardType";
+import {
+  adminPreclassifiers,
+  sysAdminPreclassifiers,
+} from "../../routes/Routes";
 
 interface TableProps {
   data: CardTypes[];
   isLoading: boolean;
-  preclassifiersRoute: string
+  rol: UserRoles;
 }
 
-const CardTypesTable = ({ data, isLoading, preclassifiersRoute }: TableProps) => {
+const CardTypesTable = ({ data, isLoading, rol }: TableProps) => {
   const contentRef = useRef<HTMLDivElement>(null);
   const tableHeight = useTableHeight(contentRef);
   const [expandedRowKeys, setExpandedRowKeys] = useState<React.Key[]>([]);
@@ -62,8 +66,9 @@ const CardTypesTable = ({ data, isLoading, preclassifiersRoute }: TableProps) =>
         dataIndex: "color",
         key: "color",
         render: (color: string) => (
-          <div className="h-5 w-10 md:w-16 rounded-lg border border-black"
-            style={{ backgroundColor: `#${color}`}}
+          <div
+            className="h-5 w-10 md:w-16 rounded-lg border border-black"
+            style={{ backgroundColor: `#${color}` }}
           />
         ),
       },
@@ -93,6 +98,17 @@ const CardTypesTable = ({ data, isLoading, preclassifiersRoute }: TableProps) =>
     []
   );
 
+  const buildPreclassifiersRoute = (data: CardTypes) => {
+    if (rol === UserRoles.IHSISADMIN)
+      return adminPreclassifiers.fullPath
+        .replace(Strings.siteParam, data.siteId)
+        .replace(Strings.cardTypeParam, data.id);
+
+    return sysAdminPreclassifiers.fullPath
+      .replace(Strings.siteParam, data.siteId)
+      .replace(Strings.cardTypeParam, data.id);
+  };
+
   const actionsRow = {
     expandedRowKeys,
     onExpand: handleExpand,
@@ -102,7 +118,7 @@ const CardTypesTable = ({ data, isLoading, preclassifiersRoute }: TableProps) =>
         <ViewPreclassifiersButton
           cardTypeId={data.id}
           cardTypeName={data.name}
-          preclassifiersRoute={preclassifiersRoute}
+          preclassifiersRoute={buildPreclassifiersRoute(data)}
         />
         <UpdateCardType id={data.id} />
       </Space>

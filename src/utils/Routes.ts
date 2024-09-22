@@ -1,38 +1,41 @@
 const Login = "/";
 const AdminDirectionHome = "/companies";
-const PriorityAll = "/priority/all";
-const SitesAllByCompany = "/sites/all";
-const Site = "/site";
-const CardTypesAllBySite = "/cardTypes/all";
-const PreclassifiersAllByCardType = "/preclassifier/all";
+const Priorities = "/priorities";
+const Sites = "/sites";
+const CardTypes = "/card-types";
+const Preclassifiers = "/preclassifiers";
 const Users = "/users";
-const SiteUsers = "/site/users";
-const LevelsAllByCardType = "/level/all";
-const AllCardsBySite = "/card/all";
+const Levels = "/levels";
+const Cards = "/cards";
 export const ResetPasswordRoute = "/reset-password";
-const CardDetails = "/card/details";
 const Charts = "/charts";
 export const UnauthorizedRoute = "/unauthorized";
 
+const Company = "/company/:company";
+const Site = "/site/:site";
+const CardType = "/card-type/:cardType";
+const CardDetails = "/card/:card/details";
+
 const AdminPrefix = "/admin";
-const SysadminPrefix = "/sysadmin";
-const MechanicPrefix = "/mechanic";
+const SysadminPrefix = "/sys-admin";
+const LocalAdminPrefix = "/local-admin";
 
 export default {
   AdminDirectionHome,
-  PriorityAll,
-  SitesAllByCompany,
-  CardTypesAllBySite,
-  PreclassifiersAllByCardType,
+  Priorities,
+  CardTypes,
+  Preclassifiers,
   Users,
-  LevelsAllByCardType,
-  AllCardsBySite,
+  Levels,
+  Cards,
   Login,
   CardDetails,
   Charts,
-  SiteUsers,
   AdminPrefix,
   SysadminPrefix,
-  MechanicPrefix,
-  Site
+  LocalAdminPrefix,
+  Sites,
+  Site,
+  Company,
+  CardType,
 };

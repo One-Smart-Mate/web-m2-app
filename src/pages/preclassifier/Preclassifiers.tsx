@@ -98,7 +98,7 @@ const Preclassifiers = () => {
 
   useEffect(() => {
     handleGetPriorities();
-  }, []);
+  }, [location.state]);
 
   const handleOnFormCreateFinish = async (values: any) => {
     try {

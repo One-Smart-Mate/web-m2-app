@@ -5,6 +5,7 @@ import {
   hasAudios,
   hasImages,
   hasVideos,
+  UserRoles,
 } from "../../../utils/Extensions";
 import { CardInterface, Evidences } from "../../../data/card/card";
 import Strings from "../../../utils/localizations/Strings";
@@ -14,13 +15,18 @@ import { useMemo } from "react";
 import { AiOutlinePicture } from "react-icons/ai";
 import { IoHeadsetOutline } from "react-icons/io5";
 import { GoDeviceCameraVideo } from "react-icons/go";
+import {
+  adminCardDetails,
+  localAdminCardDetails,
+  sysAdminCardDetails,
+} from "../../routes/Routes";
 
 interface CardProps {
   data: CardInterface;
-  cardDetailsRoute: string;
+  rol: UserRoles;
 }
 
-const InformationPanel = ({ data, cardDetailsRoute }: CardProps) => {
+const InformationPanel = ({ data, rol }: CardProps) => {
   const { status, text } = getCardStatusAndText(data.status);
   const navigate = useNavigate();
 
@@ -42,6 +48,21 @@ const InformationPanel = ({ data, cardDetailsRoute }: CardProps) => {
     return <div className="flex gap-1 text-black flex-row">{elements}</div>;
   };
 
+  const buildCardDetailsRoute = () => {
+    if (rol === UserRoles.IHSISADMIN) {
+      return adminCardDetails.fullPath
+        .replace(Strings.siteParam, data.siteId)
+        .replace(Strings.cardParam, data.siteCardId);
+    } else if (rol === UserRoles.LOCALSYSADMIN) {
+      return sysAdminCardDetails.fullPath
+        .replace(Strings.siteParam, data.siteId)
+        .replace(Strings.cardParam, data.siteCardId);
+    }
+    return localAdminCardDetails.fullPath
+      .replace(Strings.siteParam, data.siteId)
+      .replace(Strings.cardParam, data.siteCardId);
+  };
+
   return (
     <Card
       title={
@@ -61,7 +82,7 @@ const InformationPanel = ({ data, cardDetailsRoute }: CardProps) => {
       }
       className="max-w-sm h-96 mx-auto bg-gray-100 rounded-xl shadow-md"
       onClick={() => {
-        navigate(cardDetailsRoute, {
+        navigate(buildCardDetailsRoute(), {
           state: {
             cardId: data.id,
             cardName: `${data.cardTypeMethodologyName} ${data.siteCardId}`,
