@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Form, Input, Space } from "antd";
+import { Button, Form, Input, Space, Upload } from "antd";
 import { IoIosSearch } from "react-icons/io";
 import CustomButton from "../../components/CustomButtons";
 import Strings from "../../utils/localizations/Strings";
@@ -25,8 +25,14 @@ import {
 import { useLocation, useNavigate } from "react-router-dom";
 import RegisterSiteUserForm from "./components/RegisterSiteUserForm";
 import { UnauthorizedRoute } from "../../utils/Routes";
+import { UserRoles } from "../../utils/Extensions";
+import { UploadOutlined } from "@ant-design/icons";
 
-const SiteUsers = () => {
+interface Props {
+  rol: UserRoles;
+}
+
+const SiteUsers = ({ rol }: Props) => {
   const [getUsers] = useGetSiteUsersMutation();
   const [data, setData] = useState<UserTable[]>([]);
   const [isLoading, setLoading] = useState(false);
@@ -85,6 +91,16 @@ const SiteUsers = () => {
     setQuerySearch(getSearch);
   };
 
+  const actions = () => {
+    if (rol === UserRoles.IHSISADMIN) {
+      return (
+        <Upload accept=".xlsx,.xls" maxCount={1}>
+          <Button icon={<UploadOutlined />}>Import users</Button>
+        </Upload>
+      );
+    }
+  };
+
   const search = (item: UserTable, search: string) => {
     const { name, email } = item;
 
@@ -124,7 +140,10 @@ const SiteUsers = () => {
     <>
       <div className="h-full flex flex-col">
         <div className="flex flex-col items-center m-3">
-          <PageTitle mainText={Strings.usersOf} subText={siteName} />
+          <div className="flex flex-wrap gap-2">
+            <PageTitle mainText={Strings.usersOf} subText={siteName} />
+            <div className="flex items-center">{actions()}</div>
+          </div>
           <div className="flex flex-col md:flex-row flex-wrap items-center md:justify-between w-full">
             <div className="flex flex-col md:flex-row items-center flex-1 mb-1 md:mb-0">
               <Space className="w-full md:w-auto mb-1 md:mb-0">

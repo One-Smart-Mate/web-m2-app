@@ -1,5 +1,4 @@
 import { Card, Dropdown, MenuProps, Tag, theme } from "antd";
-import CustomButton from "../../../components/CustomButtons";
 import { getStatusAndText, UserRoles } from "../../../utils/Extensions";
 import { SlOptionsVertical } from "react-icons/sl";
 import Strings from "../../../utils/localizations/Strings";
@@ -53,10 +52,6 @@ const SiteCard = ({ data, rol }: CompanyCardProps) => {
       actions.push({
         key: `view-card-types-${data.id}`,
         label: <ViewCardTypesButton siteId={data.id} siteName={data.name} />,
-      });
-      actions.push({
-        key: `import-excel-${data.id}`,
-        label: <CustomButton type="action">{Strings.importExcel}</CustomButton>,
       });
       actions.push({
         key: `view-users-${data.id}`,
