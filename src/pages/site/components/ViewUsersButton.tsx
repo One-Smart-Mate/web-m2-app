@@ -12,9 +12,7 @@ const ViewUsersButton = ({ siteId, siteName }: props) => {
   const navigate = useNavigate();
 
   const handleOnViewPriorities = (siteId: string, siteName: string) => {
-    navigate(adminSiteUsers.fullPath.replace(Strings.siteParam, siteId), {
-      state: { siteId, siteName },
-    });
+    navigate(adminSiteUsers.fullPath.replace(Strings.siteParam, siteId), {state: { siteId, siteName }});
   };
 
   return (

@@ -294,8 +294,9 @@ export default class Strings {
   static siteParam = ":site";
   static cardParam = ":card";
   static cardTypeParam = ":cardType";
-
+  
   //warning notifications
   static restrictedAccessMessage =
     "Access Denied: Your role is limited to the app and does not grant permission to access the site. Please contact the administrator if you believe this is an error.";
+
 }
