@@ -7,6 +7,7 @@ import PageTitle from "../../components/PageTitle";
 import {
   useCreateUserMutation,
   useGetSiteUsersMutation,
+  useImportUsersMutation,
 } from "../../services/userService";
 import { UserTable } from "../../data/user/user";
 import UserTableComponent from "./components/UserTable";
@@ -25,8 +26,15 @@ import {
 import { useLocation, useNavigate } from "react-router-dom";
 import RegisterSiteUserForm from "./components/RegisterSiteUserForm";
 import { UnauthorizedRoute } from "../../utils/Routes";
+import { UserRoles } from "../../utils/Extensions";
+import { UploadOutlined } from "@ant-design/icons";
+import ImportUsersForm from "./components/ImportUsersForm";
 
-const SiteUsers = () => {
+interface Props {
+  rol: UserRoles;
+}
+
+const SiteUsers = ({ rol }: Props) => {
   const [getUsers] = useGetSiteUsersMutation();
   const [data, setData] = useState<UserTable[]>([]);
   const [isLoading, setLoading] = useState(false);
@@ -34,15 +42,14 @@ const SiteUsers = () => {
   const [querySearch, setQuerySearch] = useState(Strings.empty);
   const [dataBackup, setDataBackup] = useState<UserTable[]>([]);
   const [modalIsOpen, setModalOpen] = useState(false);
+  const [modalType, setModalType] = useState(Strings.empty);
   const [registerUser] = useCreateUserMutation();
   const [modalIsLoading, setModalLoading] = useState(false);
   const dispatch = useAppDispatch();
   const isSiteUpdated = useAppSelector(selectUserUpdatedIndicator);
+  const [importUsers] = useImportUsersMutation();
   const navigate = useNavigate();
 
-  const handleOnClickCreateButton = () => {
-    setModalOpen(true);
-  };
   const handleOnCancelButton = () => {
     if (!modalIsLoading) {
       setModalOpen(false);
@@ -85,6 +92,42 @@ const SiteUsers = () => {
     setQuerySearch(getSearch);
   };
 
+  const handleOnOpenModal = (modalType: string) => {
+    setModalOpen(true);
+    setModalType(modalType);
+  };
+
+  const selectFormByModalType = (modalType: string) => {
+    if (modalType === Strings.users) {
+      return RegisterSiteUserForm;
+    } else {
+      return ImportUsersForm;
+    }
+  };
+
+  const selecTitleByModalType = (modalType: string) => {
+    if (modalType === Strings.users) {
+      return `${Strings.createUserFor} ${siteName}`;
+    } else {
+      return `${Strings.importUsersFor} ${siteName}`;
+    }
+  };
+
+  const buildActions = () => {
+    if (rol === UserRoles.IHSISADMIN) {
+      return (
+        <CustomButton
+          onClick={() => handleOnOpenModal(Strings.empty)}
+          type="action"
+          className="w-full md:w-auto"
+        >
+          <UploadOutlined />
+          {Strings.importUsers}
+        </CustomButton>
+      );
+    }
+  };
+
   const search = (item: UserTable, search: string) => {
     const { name, email } = item;
 
@@ -94,20 +137,30 @@ const SiteUsers = () => {
     );
   };
 
-  const handleOnFormCreateFinish = async (values: any) => {
+  const siteName = location?.state?.siteName || Strings.empty;
+  const siteId = location?.state.siteId || Strings.empty;
+
+  const handleOnFormFinish = async (values: any) => {
     try {
       setModalLoading(true);
-      await registerUser(
-        new CreateUser(
-          values.name.trim(),
-          values.email.trim(),
-          Number(location.state.siteId),
-          values.password,
-          values.uploadCardDataWithDataNet ? 1 : 0,
-          values.uploadCardEvidenceWithDataNet ? 1 : 0,
-          values.roles
-        )
-      ).unwrap();
+      if (modalType === Strings.users) {
+        await registerUser(
+          new CreateUser(
+            values.name.trim(),
+            values.email.trim(),
+            Number(siteId),
+            values.password,
+            values.uploadCardDataWithDataNet ? 1 : 0,
+            values.uploadCardEvidenceWithDataNet ? 1 : 0,
+            values.roles
+          )
+        ).unwrap();
+      } else {
+        const { fileObj } = values;
+        const file = fileObj.fileList[0].originFileObj;
+
+        await importUsers({ file, siteId }).unwrap();
+      }
       setModalOpen(false);
       handleGetUsers();
       handleSucccessNotification(NotificationSuccess.REGISTER);
@@ -118,13 +171,14 @@ const SiteUsers = () => {
     }
   };
 
-  const siteName = location?.state?.siteName || Strings.empty;
-
   return (
     <>
       <div className="h-full flex flex-col">
         <div className="flex flex-col items-center m-3">
-          <PageTitle mainText={Strings.usersOf} subText={siteName} />
+          <div className="flex flex-wrap gap-2">
+            <PageTitle mainText={Strings.usersOf} subText={siteName} />
+            <div className="flex items-center">{buildActions()}</div>
+          </div>
           <div className="flex flex-col md:flex-row flex-wrap items-center md:justify-between w-full">
             <div className="flex flex-col md:flex-row items-center flex-1 mb-1 md:mb-0">
               <Space className="w-full md:w-auto mb-1 md:mb-0">
@@ -138,7 +192,7 @@ const SiteUsers = () => {
             </div>
             <div className="flex mb-1 md:mb-0 md:justify-end w-full md:w-auto">
               <CustomButton
-                onClick={handleOnClickCreateButton}
+                onClick={() => handleOnOpenModal(Strings.users)}
                 type="success"
                 className="w-full md:w-auto"
               >
@@ -150,6 +204,7 @@ const SiteUsers = () => {
         <div className="flex-1 overflow-auto hidden lg:block">
           <UserTableComponent
             data={data}
+            siteId={siteId}
             isLoading={isLoading}
             isSiteUserstable={true}
           />
@@ -157,14 +212,14 @@ const SiteUsers = () => {
       </div>
       <Form.Provider
         onFormFinish={async (_, { values }) => {
-          await handleOnFormCreateFinish(values);
+          await handleOnFormFinish(values);
         }}
       >
         <ModalForm
           open={modalIsOpen}
           onCancel={handleOnCancelButton}
-          FormComponent={RegisterSiteUserForm}
-          title={`${Strings.createUserFor} ${siteName}`}
+          FormComponent={selectFormByModalType(modalType)}
+          title={selecTitleByModalType(modalType)}
           isLoading={modalIsLoading}
         />
       </Form.Provider>

@@ -28,8 +28,13 @@ import {
 } from "../../utils/Notifications";
 import { CreateLevel } from "../../data/level/level.request";
 import { UnauthorizedRoute } from "../../utils/Routes";
+import { UserRoles } from "../../utils/Extensions";
 
-const Levels = () => {
+interface Props {
+  rol: UserRoles;
+}
+
+const Levels = ({ rol }: Props) => {
   const [getLevels] = useGetlevelsMutation();
   const [isLoading, setLoading] = useState(false);
   const location = useLocation();
@@ -71,6 +76,20 @@ const Levels = () => {
       name.toLowerCase().includes(search.toLowerCase()) ||
       description.toLowerCase().includes(search.toLowerCase())
     );
+  };
+
+  const buildCreateLevelAction = () => {
+    if (rol === UserRoles.IHSISADMIN) {
+      return (
+        <CustomButton
+          onClick={handleOnClickCreateButton}
+          type="success"
+          className="w-full md:w-auto"
+        >
+          {Strings.create}
+        </CustomButton>
+      );
+    }
   };
 
   const handleOnClickCreateButton = () => {
@@ -146,13 +165,7 @@ const Levels = () => {
               </Space>
             </div>
             <div className="flex mb-1 md:mb-0 md:justify-end w-full md:w-auto">
-              <CustomButton
-                onClick={handleOnClickCreateButton}
-                type="success"
-                className="w-full md:w-auto"
-              >
-                {Strings.create}
-              </CustomButton>
+              {buildCreateLevelAction()}
             </div>
           </div>
         </div>

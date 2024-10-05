@@ -24,10 +24,15 @@ import UpdateSiteUserForm from "./UpdateSiteUserForm";
 
 interface ButtonEditProps {
   userId: string;
+  siteId: string;
   isSiteUserstable: boolean;
 }
 
-const UpdateUserButton = ({ userId, isSiteUserstable }: ButtonEditProps) => {
+const UpdateUserButton = ({
+  userId,
+  siteId,
+  isSiteUserstable,
+}: ButtonEditProps) => {
   const [modalIsOpen, setModalOpen] = useState(false);
   const [modalIsLoading, setModalLoading] = useState(false);
   const [dataIsLoading, setDataLoading] = useState(false);
@@ -58,7 +63,7 @@ const UpdateUserButton = ({ userId, isSiteUserstable }: ButtonEditProps) => {
           Number(values.id),
           values.name.trim(),
           values.email.trim(),
-          Number(values.siteId),
+          Number(siteId),
           values.password,
           values.uploadCardDataWithDataNet ? 1 : 0,
           values.uploadCardEvidenceWithDataNet ? 1 : 0,

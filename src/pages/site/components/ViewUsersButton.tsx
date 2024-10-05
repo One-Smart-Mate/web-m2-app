@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import CustomButton from "../../../components/CustomButtons";
 import Strings from "../../../utils/localizations/Strings";
-import Routes from "../../../utils/Routes";
+import { adminSiteUsers } from "../../routes/Routes";
 
 interface props {
   siteId: string;
@@ -12,9 +12,7 @@ const ViewUsersButton = ({ siteId, siteName }: props) => {
   const navigate = useNavigate();
 
   const handleOnViewPriorities = (siteId: string, siteName: string) => {
-    navigate(Routes.AdminPrefix + Routes.Users, {
-      state: { siteId, siteName },
-    });
+    navigate(adminSiteUsers.fullPath.replace(Strings.siteParam, siteId), {state: { siteId, siteName }});
   };
 
   return (

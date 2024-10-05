@@ -5,7 +5,6 @@ import Strings from "../../../utils/localizations/Strings";
 import { Badge, Space, Table } from "antd";
 import { getStatusAndText, UserRoles } from "../../../utils/Extensions";
 import Constants from "../../../utils/Constants";
-import CustomButton from "../../../components/CustomButtons";
 import { Site } from "../../../data/site/site";
 import ViewPrioritiesButton from "./ViewPrioritiesButton";
 import ViewCardTypesButton from "./ViewCardTypesButton";
@@ -184,11 +183,6 @@ const SiteTable = ({ data, isLoading, rol }: TableProps) => {
           siteId={data.id}
           siteName={data.name}
         />
-      );
-      actions.push(
-        <CustomButton key={`import-excel-${data.id}`} type="action">
-          {Strings.importExcel}
-        </CustomButton>
       );
     }
 

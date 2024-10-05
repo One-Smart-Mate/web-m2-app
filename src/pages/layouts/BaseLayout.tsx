@@ -85,9 +85,10 @@ const BaseLayout: React.FC = () => {
     if (rol === UserRoles.IHSISADMIN) {
       navigate(data.key);
     } else {
-      const siteInfo = data.keyPath[1].split(" ");
-      const siteId = siteInfo[0];
-      const siteName = siteInfo[1];
+      const siteInfo = data.keyPath[1];
+      const siteId = siteInfo.split(" ")[0];
+      const siteName = siteInfo.slice(siteId.length);
+
       navigate(data.key, {
         state: {
           companyId: user.companyId,
