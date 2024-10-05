@@ -50,7 +50,7 @@ const InfoCollapse = ({ data, evidences }: CardProps) => {
   const dispatch = useAppDispatch();
 
   const { card } = data;
-  const cardStatus = getCardStatusAndText(card.status);
+  const cardStatus = getCardStatusAndText(card.status, card.cardDueDate);
 
   const handleOnOpenModal = (modalType: string) => {
     setModalOpen(true);
@@ -220,9 +220,7 @@ const InfoCollapse = ({ data, evidences }: CardProps) => {
             </p>
           </div>
           <Collapse
-            collapsible={
-              evidences.length === 0 ? "disabled" : undefined
-            }
+            collapsible={evidences.length === 0 ? "disabled" : undefined}
             className="border-black mt-2 rounded-xl shadow-md"
           >
             <Collapse.Panel

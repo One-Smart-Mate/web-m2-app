@@ -65,6 +65,19 @@ export const userService = apiSlice.injectEndpoints({
         body: { ...resetPassword },
       }),
     }),
+    importUsers: builder.mutation({
+      query: ({ file, siteId }) => {
+        var formData = new FormData();
+        formData.append("file", file);
+        formData.append("siteId", siteId);
+
+        return {
+          url: "/file-upload/import-users",
+          method: "POST",
+          body: formData,
+        };
+      },
+    }),
   }),
 });
 
@@ -79,4 +92,5 @@ export const {
   useSendCodeToVerifyMutation,
   useResetPasswordMutation,
   useGetSiteUsersMutation,
+  useImportUsersMutation,
 } = userService;

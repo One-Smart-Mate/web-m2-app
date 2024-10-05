@@ -60,6 +60,7 @@ export default class Strings {
   static passwordsDoNotMatch = "Password do not match";
   static onlyLetters = "Please input only letters";
   static passwordLenght = "Password must have at least 8 characters";
+  static uploadFileRequired = "Please upload a file";
 
   //errors company form
   static requiredCompanyName = "Please enter the company name";
@@ -108,8 +109,8 @@ export default class Strings {
   static viewCardTypes = "View card types";
   static viewCards = "View cards";
   static viewCharts = "View charts";
-  static importExcel = "Import excel";
   static viewUsers = "View users";
+  static importUsers = "Import users";
 
   //erros sites form
   static requiredLatitud = "Please enter the latitud";
@@ -127,6 +128,10 @@ export default class Strings {
   static usersOf = "Users of";
   static requiredUserLicense = "Please select the user license";
   static enable = "Enable";
+
+  //Import users form
+  static dragFile = "Click or drag file to this area to upload";
+  static singleUpload = "Support for a single upload .xlsx";
 
   //sites
   static site = "Site";
@@ -199,6 +204,7 @@ export default class Strings {
   static updateCompany = "Update company";
   static createPriority = "Create priority for";
   static createUserFor = "Create user for";
+  static importUsersFor = "Import users for";
   static createUser = "Create user";
   static createSite = "Create site for";
   static updateSite = "Update site";
@@ -221,6 +227,7 @@ export default class Strings {
   static anomalyDetected = "Anomaly detected";
   static updateMechanic = "Update mechanic";
   static changeLog = "Change log";
+  static noDueDate = "No due date";
 
   //charts
   static chartsOf = "Charts of";
@@ -269,6 +276,7 @@ export default class Strings {
   static inactive = "Inactive";
   static open = "Open";
   static closed = "Closed";
+  static pastDue = "Past due";
 
   static preclassifiersof = "Preclassifiers of";
   static updatePreclassifier = "Update preclassifier";
@@ -286,4 +294,8 @@ export default class Strings {
   static siteParam = ":site";
   static cardParam = ":card";
   static cardTypeParam = ":cardType";
+
+  //warning notifications
+  static restrictedAccessMessage =
+    "Access Denied: Your role is limited to the app and does not grant permission to access the site. Please contact the administrator if you believe this is an error.";
 }

@@ -27,7 +27,7 @@ interface CardProps {
 }
 
 const InformationPanel = ({ data, rol }: CardProps) => {
-  const { status, text } = getCardStatusAndText(data.status);
+  const { status, text } = getCardStatusAndText(data.status, data.cardDueDate);
   const navigate = useNavigate();
 
   const evidenceIndicator = (evidences: Evidences[]) => {
@@ -135,7 +135,7 @@ const InformationPanel = ({ data, rol }: CardProps) => {
         <span>{Strings.dueDate}</span>
         <div className="col-span-2">
           <p className="max-w-48 w-fit text-white bg-card-fields rounded-lg p-1">
-            {data.cardDueDate}
+            {data.cardDueDate || Strings.noDueDate}
           </p>
         </div>
       </div>

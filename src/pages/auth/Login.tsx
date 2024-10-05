@@ -8,7 +8,10 @@ import { setCredentials } from "../../core/authReducer";
 import { Link, useNavigate } from "react-router-dom";
 import { useSessionStorage } from "../../core/useSessionStorage";
 import User from "../../data/user/user";
-import { handleErrorNotification } from "../../utils/Notifications";
+import {
+  handleErrorNotification,
+  handleWarningNotification,
+} from "../../utils/Notifications";
 import Meta from "antd/es/card/Meta";
 import {
   getInitRoute,
@@ -42,13 +45,18 @@ const LoginPage = () => {
     const rol = getUserRol(user);
     if (rol === UserRoles.IHSISADMIN) {
       navigate(getInitRoute(user));
-    } else {
+    } else if (
+      rol === UserRoles.LOCALSYSADMIN ||
+      rol === UserRoles.LOCALADMIN
+    ) {
       navigate(getInitRoute(user), {
         state: {
           companyId: user.companyId,
           companyName: user.companyName,
         },
       });
+    } else {
+      handleWarningNotification(Strings.restrictedAccessMessage);
     }
   };
 

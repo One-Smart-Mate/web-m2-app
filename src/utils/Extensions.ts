@@ -178,10 +178,26 @@ export const getStatusAndText = (
     };
   }
 };
+
 export const getCardStatusAndText = (
-  input: string
+  input: string,
+  duDate?: string
 ): { status: "error" | "success"; text: string } => {
   if (input === "A" || input === "P" || input === "V") {
+    if (duDate) {
+      const currentDate = new Date();
+      const dueDateObj = new Date(duDate);
+
+      currentDate.setHours(0, 0, 0, 0);
+      dueDateObj.setHours(0, 0, 0, 0);
+
+      if (dueDateObj < currentDate) {
+        return {
+          status: "error",
+          text: Strings.pastDue,
+        };
+      }
+    }
     return {
       status: "success",
       text: Strings.open,

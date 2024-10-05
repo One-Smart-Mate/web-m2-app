@@ -49,7 +49,7 @@ export const adminSiteUsers = new Route(
   "Users",
   "site users",
   Routes.AdminPrefix + Routes.Site + Routes.Users,
-  <SiteUsers rol={UserRoles.IHSISADMIN}/>,
+  <SiteUsers rol={UserRoles.IHSISADMIN} />,
   <MdOutlineManageAccounts />
 );
 
@@ -81,7 +81,7 @@ const adminLevels = new Route(
   "Levels",
   "levels",
   Routes.AdminPrefix + Routes.Levels,
-  <Levels />,
+  <Levels rol={UserRoles.IHSISADMIN} />,
   <></>
 );
 
@@ -167,7 +167,7 @@ const sysAdminLevels = new Route(
   "Levels",
   "levels",
   Routes.SysadminPrefix + Routes.Site + Routes.Levels,
-  <Levels />,
+  <Levels rol={UserRoles.LOCALSYSADMIN} />,
   <PiMapPinAreaLight />
 );
 

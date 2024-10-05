@@ -9,12 +9,14 @@ import UpdateUserButton from "./UpdateUserButton";
 
 interface PrioritiesTableProps {
   data: UserTable[];
+  siteId: string;
   isLoading: boolean;
   isSiteUserstable: boolean;
 }
 
 const UserTableComponent = ({
   data,
+  siteId,
   isLoading,
   isSiteUserstable,
 }: PrioritiesTableProps) => {
@@ -90,6 +92,7 @@ const UserTableComponent = ({
             <Space>
               <UpdateUserButton
                 userId={record.id}
+                siteId={siteId}
                 isSiteUserstable={isSiteUserstable}
               />
             </Space>
