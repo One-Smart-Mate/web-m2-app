@@ -198,7 +198,7 @@ const InfoCollapse = ({ data, evidences }: CardProps) => {
               </p>
             </div>
             <div className="flex flex-col text-center gap-1">
-              <p className="font-semibold">{Strings.creator} </p>
+              <p className="font-semibold">{Strings.createdBy} </p>
               <p className="bg-card-fields rounded-lg py-1 px-1 text-white">
                 {card.creatorName || Strings.NA}
               </p>

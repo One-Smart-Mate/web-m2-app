@@ -10,7 +10,7 @@ import {
   YAxis,
 } from "recharts";
 import { Methodology } from "../../../data/charts/charts";
-import { useGetCreatorsChartDataMutation } from "../../../services/chartService";
+import { useGetMechanicsChartDataMutation } from "../../../services/chartService";
 import Strings from "../../../utils/localizations/Strings";
 import CustomLegend from "../../../components/CustomLegend";
 import { useSearchCardsQuery } from "../../../services/cardService";
@@ -22,16 +22,18 @@ export interface ChartProps {
   methodologies: Methodology[];
 }
 
-const CreatorsChart = ({ siteId, methodologies }: ChartProps) => {
-  const [getCreators] = useGetCreatorsChartDataMutation();
+const MechanicsChart = ({ siteId, methodologies }: ChartProps) => {
+  const [getMechanics] = useGetMechanicsChartDataMutation();
   const [transformedData, setTransformedData] = useState<any[]>([]);
   const [open, setOpen] = useState<boolean>(false);
-  const [selectedCreatorName, setCreatorName] = useState(Strings.empty);
+  const [selectedMechanicName, setSelectedMechanicName] = useState(
+    Strings.empty
+  );
   const [selectedCardTypeName, setCardTypeName] = useState(Strings.empty);
   const [selectedTotalCards, setSelectedTotalCards] = useState(Strings.empty);
   const [searchParams, setSearchParams] = useState<{
     siteId: string;
-    creator?: string;
+    mechanic?: string;
     cardTypeName: string;
   } | null>(null);
 
@@ -40,20 +42,20 @@ const CreatorsChart = ({ siteId, methodologies }: ChartProps) => {
   });
 
   const handleGetData = async () => {
-    const response = await getCreators(siteId).unwrap();
-    const creatorMap: { [key: string]: any } = {};
+    const response = await getMechanics(siteId).unwrap();
+    const mechanicMap: { [key: string]: any } = {};
     response.forEach((item: any) => {
-      if (!creatorMap[item.creator]) {
-        creatorMap[item.creator] = {
-          creator: item.creator,
+      if (!mechanicMap[item.mechanic]) {
+        mechanicMap[item.mechanic] = {
+          mechanic: item.mechanic || Strings.noMechanic,
         };
       }
-      creatorMap[item.creator][item.cardTypeName.toLowerCase()] = parseInt(
+      mechanicMap[item.mechanic][item.cardTypeName.toLowerCase()] = parseInt(
         item.totalCards,
         10
       );
     });
-    const transformedData = Object.values(creatorMap);
+    const transformedData = Object.values(mechanicMap);
     setTransformedData(transformedData);
   };
 
@@ -64,12 +66,15 @@ const CreatorsChart = ({ siteId, methodologies }: ChartProps) => {
   const handleOnClick = (data: any, cardTypeName: string) => {
     setSearchParams({
       siteId,
-      creator: data.creator,
+      mechanic:
+        data.mechanic !== Strings.noMechanic ? data.mechanic : Strings.none,
       cardTypeName: cardTypeName,
     });
     const normalizedCardTypeName = cardTypeName.toLowerCase();
     setSelectedTotalCards(data[normalizedCardTypeName]);
-    setCreatorName(data.creator);
+    setSelectedMechanicName(
+      data.mechanic !== Strings.noMechanic ? data.mechanic : Strings.none
+    );
     setCardTypeName(cardTypeName);
     setOpen(true);
   };
@@ -82,7 +87,7 @@ const CreatorsChart = ({ siteId, methodologies }: ChartProps) => {
           <CartesianGrid strokeDasharray="3 3" />
           <YAxis />
           <XAxis
-            dataKey={"creator"}
+            dataKey={"mechanic"}
             angle={-15}
             textAnchor="end"
             className="md:text-sm text-xs"
@@ -110,14 +115,14 @@ const CreatorsChart = ({ siteId, methodologies }: ChartProps) => {
         open={open}
         dataSource={searchData}
         isLoading={isFetching}
-        label={Strings.creator}
+        label={Strings.mechanic}
         onClose={() => setOpen(false)}
         totalCards={selectedTotalCards}
         rol={UserRoles.LOCALSYSADMIN}
-        text={selectedCreatorName}
+        text={selectedMechanicName}
         cardTypeName={selectedCardTypeName}
       />
     </>
   );
 };
-export default CreatorsChart;
+export default MechanicsChart;

@@ -10,28 +10,30 @@ import {
   YAxis,
 } from "recharts";
 import { Methodology } from "../../../data/charts/charts";
-import { useGetCreatorsChartDataMutation } from "../../../services/chartService";
+import { useGetDefinitiveUsersChartDataMutation } from "../../../services/chartService";
 import Strings from "../../../utils/localizations/Strings";
 import CustomLegend from "../../../components/CustomLegend";
 import { useSearchCardsQuery } from "../../../services/cardService";
-import CustomDrawerCardList from "../../../components/CustomDrawerCardList";
 import { UserRoles } from "../../../utils/Extensions";
+import CustomDrawerCardList from "../../../components/CustomDrawerCardList";
 
 export interface ChartProps {
   siteId: string;
   methodologies: Methodology[];
 }
 
-const CreatorsChart = ({ siteId, methodologies }: ChartProps) => {
-  const [getCreators] = useGetCreatorsChartDataMutation();
+const DefinitiveUsersChart = ({ siteId, methodologies }: ChartProps) => {
+  const [getDefinitiveUsers] = useGetDefinitiveUsersChartDataMutation();
   const [transformedData, setTransformedData] = useState<any[]>([]);
   const [open, setOpen] = useState<boolean>(false);
-  const [selectedCreatorName, setCreatorName] = useState(Strings.empty);
+  const [selectedDefinitiveUserName, setSelectedDefinitveUserName] = useState(
+    Strings.empty
+  );
   const [selectedCardTypeName, setCardTypeName] = useState(Strings.empty);
   const [selectedTotalCards, setSelectedTotalCards] = useState(Strings.empty);
   const [searchParams, setSearchParams] = useState<{
     siteId: string;
-    creator?: string;
+    definitiveUser?: string;
     cardTypeName: string;
   } | null>(null);
 
@@ -40,20 +42,18 @@ const CreatorsChart = ({ siteId, methodologies }: ChartProps) => {
   });
 
   const handleGetData = async () => {
-    const response = await getCreators(siteId).unwrap();
-    const creatorMap: { [key: string]: any } = {};
+    const response = await getDefinitiveUsers(siteId).unwrap();
+    const definitiveUserMap: { [key: string]: any } = {};
     response.forEach((item: any) => {
-      if (!creatorMap[item.creator]) {
-        creatorMap[item.creator] = {
-          creator: item.creator,
+      if (!definitiveUserMap[item.definitiveUser]) {
+        definitiveUserMap[item.definitiveUser] = {
+          definitiveUser: item.definitiveUser || Strings.noDefinitiveUser,
         };
       }
-      creatorMap[item.creator][item.cardTypeName.toLowerCase()] = parseInt(
-        item.totalCards,
-        10
-      );
+      definitiveUserMap[item.definitiveUser][item.cardTypeName.toLowerCase()] =
+        parseInt(item.totalCards, 10);
     });
-    const transformedData = Object.values(creatorMap);
+    const transformedData = Object.values(definitiveUserMap);
     setTransformedData(transformedData);
   };
 
@@ -64,12 +64,19 @@ const CreatorsChart = ({ siteId, methodologies }: ChartProps) => {
   const handleOnClick = (data: any, cardTypeName: string) => {
     setSearchParams({
       siteId,
-      creator: data.creator,
+      definitiveUser:
+        data.definitiveUser !== Strings.noDefinitiveUser
+          ? data.definitiveUser
+          : Strings.none,
       cardTypeName: cardTypeName,
     });
     const normalizedCardTypeName = cardTypeName.toLowerCase();
     setSelectedTotalCards(data[normalizedCardTypeName]);
-    setCreatorName(data.creator);
+    setSelectedDefinitveUserName(
+      data.definitiveUser !== Strings.noDefinitiveUser
+        ? data.definitiveUser
+        : Strings.none
+    );
     setCardTypeName(cardTypeName);
     setOpen(true);
   };
@@ -82,7 +89,7 @@ const CreatorsChart = ({ siteId, methodologies }: ChartProps) => {
           <CartesianGrid strokeDasharray="3 3" />
           <YAxis />
           <XAxis
-            dataKey={"creator"}
+            dataKey={"definitiveUser"}
             angle={-15}
             textAnchor="end"
             className="md:text-sm text-xs"
@@ -110,14 +117,14 @@ const CreatorsChart = ({ siteId, methodologies }: ChartProps) => {
         open={open}
         dataSource={searchData}
         isLoading={isFetching}
-        label={Strings.creator}
+        label={Strings.definitiveUser}
         onClose={() => setOpen(false)}
         totalCards={selectedTotalCards}
         rol={UserRoles.LOCALSYSADMIN}
-        text={selectedCreatorName}
+        text={selectedDefinitiveUserName}
         cardTypeName={selectedCardTypeName}
       />
     </>
   );
 };
-export default CreatorsChart;
+export default DefinitiveUsersChart;

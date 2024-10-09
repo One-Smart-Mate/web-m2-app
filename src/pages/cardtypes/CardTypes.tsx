@@ -9,7 +9,7 @@ import { CardTypes } from "../../data/cardtypes/cardTypes";
 import {
   useCreateCardTypeMutation,
   useGetCardTypesMutation,
-} from "../../services/CardTypesService";
+} from "../../services/cardTypesService";
 import PaginatedList from "../../components/PaginatedList";
 import CardTypesCard from "./components/CardTypesCard";
 import ModalForm from "../../components/ModalForm";

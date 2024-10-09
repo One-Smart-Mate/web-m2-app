@@ -6,7 +6,7 @@ import CreatorsChart from "./components/CreatorsChart";
 import WeeksChart from "./components/WeeksChart";
 import PreclassifiersChart from "./components/PreclassifiersChart";
 import { useEffect, useState } from "react";
-import { useGetCardTypesCatalogsMutation } from "../../services/CardTypesService";
+import { useGetCardTypesCatalogsMutation } from "../../services/cardTypesService";
 import { CardTypesCatalog } from "../../data/cardtypes/cardTypes";
 import MethodologiesChart from "./components/MethodologiesChart";
 import { Card, DatePicker, Empty } from "antd";
@@ -17,6 +17,8 @@ import MachinesChart from "./components/MachinesChart";
 import CustomButton from "../../components/CustomButtons";
 import { IoReloadOutline } from "react-icons/io5";
 import { MdOutlineFileDownload } from "react-icons/md";
+import MechanicsChart from "./components/MechanicsChart";
+import DefinitiveUsersChart from "./components/DefinitiveUsersChart";
 const { RangePicker } = DatePicker;
 
 const Charts = () => {
@@ -66,7 +68,7 @@ const Charts = () => {
   return (
     <>
       <div className="h-full flex flex-col">
-        <div className="flex gap-2 justify-center items-center m-3">
+        <div className="flex gap-2 justify-center flex-wrap items-center m-3">
           <PageTitle mainText={Strings.chartsOf} subText={siteName} />
           <RangePicker onChange={handleDateChange} />
           <CustomButton
@@ -132,28 +134,31 @@ const Charts = () => {
                   title={
                     <div className="mt-2 flex flex-col items-center">
                       <h2 className="text-xl font-semibold text-black">
-                        {Strings.cardAreas}
+                        {Strings.areas}
                       </h2>
                     </div>
                   }
                   className="md:flex-1 w-full mx-auto bg-gray-100 rounded-xl shadow-md"
                 >
                   <div className="w-full h-60">
-                    <AreasChart siteId={siteId} />
+                    <AreasChart methodologies={methodologies} siteId={siteId} />
                   </div>
                 </Card>
                 <Card
                   title={
                     <div className="mt-2 flex flex-col items-center">
                       <h2 className="text-xl font-semibold text-black">
-                        {Strings.cardMachines}
+                        {Strings.machines}
                       </h2>
                     </div>
                   }
                   className="md:flex-1 w-full mx-auto bg-gray-100 rounded-xl shadow-md"
                 >
                   <div className="w-full h-60">
-                    <MachinesChart siteId={siteId} />
+                    <MachinesChart
+                      siteId={siteId}
+                      methodologies={methodologies}
+                    />
                   </div>
                 </Card>
               </div>
@@ -162,14 +167,53 @@ const Charts = () => {
                   title={
                     <div className="mt-2 flex flex-col items-center">
                       <h2 className="text-xl font-semibold text-black">
-                        {Strings.cardCreators}
+                        {Strings.creators}
                       </h2>
                     </div>
                   }
                   className="md:flex-1 w-full mx-auto bg-gray-100 rounded-xl shadow-md"
                 >
                   <div className="w-full h-60">
-                    <CreatorsChart siteId={siteId} />
+                    <CreatorsChart
+                      siteId={siteId}
+                      methodologies={methodologies}
+                    />
+                  </div>
+                </Card>
+                <Card
+                  title={
+                    <div className="mt-2 flex flex-col items-center">
+                      <h2 className="text-xl font-semibold text-black">
+                        {Strings.mechanics}
+                      </h2>
+                    </div>
+                  }
+                  className="md:flex-1 w-full mx-auto bg-gray-100 rounded-xl shadow-md"
+                >
+                  <div className="w-full h-60">
+                    <MechanicsChart
+                      siteId={siteId}
+                      methodologies={methodologies}
+                    />
+                  </div>
+                </Card>
+              </div>
+              <div className="mb-2 flex flex-wrap flex-row gap-2">
+                <Card
+                  title={
+                    <div className="mt-2 flex flex-col items-center">
+                      <h2 className="text-xl font-semibold text-black">
+                        {Strings.definitiveUsers}
+                      </h2>
+                    </div>
+                  }
+                  className="md:flex-1 w-full mx-auto bg-gray-100 rounded-xl shadow-md"
+                >
+                  <div className="w-full h-60">
+                    <DefinitiveUsersChart
+                      siteId={siteId}
+                      methodologies={methodologies}
+                    />
                   </div>
                 </Card>
                 <Card

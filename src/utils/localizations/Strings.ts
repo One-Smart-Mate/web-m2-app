@@ -35,11 +35,14 @@ export default class Strings {
   static days = "Days";
   static appDefinitiveUser = "App definitive user";
   static definitiveUser = "Definitive user";
+  static definitiveUsers = "Definitive users";
   static definitiveDate = "Definitive date";
   static provisionalSoluitonApplied = "Provisional solution applied";
   static definitiveSolutionApplied = "Definitive solution applied";
   static NA = "N/A";
   static noResponsible = "No responsible";
+  static noMechanic = "No mechanic";
+  static noDefinitiveUser = "No definitive user";
   static images = "Images";
   static videos = "Videos";
   static audios = "Audios";
@@ -214,14 +217,17 @@ export default class Strings {
   static updateLevel = "Update level";
   static createNodefor = "Create node for";
   static cardsOf = "Cards of";
+  static cards = "Cards";
   static cardDetailsOf = "Card details of";
   static cardType = "Card type";
+  static type = "Type";
   static problemType = "Problem type";
   static cardNumber = "Card Number";
   static area = "Area";
   static createdBy = "Created by";
   static date = "Date";
   static mechanic = "Mechanic";
+  static mechanics = "Mechanics";
   static creator = "Creator";
   static comments = "Comments";
   static anomalyDetected = "Anomaly detected";
@@ -232,17 +238,19 @@ export default class Strings {
   //charts
   static chartsOf = "Charts of";
   static anomalies = "Anomalies";
-  static cardAreas = "Card areas";
-  static cardCreators = "Card creators";
-  static cardMachines = "Card machines";
+  static areas = "Areas";
+  static creators = "Creators";
+  static machines = "Machines";
   static tagMonitoring = "Tag monitoring";
-  static totalCards = "Total cards:";
-  static areaChart = "Area:";
-  static machine = "Machine:";
+  static totalCards = "Total cards";
+  static total = "Total";
+  static areaChart = "Area";
+  static machine = "Machine";
   static location = "Location";
-  static creatorChart = "Creator:";
-  static cardName = "Card name:";
-  static preclassifierChart = "Preclassifier:";
+  static machineLocation = "Machine location";
+  static creatorChart = "Creator";
+  static cardName = "Card name";
+  static preclassifierChart = "Preclassifier";
   static year = "Year:";
   static week = "Week:";
   static cumulativeIssued = "Cumulative issued:";
@@ -279,6 +287,7 @@ export default class Strings {
   static pastDue = "Past due";
 
   static preclassifiersof = "Preclassifiers of";
+  static preclassifier = "Preclassifier";
   static updatePreclassifier = "Update preclassifier";
   static levelsof = "Levels of";
 
@@ -294,9 +303,9 @@ export default class Strings {
   static siteParam = ":site";
   static cardParam = ":card";
   static cardTypeParam = ":cardType";
-  
+  static colon = ":";
+
   //warning notifications
   static restrictedAccessMessage =
     "Access Denied: Your role is limited to the app and does not grant permission to access the site. Please contact the administrator if you believe this is an error.";
-
 }

@@ -18,7 +18,7 @@ import { useGetSiteResponsiblesMutation } from "../../../services/userService";
 import { useAppSelector } from "../../../core/store";
 import { selectSiteId } from "../../../core/genericReducer";
 import { Responsible } from "../../../data/user/user";
-import { useGetCardTypesCatalogsMutation } from "../../../services/CardTypesService";
+import { useGetCardTypesCatalogsMutation } from "../../../services/cardTypesService";
 import { CardTypesCatalog } from "../../../data/cardtypes/cardTypes";
 import { IoHeadsetOutline } from "react-icons/io5";
 import { GoDeviceCameraVideo } from "react-icons/go";

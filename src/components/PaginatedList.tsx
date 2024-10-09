@@ -3,13 +3,16 @@ import { RESPONSIVE_LIST } from "../utils/Extensions";
 import Constants from "../utils/Constants";
 
 interface ListProps {
+  responsive?: boolean;
   [key: string]: any;
 }
 
-const PaginatedList = ({ ...rest }: ListProps) => {
+const PaginatedList = ({ responsive = true, ...rest }: ListProps) => {
+  const gridConfig = responsive ? RESPONSIVE_LIST : { gutter: 16, column: 1 };
+
   const list = (
     <List
-      grid={RESPONSIVE_LIST}
+      grid={gridConfig}
       pagination={{
         showSizeChanger: true,
         defaultPageSize: Constants.PAGE_SIZE,

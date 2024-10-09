@@ -45,7 +45,6 @@ const adminUsers = new Route(
   <MdOutlineManageAccounts />
 );
 
-
 export const adminSiteUsers = new Route(
   "Users",
   "site users",
