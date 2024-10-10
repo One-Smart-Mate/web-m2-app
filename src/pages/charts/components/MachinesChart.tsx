@@ -3,67 +3,127 @@ import {
   Bar,
   BarChart,
   CartesianGrid,
+  Cell,
+  Legend,
   ResponsiveContainer,
-  Tooltip,
   XAxis,
   YAxis,
 } from "recharts";
 import { useGetMachinesChartDataMutation } from "../../../services/chartService";
 import Strings from "../../../utils/localizations/Strings";
-import { Machine } from "../../../data/charts/charts";
+import { Methodology } from "../../../data/charts/charts";
+import CustomLegend from "../../../components/CustomLegend";
+import { useSearchCardsQuery } from "../../../services/cardService";
+import CustomDrawerCardList from "../../../components/CustomDrawerCardList";
+import { UserRoles } from "../../../utils/Extensions";
 
 export interface ChartProps {
   siteId: string;
+  rol: UserRoles;
+  methodologies: Methodology[];
 }
 
-const MachinesChart = ({ siteId }: ChartProps) => {
+const MachinesChart = ({ siteId, methodologies, rol }: ChartProps) => {
   const [getMachines] = useGetMachinesChartDataMutation();
-  const [machines, setMachines] = useState<Machine[]>([]);
+  const [transformedData, setTransformedData] = useState<any[]>([]);
+  const [open, setOpen] = useState<boolean>(false);
+  const [selectedMachineName, setSelectedMachineName] = useState(Strings.empty);
+  const [selectedLocation, setSelectedLocation] = useState(Strings.empty);
+  const [selectedCardTypeName, setCardTypeName] = useState(Strings.empty);
+  const [selectedTotalCards, setSelectedTotalCards] = useState(Strings.empty);
+  const [searchParams, setSearchParams] = useState<{
+    siteId: string;
+    nodeName?: string;
+    cardTypeName: string;
+  } | null>(null);
+
+  const { data: searchData, isFetching } = useSearchCardsQuery(searchParams, {
+    skip: !searchParams,
+  });
+
   const handleGetData = async () => {
     const response = await getMachines(siteId).unwrap();
-    setMachines(response);
+    const nodeMap: { [key: string]: any } = {};
+    response.forEach((item: any) => {
+      if (!nodeMap[item.nodeName]) {
+        nodeMap[item.nodeName] = {
+          nodeName: item.nodeName,
+          location: item.location,
+        };
+      }
+      nodeMap[item.nodeName][item.cardTypeName.toLowerCase()] = parseInt(
+        item.totalCards,
+        10
+      );
+    });
+    const transformedData = Object.values(nodeMap);
+    setTransformedData(transformedData);
   };
+
   useEffect(() => {
     handleGetData();
   }, []);
+
+  const handleOnClick = (data: any, cardTypeName: string) => {
+    setSearchParams({
+      siteId,
+      nodeName: data.nodeName,
+      cardTypeName: cardTypeName,
+    });
+    const normalizedCardTypeName = cardTypeName.toLowerCase();
+    setSelectedTotalCards(data[normalizedCardTypeName]);
+    setSelectedMachineName(data.nodeName);
+    setSelectedLocation(data.location);
+    setCardTypeName(cardTypeName);
+    setOpen(true);
+  };
+
   return (
-    <ResponsiveContainer width={"100%"} height={"100%"}>
-      <BarChart data={machines} margin={{ bottom: 50 }}>
-        <Tooltip
-          content={(props) => (
-            <div>
-              {props.payload?.map((item) => {
-                return (
-                  <div
-                    className="bg-card-fields md:text-sm text-xs w-52 md:w-auto text-white py-2 px-4 rounded-md shadow-lg"
-                    key={item.payload.machine}
-                  >
-                    <p>
-                      {Strings.location} {item.payload.location}
-                    </p>
-                    <p>
-                      {Strings.machine} {item.payload.machine}
-                    </p>
-                    <p>
-                      {Strings.totalCards} {item.payload.totalCards}
-                    </p>
-                  </div>
-                );
-              })}
-            </div>
-          )}
-        />
-        <CartesianGrid strokeDasharray="3 3" />
-        <YAxis dataKey={"totalCards"} />
-        <XAxis
-          dataKey={"machine"}
-          angle={-20}
-          textAnchor="end"
-          className="md:text-sm text-xs"
-        />
-        <Bar stroke="black" dataKey="totalCards" fill="#6b5454" />
-      </BarChart>
-    </ResponsiveContainer>
+    <>
+      <ResponsiveContainer width={"100%"} height={"100%"}>
+        <BarChart data={transformedData} margin={{ bottom: 50 }}>
+          <Legend content={<CustomLegend />} verticalAlign="top" />
+          <CartesianGrid strokeDasharray="3 3" />
+          <YAxis />
+          <XAxis
+            dataKey={"nodeName"}
+            angle={-20}
+            textAnchor="end"
+            className="md:text-sm text-xs"
+          />
+          {methodologies.map((m) => (
+            <Bar
+              key={m.methodology}
+              dataKey={`${m.methodology.toLowerCase()}`}
+              stackId="a"
+              stroke="black"
+              fill={`#${m.color}`}
+              onClick={(data) => handleOnClick(data, m.methodology)}
+            >
+              {transformedData.map((_, index) => (
+                <Cell
+                  key={`cell-${m.methodology}-${index}`}
+                  className="transform transition-transform duration-200  hover:opacity-70 cursor-pointer"
+                />
+              ))}
+            </Bar>
+          ))}
+        </BarChart>
+      </ResponsiveContainer>
+      <CustomDrawerCardList
+        open={open}
+        dataSource={searchData}
+        isLoading={isFetching}
+        onClose={() => setOpen(false)}
+        totalCards={selectedTotalCards}
+        rol={rol}
+        label={Strings.machine}
+        text={selectedMachineName}
+        label2={Strings.machineLocation}
+        text2={selectedLocation}
+        cardTypeName={selectedCardTypeName}
+      />
+    </>
   );
 };
 export default MachinesChart;

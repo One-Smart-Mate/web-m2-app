@@ -35,6 +35,49 @@ export const cardService = apiSlice.injectEndpoints({
         body: { ...responsible },
       }),
     }),
+    searchCards: builder.query<
+      CardInterface[],
+      {
+        siteId: string;
+        area?: string;
+        nodeName?: string;
+        mechanic?: string;
+        creator?: string;
+        definitiveUser?: string;
+        preclassifier?: string;
+        cardTypeName: string;
+      } | null
+    >({
+      query: (params) => {
+        if (!params) {
+          throw new Error("Invalid parameters");
+        }
+        const {
+          siteId,
+          area,
+          nodeName,
+          mechanic,
+          creator,
+          definitiveUser,
+          preclassifier,
+          cardTypeName,
+        } = params;
+
+        const queryParams = new URLSearchParams({
+          siteId,
+          cardTypeName,
+          ...(area ? { area } : {}),
+          ...(nodeName ? { nodeName } : {}),
+          ...(preclassifier ? { preclassifier } : {}),
+          ...(mechanic ? { mechanic } : {}),
+          ...(creator ? { creator } : {}),
+          ...(definitiveUser ? { definitiveUser } : {}),
+        }).toString();
+
+        return `card?${queryParams}`;
+      },
+      transformResponse: (response: { data: CardInterface[] }) => response.data,
+    }),
   }),
 });
 
@@ -44,4 +87,5 @@ export const {
   useGetCardNotesMutation,
   useUpdateCardPriorityMutation,
   useUpdateCardMechanicMutation,
+  useSearchCardsQuery,
 } = cardService;

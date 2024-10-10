@@ -10,29 +10,31 @@ import {
   YAxis,
 } from "recharts";
 import { Methodology } from "../../../data/charts/charts";
-import { useGetAreasChartDataMutation } from "../../../services/chartService";
+import { useGetDefinitiveUsersChartDataMutation } from "../../../services/chartService";
 import Strings from "../../../utils/localizations/Strings";
-import { UserRoles } from "../../../utils/Extensions";
-import { useSearchCardsQuery } from "../../../services/cardService";
 import CustomLegend from "../../../components/CustomLegend";
+import { useSearchCardsQuery } from "../../../services/cardService";
+import { UserRoles } from "../../../utils/Extensions";
 import CustomDrawerCardList from "../../../components/CustomDrawerCardList";
 
 export interface ChartProps {
   siteId: string;
-  methodologies: Methodology[];
   rol: UserRoles;
+  methodologies: Methodology[];
 }
 
-const AreasChart = ({ siteId, methodologies, rol }: ChartProps) => {
-  const [getAreas] = useGetAreasChartDataMutation();
+const DefinitiveUsersChart = ({ siteId, methodologies, rol }: ChartProps) => {
+  const [getDefinitiveUsers] = useGetDefinitiveUsersChartDataMutation();
   const [transformedData, setTransformedData] = useState<any[]>([]);
   const [open, setOpen] = useState<boolean>(false);
-  const [selectedAreaName, setAreaName] = useState(Strings.empty);
+  const [selectedDefinitiveUserName, setSelectedDefinitveUserName] = useState(
+    Strings.empty
+  );
   const [selectedCardTypeName, setCardTypeName] = useState(Strings.empty);
   const [selectedTotalCards, setSelectedTotalCards] = useState(Strings.empty);
   const [searchParams, setSearchParams] = useState<{
     siteId: string;
-    area?: string;
+    definitiveUser?: string;
     cardTypeName: string;
   } | null>(null);
 
@@ -41,18 +43,18 @@ const AreasChart = ({ siteId, methodologies, rol }: ChartProps) => {
   });
 
   const handleGetData = async () => {
-    const response = await getAreas(siteId).unwrap();
-    const areaMap: { [key: string]: any } = {};
+    const response = await getDefinitiveUsers(siteId).unwrap();
+    const definitiveUserMap: { [key: string]: any } = {};
     response.forEach((item: any) => {
-      if (!areaMap[item.area]) {
-        areaMap[item.area] = { area: item.area };
+      if (!definitiveUserMap[item.definitiveUser]) {
+        definitiveUserMap[item.definitiveUser] = {
+          definitiveUser: item.definitiveUser || Strings.noDefinitiveUser,
+        };
       }
-      areaMap[item.area][item.cardTypeName.toLowerCase()] = parseInt(
-        item.totalCards,
-        10
-      );
+      definitiveUserMap[item.definitiveUser][item.cardTypeName.toLowerCase()] =
+        parseInt(item.totalCards, 10);
     });
-    const transformedData = Object.values(areaMap);
+    const transformedData = Object.values(definitiveUserMap);
     setTransformedData(transformedData);
   };
 
@@ -63,12 +65,19 @@ const AreasChart = ({ siteId, methodologies, rol }: ChartProps) => {
   const handleOnClick = (data: any, cardTypeName: string) => {
     setSearchParams({
       siteId,
-      area: data.area,
+      definitiveUser:
+        data.definitiveUser !== Strings.noDefinitiveUser
+          ? data.definitiveUser
+          : Strings.none,
       cardTypeName: cardTypeName,
     });
     const normalizedCardTypeName = cardTypeName.toLowerCase();
     setSelectedTotalCards(data[normalizedCardTypeName]);
-    setAreaName(data.area);
+    setSelectedDefinitveUserName(
+      data.definitiveUser !== Strings.noDefinitiveUser
+        ? data.definitiveUser
+        : Strings.none
+    );
     setCardTypeName(cardTypeName);
     setOpen(true);
   };
@@ -81,8 +90,8 @@ const AreasChart = ({ siteId, methodologies, rol }: ChartProps) => {
           <CartesianGrid strokeDasharray="3 3" />
           <YAxis />
           <XAxis
-            dataKey={"area"}
-            angle={-20}
+            dataKey={"definitiveUser"}
+            angle={-15}
             textAnchor="end"
             className="md:text-sm text-xs"
           />
@@ -109,14 +118,14 @@ const AreasChart = ({ siteId, methodologies, rol }: ChartProps) => {
         open={open}
         dataSource={searchData}
         isLoading={isFetching}
-        label={Strings.area}
+        label={Strings.definitiveUser}
         onClose={() => setOpen(false)}
         totalCards={selectedTotalCards}
         rol={rol}
-        text={selectedAreaName}
+        text={selectedDefinitiveUserName}
         cardTypeName={selectedCardTypeName}
       />
     </>
   );
 };
-export default AreasChart;
+export default DefinitiveUsersChart;

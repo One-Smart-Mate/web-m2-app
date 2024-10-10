@@ -14,7 +14,7 @@ import {
   setRowData,
 } from "../../../core/genericReducer";
 import ModalUpdateForm from "../../../components/ModalUpdateForm";
-import { useGetCardTypeMutation, useUpdateCardTypeMutation } from "../../../services/CardTypesService";
+import { useGetCardTypeMutation, useUpdateCardTypeMutation } from "../../../services/cardTypesService";
 import { UpdateCardTypeReq } from "../../../data/cardtypes/cardTypes.request";
 import UpdateCardTypeForm from "./UpdateCardTypeForm";
 import { AggregationColor } from "antd/es/color-picker/color";

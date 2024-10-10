@@ -10,29 +10,31 @@ import {
   YAxis,
 } from "recharts";
 import { Methodology } from "../../../data/charts/charts";
-import { useGetAreasChartDataMutation } from "../../../services/chartService";
+import { useGetMechanicsChartDataMutation } from "../../../services/chartService";
 import Strings from "../../../utils/localizations/Strings";
-import { UserRoles } from "../../../utils/Extensions";
-import { useSearchCardsQuery } from "../../../services/cardService";
 import CustomLegend from "../../../components/CustomLegend";
+import { useSearchCardsQuery } from "../../../services/cardService";
 import CustomDrawerCardList from "../../../components/CustomDrawerCardList";
+import { UserRoles } from "../../../utils/Extensions";
 
 export interface ChartProps {
   siteId: string;
-  methodologies: Methodology[];
   rol: UserRoles;
+  methodologies: Methodology[];
 }
 
-const AreasChart = ({ siteId, methodologies, rol }: ChartProps) => {
-  const [getAreas] = useGetAreasChartDataMutation();
+const MechanicsChart = ({ siteId, methodologies, rol }: ChartProps) => {
+  const [getMechanics] = useGetMechanicsChartDataMutation();
   const [transformedData, setTransformedData] = useState<any[]>([]);
   const [open, setOpen] = useState<boolean>(false);
-  const [selectedAreaName, setAreaName] = useState(Strings.empty);
+  const [selectedMechanicName, setSelectedMechanicName] = useState(
+    Strings.empty
+  );
   const [selectedCardTypeName, setCardTypeName] = useState(Strings.empty);
   const [selectedTotalCards, setSelectedTotalCards] = useState(Strings.empty);
   const [searchParams, setSearchParams] = useState<{
     siteId: string;
-    area?: string;
+    mechanic?: string;
     cardTypeName: string;
   } | null>(null);
 
@@ -41,18 +43,20 @@ const AreasChart = ({ siteId, methodologies, rol }: ChartProps) => {
   });
 
   const handleGetData = async () => {
-    const response = await getAreas(siteId).unwrap();
-    const areaMap: { [key: string]: any } = {};
+    const response = await getMechanics(siteId).unwrap();
+    const mechanicMap: { [key: string]: any } = {};
     response.forEach((item: any) => {
-      if (!areaMap[item.area]) {
-        areaMap[item.area] = { area: item.area };
+      if (!mechanicMap[item.mechanic]) {
+        mechanicMap[item.mechanic] = {
+          mechanic: item.mechanic || Strings.noMechanic,
+        };
       }
-      areaMap[item.area][item.cardTypeName.toLowerCase()] = parseInt(
+      mechanicMap[item.mechanic][item.cardTypeName.toLowerCase()] = parseInt(
         item.totalCards,
         10
       );
     });
-    const transformedData = Object.values(areaMap);
+    const transformedData = Object.values(mechanicMap);
     setTransformedData(transformedData);
   };
 
@@ -63,12 +67,15 @@ const AreasChart = ({ siteId, methodologies, rol }: ChartProps) => {
   const handleOnClick = (data: any, cardTypeName: string) => {
     setSearchParams({
       siteId,
-      area: data.area,
+      mechanic:
+        data.mechanic !== Strings.noMechanic ? data.mechanic : Strings.none,
       cardTypeName: cardTypeName,
     });
     const normalizedCardTypeName = cardTypeName.toLowerCase();
     setSelectedTotalCards(data[normalizedCardTypeName]);
-    setAreaName(data.area);
+    setSelectedMechanicName(
+      data.mechanic !== Strings.noMechanic ? data.mechanic : Strings.none
+    );
     setCardTypeName(cardTypeName);
     setOpen(true);
   };
@@ -81,8 +88,8 @@ const AreasChart = ({ siteId, methodologies, rol }: ChartProps) => {
           <CartesianGrid strokeDasharray="3 3" />
           <YAxis />
           <XAxis
-            dataKey={"area"}
-            angle={-20}
+            dataKey={"mechanic"}
+            angle={-15}
             textAnchor="end"
             className="md:text-sm text-xs"
           />
@@ -109,14 +116,14 @@ const AreasChart = ({ siteId, methodologies, rol }: ChartProps) => {
         open={open}
         dataSource={searchData}
         isLoading={isFetching}
-        label={Strings.area}
+        label={Strings.mechanic}
         onClose={() => setOpen(false)}
         totalCards={selectedTotalCards}
         rol={rol}
-        text={selectedAreaName}
+        text={selectedMechanicName}
         cardTypeName={selectedCardTypeName}
       />
     </>
   );
 };
-export default AreasChart;
+export default MechanicsChart;
