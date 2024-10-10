@@ -9,7 +9,7 @@ import UpdateUserButton from "./UpdateUserButton";
 
 interface PrioritiesTableProps {
   data: UserTable[];
-  siteId: string;
+  siteId?: string;
   isLoading: boolean;
   isSiteUserstable: boolean;
 }
@@ -68,8 +68,24 @@ const UserTableComponent = ({
           );
         },
       },
-      ...(!isSiteUserstable
+      ...(isSiteUserstable && siteId
         ? [
+            {
+              title: Strings.actions,
+              render: (record: UserTable) => {
+                return (
+                  <Space>
+                    <UpdateUserButton
+                      userId={record.id}
+                      siteId={siteId}
+                      isSiteUserstable={isSiteUserstable}
+                    />
+                  </Space>
+                );
+              },
+            },
+          ]
+        : [
             {
               title: Strings.sites,
               key: "sites",
@@ -83,22 +99,7 @@ const UserTableComponent = ({
                 );
               },
             },
-          ]
-        : []),
-      {
-        title: Strings.actions,
-        render: (record) => {
-          return (
-            <Space>
-              <UpdateUserButton
-                userId={record.id}
-                siteId={siteId}
-                isSiteUserstable={isSiteUserstable}
-              />
-            </Space>
-          );
-        },
-      },
+          ]),
     ],
     [Strings]
   );
