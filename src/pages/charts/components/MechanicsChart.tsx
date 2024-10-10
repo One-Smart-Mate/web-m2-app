@@ -19,10 +19,11 @@ import { UserRoles } from "../../../utils/Extensions";
 
 export interface ChartProps {
   siteId: string;
+  rol: UserRoles;
   methodologies: Methodology[];
 }
 
-const MechanicsChart = ({ siteId, methodologies }: ChartProps) => {
+const MechanicsChart = ({ siteId, methodologies, rol }: ChartProps) => {
   const [getMechanics] = useGetMechanicsChartDataMutation();
   const [transformedData, setTransformedData] = useState<any[]>([]);
   const [open, setOpen] = useState<boolean>(false);
@@ -118,7 +119,7 @@ const MechanicsChart = ({ siteId, methodologies }: ChartProps) => {
         label={Strings.mechanic}
         onClose={() => setOpen(false)}
         totalCards={selectedTotalCards}
-        rol={UserRoles.LOCALSYSADMIN}
+        rol={rol}
         text={selectedMechanicName}
         cardTypeName={selectedCardTypeName}
       />

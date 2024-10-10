@@ -20,9 +20,10 @@ import CustomDrawerCardList from "../../../components/CustomDrawerCardList";
 export interface ChartProps {
   siteId: string;
   methodologies: Methodology[];
+  rol: UserRoles;
 }
 
-const AreasChart = ({ siteId, methodologies }: ChartProps) => {
+const AreasChart = ({ siteId, methodologies, rol }: ChartProps) => {
   const [getAreas] = useGetAreasChartDataMutation();
   const [transformedData, setTransformedData] = useState<any[]>([]);
   const [open, setOpen] = useState<boolean>(false);
@@ -111,7 +112,7 @@ const AreasChart = ({ siteId, methodologies }: ChartProps) => {
         label={Strings.area}
         onClose={() => setOpen(false)}
         totalCards={selectedTotalCards}
-        rol={UserRoles.LOCALSYSADMIN}
+        rol={rol}
         text={selectedAreaName}
         cardTypeName={selectedCardTypeName}
       />

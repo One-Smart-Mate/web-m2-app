@@ -19,10 +19,11 @@ import CustomDrawerCardList from "../../../components/CustomDrawerCardList";
 
 export interface ChartProps {
   siteId: string;
+  rol: UserRoles;
   methodologies: Methodology[];
 }
 
-const DefinitiveUsersChart = ({ siteId, methodologies }: ChartProps) => {
+const DefinitiveUsersChart = ({ siteId, methodologies, rol }: ChartProps) => {
   const [getDefinitiveUsers] = useGetDefinitiveUsersChartDataMutation();
   const [transformedData, setTransformedData] = useState<any[]>([]);
   const [open, setOpen] = useState<boolean>(false);
@@ -120,7 +121,7 @@ const DefinitiveUsersChart = ({ siteId, methodologies }: ChartProps) => {
         label={Strings.definitiveUser}
         onClose={() => setOpen(false)}
         totalCards={selectedTotalCards}
-        rol={UserRoles.LOCALSYSADMIN}
+        rol={rol}
         text={selectedDefinitiveUserName}
         cardTypeName={selectedCardTypeName}
       />

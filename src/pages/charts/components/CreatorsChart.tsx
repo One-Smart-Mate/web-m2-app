@@ -19,10 +19,11 @@ import { UserRoles } from "../../../utils/Extensions";
 
 export interface ChartProps {
   siteId: string;
+  rol: UserRoles;
   methodologies: Methodology[];
 }
 
-const CreatorsChart = ({ siteId, methodologies }: ChartProps) => {
+const CreatorsChart = ({ siteId, methodologies, rol }: ChartProps) => {
   const [getCreators] = useGetCreatorsChartDataMutation();
   const [transformedData, setTransformedData] = useState<any[]>([]);
   const [open, setOpen] = useState<boolean>(false);
@@ -113,7 +114,7 @@ const CreatorsChart = ({ siteId, methodologies }: ChartProps) => {
         label={Strings.creator}
         onClose={() => setOpen(false)}
         totalCards={selectedTotalCards}
-        rol={UserRoles.LOCALSYSADMIN}
+        rol={rol}
         text={selectedCreatorName}
         cardTypeName={selectedCardTypeName}
       />

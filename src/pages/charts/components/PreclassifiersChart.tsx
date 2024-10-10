@@ -18,9 +18,10 @@ import { UserRoles } from "../../../utils/Extensions";
 
 export interface ChartProps {
   siteId: string;
+  rol: UserRoles;
 }
 
-const PreclassifiersChart = ({ siteId }: ChartProps) => {
+const PreclassifiersChart = ({ siteId, rol }: ChartProps) => {
   const [getAnomalies] = useGetPreclassifiersChartDataMutation();
   const [preclassifiers, setPreclassifiers] = useState<Preclassifier[]>([]);
   const [open, setOpen] = useState<boolean>(false);
@@ -94,7 +95,7 @@ const PreclassifiersChart = ({ siteId }: ChartProps) => {
         label={Strings.preclassifier}
         onClose={() => setOpen(false)}
         totalCards={selectedTotalCards}
-        rol={UserRoles.LOCALSYSADMIN}
+        rol={rol}
         text={selectedPreclassifierName}
         cardTypeName={selectedCardTypeName}
       />

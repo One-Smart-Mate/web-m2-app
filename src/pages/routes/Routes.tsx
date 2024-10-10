@@ -105,7 +105,7 @@ const adminCharts = new Route(
   "Charts",
   "charts",
   Routes.AdminPrefix + Routes.Charts,
-  <Charts />,
+  <Charts rol={UserRoles.IHSISADMIN} />,
   <></>
 );
 
@@ -135,7 +135,7 @@ const sysAdminCharts = new Route(
   "Charts",
   "charts",
   Routes.SysadminPrefix + Routes.Site + Routes.Charts,
-  <Charts />,
+  <Charts rol={UserRoles.LOCALSYSADMIN} />,
   <BsBarChartLine />
 );
 
@@ -286,7 +286,7 @@ const localAdminCharts = new Route(
   "Charts",
   "charts",
   Routes.LocalAdminPrefix + Routes.Site + Routes.Charts,
-  <Charts />,
+  <Charts rol={UserRoles.LOCALADMIN}/>,
   <BsBarChartLine />
 );
 
