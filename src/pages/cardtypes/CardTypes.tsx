@@ -6,10 +6,6 @@ import CustomButton from "../../components/CustomButtons";
 import { useLocation, useNavigate } from "react-router-dom";
 import CardTypesTable from "./components/CardTypesTable";
 import { CardTypes } from "../../data/cardtypes/cardTypes";
-import {
-  useCreateCardTypeMutation,
-  useGetCardTypesMutation,
-} from "../../services/cardTypesService";
 import PaginatedList from "../../components/PaginatedList";
 import CardTypesCard from "./components/CardTypesCard";
 import ModalForm from "../../components/ModalForm";
@@ -29,6 +25,7 @@ import { useAppDispatch, useAppSelector } from "../../core/store";
 import PageTitle from "../../components/PageTitle";
 import { UserRoles } from "../../utils/Extensions";
 import { UnauthorizedRoute } from "../../utils/Routes";
+import { useCreateCardTypeMutation, useGetCardTypesMutation } from "../../services/CardTypesService";
 
 interface CardTypeProps {
   rol: UserRoles;

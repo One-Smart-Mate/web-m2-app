@@ -6,7 +6,7 @@ import CreatorsChart from "./components/CreatorsChart";
 import WeeksChart from "./components/WeeksChart";
 import PreclassifiersChart from "./components/PreclassifiersChart";
 import { useEffect, useState } from "react";
-import { useGetCardTypesCatalogsMutation } from "../../services/cardTypesService";
+import { useGetCardTypesCatalogsMutation } from '../../services/CardTypesService';
 import { CardTypesCatalog } from "../../data/cardtypes/cardTypes";
 import MethodologiesChart from "./components/MethodologiesChart";
 import { Card, Empty } from "antd";
