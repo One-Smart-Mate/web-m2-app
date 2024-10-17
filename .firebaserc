@@ -1,5 +1,9 @@
 {
   "projects": {
-    "default": "web-m2-app"
-  }
+    "default": "osm-web-app",
+    "development": "osm-web-app-dev"
+  },
+  "targets": {},
+  "etags": {},
+  "dataconnectEmulatorConfig": {}
 }
