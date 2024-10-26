@@ -114,6 +114,7 @@ export default class Strings {
   static viewCharts = "View charts";
   static viewUsers = "View users";
   static importUsers = "Import users";
+  static downloadData = "Download data";
 
   //erros sites form
   static requiredLatitud = "Please enter the latitud";
@@ -304,6 +305,14 @@ export default class Strings {
   static cardParam = ":card";
   static cardTypeParam = ":cardType";
   static colon = ":";
+
+  //Rangepricker presets
+  static last7days = "Last 7 Days";
+  static last14days = "Last 14 Days";
+  static last30days = "Last 30 Days";
+  static last90days = "Last 90 Days";
+
+  static failedToDownload = "Failed to download";
 
   //warning notifications
   static restrictedAccessMessage =
